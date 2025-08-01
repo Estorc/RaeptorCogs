@@ -1,0 +1,49 @@
+# Build directories
+/build/
+/cmake-build-*/
+
+# CMake files
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# Generated files
+*.exe
+*.out
+*.app
+*.o
+*.obj
+*.so
+*.dll
+*.dylib
+*.lib
+*.a
+
+# Debug files
+*.pdb
+*.idb
+*.ilk
+
+# Visual Studio files
+*.vcxproj*
+*.sln
+*.vcxproj.filters
+*.vcxproj.user
+
+# JetBrains Rider / CLion
+.idea/
+*.iml
+
+# VS Code
+.vscode/
+
+# MacOS files
+.DS_Store
+
+# Linux files
+*~
+
+# Other temporary files
+*.log
+*.tmp
