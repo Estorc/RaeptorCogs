@@ -1,5 +1,5 @@
 #pragma once
-#include <glad/gl.h>
+#include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/ext/matrix_clip_space.hpp>
@@ -7,9 +7,9 @@
 #include <stack>
 #include <io/images.hpp>
 #include <flags.hpp>
-#include <stb/stb_image.h>
-#include <stb/stb_image_write.h>
-#include <stb/stb_rect_pack.h>
+#include <stb_image.h>
+#include <stb_image_write.h>
+#include <stb_rect_pack.h>
 
 /** TODO:
  * - Constant atlas loader

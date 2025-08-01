@@ -15,7 +15,7 @@ GLFWwindow* create_window() {
 
     glfwMakeContextCurrent(window);
 
-    if (!gladLoadGL(glfwGetProcAddress)) {
+    if (!gladLoadGL()) {
         glfwTerminate();
         return nullptr;
     }

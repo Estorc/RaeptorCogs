@@ -16,6 +16,57 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 include(FetchContent)
 find_package(Python3 COMPONENTS Interpreter REQUIRED)
 
+if(NOT Python3_Interpreter_FOUND)
+  message(FATAL_ERROR "Python3 interpreter not found. Please install Python3 to build this project.")
+endif()
+
+#========================================================================#
+# GLAD
+#========================================================================#
+
+execute_process(
+  COMMAND ${Python3_EXECUTABLE} -m pip show glad
+  RESULT_VARIABLE glad_pip_result
+  OUTPUT_QUIET
+  ERROR_QUIET
+)
+
+if(NOT glad_pip_result EQUAL 0)
+  message(STATUS "Python package 'glad' not found. Installing...")
+  execute_process(
+    COMMAND ${Python3_EXECUTABLE} -m pip install --user glad
+    RESULT_VARIABLE pip_install_result
+  )
+  if(NOT pip_install_result EQUAL 0)
+    message(FATAL_ERROR "Failed to install Python package 'glad'. Please install it manually.")
+  endif()
+endif()
+
+# Define where to generate glad files
+set(GLAD_DIR ${CMAKE_BINARY_DIR}/glad)
+file(MAKE_DIRECTORY ${GLAD_DIR})
+
+set(GL_VERSION 4.6)
+set(GL_PROFILE core)
+
+# Run glad generator during build (custom command)
+add_custom_command(
+  OUTPUT ${GLAD_DIR}/src/glad.c ${GLAD_DIR}/include/glad/glad.h
+  COMMAND ${Python3_EXECUTABLE} -m glad --generator=c --spec=gl --out-path=${GLAD_DIR} --api=gl=${GL_VERSION} --profile=${GL_PROFILE} --extensions=""
+  WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+  COMMENT "Generating GLAD files"
+  VERBATIM
+)
+
+# Create glad library from generated files
+add_library(glad STATIC
+  ${GLAD_DIR}/src/glad.c
+)
+
+target_include_directories(glad PUBLIC
+    ${GLAD_DIR}/include
+)
+
 #========================================================================#
 # IMPORTS
 #========================================================================#
@@ -48,14 +99,12 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(nfd)
 
-
-# --- Add GLAD static library (using pre-generated sources) ---
-add_library(glad STATIC
-    glad/src/gl.c
+FetchContent_Declare(
+  stb
+  GIT_REPOSITORY https://github.com/nothings/stb.git
+  GIT_TAG        master
 )
-target_include_directories(glad PUBLIC glad/include)
-
-find_package(OpenGL REQUIRED)
+FetchContent_MakeAvailable(stb)
 
 #========================================================================#
 # BUILD SHADERS
@@ -91,7 +140,7 @@ add_library(imgui STATIC
 target_include_directories(imgui PUBLIC
     ${imgui_SOURCE_DIR}
     ${imgui_SOURCE_DIR}/backends
-    glad/include
+    ${GLAD_DIR}/include
     ${glfw_SOURCE_DIR}/include
     ${nfd_SOURCE_DIR}/src/include
 )
@@ -113,9 +162,9 @@ target_sources(RaeptorLab PRIVATE ${SOURCES})
 # ---- Include dirs ----
 target_include_directories(RaeptorLab PRIVATE
     include
-    third_party
-    glad/include
+    ${GLAD_DIR}/include
     shaders
+    ${stb_SOURCE_DIR}
 )
 
 #========================================================================#
