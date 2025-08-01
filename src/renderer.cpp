@@ -1,13 +1,14 @@
-#include <renderer.hpp>
-#include <app.hpp>
+#include <RaeptorLab/renderer.hpp>
 #include <iostream>
 #include "shaders_embed.h"
+#include <glm/ext/matrix_transform.hpp>
+#include <glm/ext/matrix_clip_space.hpp>
 
 #define MAX_SPRITES 1000000
 #define SSBO_INSTANCE_SIZE 32
 #define SSBO_DEFAULT_SIZE (MAX_SPRITES * SSBO_INSTANCE_SIZE)
 
-Renderer::Renderer(RaeptorApplication* app) : app(app) {
+Renderer::Renderer() {
     float vertices[] = {
         0.0f,  0.0f,      0.0f,   0.0f,
          1.0f,  0.0f,      1.0f,   0.0f,
@@ -120,9 +121,9 @@ Renderer::~Renderer() {
     glDeleteBuffers(1, &this->quadEBO);
 }
 
-void Renderer::render() {
+void Renderer::render(GLFWwindow* window) {
     int width, height;
-    glfwGetWindowSize(this->app->getWindow(), &width, &height);
+    glfwGetWindowSize(window, &width, &height);
 
     glUseProgram(this->shader);
     glBindVertexArray(this->quadVAO);

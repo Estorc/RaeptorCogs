@@ -4,7 +4,7 @@
 #include <stb_image_write.h>
 #define STB_RECT_PACK_IMPLEMENTATION
 #include <stb_rect_pack.h>
-#include <io/images.hpp>
+#include <RaeptorLab/io/images.hpp>
 
 GLuint load_texture(const char* filename) {
     GLuint textureID = 0;

@@ -10,6 +10,16 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 #========================================================================#
+# CMAKE CONFIGURATION
+#========================================================================#
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -Werror")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-parameter -Wno-unused-variable")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated-declarations -Wno-missing-field-initializers")
+set(GL_VERSION 4.6)
+set(GL_PROFILE core)
+
+#========================================================================#
 # CMAKE MODULES
 #========================================================================#
 
@@ -46,9 +56,6 @@ endif()
 set(GLAD_DIR ${CMAKE_BINARY_DIR}/glad)
 file(MAKE_DIRECTORY ${GLAD_DIR})
 
-set(GL_VERSION 4.6)
-set(GL_PROFILE core)
-
 # Run glad generator during build (custom command)
 add_custom_command(
   OUTPUT ${GLAD_DIR}/src/glad.c ${GLAD_DIR}/include/glad/glad.h
@@ -79,25 +86,11 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(glfw)
 
-# --- Fetch ImGUI ---
-FetchContent_Declare(
-    imgui
-    GIT_REPOSITORY  https://github.com/ocornut/imgui.git
-    GIT_TAG         v1.89.8  # or latest stable tag
-)
-FetchContent_MakeAvailable(imgui)
-
 FetchContent_Declare(
     glm
     GIT_REPOSITORY  https://github.com/g-truc/glm.git        
 )
 FetchContent_MakeAvailable(glm)
-
-FetchContent_Declare(
-    nfd
-    GIT_REPOSITORY  https://github.com/btzy/nativefiledialog-extended.git
-)
-FetchContent_MakeAvailable(nfd)
 
 FetchContent_Declare(
   stb
@@ -127,44 +120,25 @@ add_custom_command(
 #========================================================================#
 
 
-add_library(imgui STATIC
-    ${imgui_SOURCE_DIR}/imgui.cpp
-    ${imgui_SOURCE_DIR}/imgui_draw.cpp
-    ${imgui_SOURCE_DIR}/imgui_widgets.cpp
-    ${imgui_SOURCE_DIR}/imgui_tables.cpp
-    ${imgui_SOURCE_DIR}/imgui_demo.cpp
-    ${imgui_SOURCE_DIR}/backends/imgui_impl_glfw.cpp
-    ${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp
-)
-
-target_include_directories(imgui PUBLIC
-    ${imgui_SOURCE_DIR}
-    ${imgui_SOURCE_DIR}/backends
-    ${GLAD_DIR}/include
-    ${glfw_SOURCE_DIR}/include
-    ${nfd_SOURCE_DIR}/src/include
-)
-
-target_compile_definitions(imgui PUBLIC IMGUI_IMPL_OPENGL_LOADER_GLAD)
-
-
-add_executable(RaeptorLab src/main.cpp)
-
 # --- Recursively find all source files in src/ directory ---
 
-file(GLOB_RECURSE SOURCES 
+file(GLOB_RECURSE LIB_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/*.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/include/*.hpp"
 )
 
-target_sources(RaeptorLab PRIVATE ${SOURCES})
+add_library(RaeptorLab STATIC ${LIB_SOURCES})
 
 # ---- Include dirs ----
-target_include_directories(RaeptorLab PRIVATE
-    include
-    ${GLAD_DIR}/include
-    shaders
-    ${stb_SOURCE_DIR}
+target_include_directories(RaeptorLab 
+    PUBLIC
+        ${stb_SOURCE_DIR}
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/shaders>
+        $<INSTALL_INTERFACE:include>
+    PRIVATE
+        ${GLAD_DIR}/include
 )
 
 #========================================================================#
@@ -179,11 +153,72 @@ target_include_directories(RaeptorLab PRIVATE ${CMAKE_BINARY_DIR})
 # LINKING
 #========================================================================#
 
-target_link_libraries(RaeptorLab PRIVATE
-    glad
-    glfw
-    imgui
-    glm
-    nfd
-    ${CMAKE_DL_LIBS}
+target_link_libraries(RaeptorLab 
+    PUBLIC
+        glfw
+        glm
+        glad
+        ${CMAKE_DL_LIBS}
 )
+
+#========================================================================#
+# EXAMPLES
+#========================================================================#
+
+option(RAEPTORLAB_BUILD_EXAMPLES "Build example apps" OFF)
+
+if(RAEPTORLAB_BUILD_EXAMPLES)
+
+    # --- Fetch ImGUI ---
+    FetchContent_Declare(
+        imgui
+        GIT_REPOSITORY  https://github.com/ocornut/imgui.git
+        GIT_TAG         v1.89.8  # or latest stable tag
+    )
+    FetchContent_MakeAvailable(imgui)
+
+    # --- Fetch NFD ---
+    FetchContent_Declare(
+        nfd
+        GIT_REPOSITORY  https://github.com/btzy/nativefiledialog-extended.git
+    )
+    FetchContent_MakeAvailable(nfd)
+
+
+    add_library(imgui STATIC
+        ${imgui_SOURCE_DIR}/imgui.cpp
+        ${imgui_SOURCE_DIR}/imgui_draw.cpp
+        ${imgui_SOURCE_DIR}/imgui_widgets.cpp
+        ${imgui_SOURCE_DIR}/imgui_tables.cpp
+        ${imgui_SOURCE_DIR}/imgui_demo.cpp
+        ${imgui_SOURCE_DIR}/backends/imgui_impl_glfw.cpp
+        ${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp
+    )
+
+    target_include_directories(imgui PUBLIC
+        ${imgui_SOURCE_DIR}
+        ${imgui_SOURCE_DIR}/backends
+        ${GLAD_DIR}/include
+        ${glfw_SOURCE_DIR}/include
+        ${nfd_SOURCE_DIR}/src/include
+    )
+
+    target_compile_definitions(imgui PUBLIC IMGUI_IMPL_OPENGL_LOADER_GLAD)
+
+
+    add_executable(RaeptorLabDemo examples/demo/main.cpp)
+
+    target_include_directories(RaeptorLabDemo PRIVATE
+        ${imgui_SOURCE_DIR}
+        ${imgui_SOURCE_DIR}/backends
+        ${nfd_SOURCE_DIR}/src/include
+    )
+
+    target_link_libraries(RaeptorLabDemo PRIVATE
+        RaeptorLab
+        imgui
+        nfd
+    )
+endif()
+
+#========================================================================#

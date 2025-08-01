@@ -49,11 +49,11 @@ class Font {
         void bind() const;
 
         GLuint getID() const;
-        GlyphData* getGlyph(char character) const;
-        glm::vec4 getGlyphUVRect(char character) const;
-        glm::vec2 getGlyphOffset(char character) const;
-        glm::vec2 getGlyphSize(char character) const;
-        float getGlyphXAdvance(char character) const;
+        GlyphData* getGlyph(unsigned char character) const;
+        glm::vec4 getGlyphUVRect(unsigned char character) const;
+        glm::vec2 getGlyphOffset(unsigned char character) const;
+        glm::vec2 getGlyphSize(unsigned char character) const;
+        float getGlyphXAdvance(unsigned char character) const;
         float getFontSize() const;
 };
 

@@ -1,5 +1,5 @@
-#include <graphic.hpp>
-#include <renderer.hpp>
+#include <RaeptorLab/graphic.hpp>
+#include <RaeptorLab/renderer.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
 Graphic::~Graphic() {

@@ -1,5 +1,6 @@
-#include <text.hpp>
+#include <RaeptorLab/text.hpp>
 #include <iostream>
+#include <glm/ext/matrix_transform.hpp>
 
 
 Glyph::Glyph(Text &text, char character, glm::vec2 advance) : text(&text), character(character) {
@@ -95,7 +96,7 @@ void Text::rebuild() {
         if (glyphs.size() > content.size()) {
             glyphs.resize(content.size()); // Resize glyphs vector if it has more elements than content
         }
-        for (int i = 0; i < content.size(); ++i) {
+        for (size_t i = 0; i < content.size(); ++i) {
             char c = content[i];
             if (glyphs.size() < i + 1) {
                 glyphs.push_back(std::make_shared<Glyph>(*this, c, advance));

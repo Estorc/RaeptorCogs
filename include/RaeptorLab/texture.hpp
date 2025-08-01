@@ -5,8 +5,8 @@
 #include <glm/ext/matrix_clip_space.hpp>
 #include <vector>
 #include <stack>
-#include <io/images.hpp>
-#include <flags.hpp>
+#include <RaeptorLab/io/images.hpp>
+#include <RaeptorLab/flags.hpp>
 #include <stb_image.h>
 #include <stb_image_write.h>
 #include <stb_rect_pack.h>

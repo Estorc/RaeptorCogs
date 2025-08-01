@@ -1,8 +1,30 @@
-#include <app.hpp>
-#include <memory.hpp>
+#include <RaeptorLab/memory.hpp>
+#include <RaeptorLab/io/font.hpp>
+#include <RaeptorLab/text.hpp>
+#include <RaeptorLab/renderer.hpp>
+#include <RaeptorLab/sprite.hpp>
+#include <backends/imgui_impl_glfw.h>
+#include <backends/imgui_impl_opengl3.h>
+#include <imgui.h>
 #include <nfd.h>
-#include <io/font.hpp>
-#include <text.hpp>
+
+const char* CLIENT_ID = "oimks47i3t5pnlb2vm7hy3rdfkwh6j";
+const char* CLIENT_SECRET = "6jlc8bcesyj1cukiga7aji44cba78i";
+
+class RaeptorApplication {
+    private:
+        GLFWwindow* window;
+        Renderer* renderer;
+
+    public:
+        RaeptorApplication();
+        ~RaeptorApplication();
+
+        int update();
+
+        ImGuiIO& getGui();
+        GLFWwindow* getWindow();
+};
 
 GLFWwindow* create_window() {
     if (!glfwInit()) return nullptr;
@@ -46,7 +68,7 @@ RaeptorApplication::RaeptorApplication() {
     create_gui(this->window);
     testTexture = Texture("assets/textures/texture.png");
     font = Font("assets/fonts/Alef-Bold.ttf", 72);
-    for (int i = 0; i < sprites.size(); ++i) {
+    for (size_t i = 0; i < sprites.size(); ++i) {
         sprites[i] = Sprite(testTexture);
         sprites[i].setPosition(glm::vec2(100.0f + (i%100) * 10, 100.0f + (i/100) * 10));
         sprites[i].setSize(glm::vec2(50.0f, 50.0f));
@@ -55,7 +77,7 @@ RaeptorApplication::RaeptorApplication() {
         sprites[i].setAnchor(glm::vec2(0.5f, 0.5f));
         sprites[i].setVisibility(true);
     }
-    this->renderer = new Renderer(this);
+    this->renderer = new Renderer();
     for (auto& sprite : sprites) {
         sprite.addToRenderer(*this->renderer);
     }
@@ -97,7 +119,7 @@ int RaeptorApplication::update() {
     ImGui::Begin("Hello, ImGui!");
     ImGui::Text(("This is a sample window ( " + std::to_string(fps) + "FPS )").c_str());
 
-    for (int i = 0; i < nodes.size(); ++i) {
+    for (size_t i = 0; i < nodes.size(); ++i) {
         Node& node = nodes[i];
         ImGui::PushID(i);  // Ensure unique ID per widget set
 
@@ -241,7 +263,7 @@ int RaeptorApplication::update() {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    this->renderer->render();
+    this->renderer->render(this->window);
     //this->renderer->clearBatches();
 
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -264,4 +286,15 @@ ImGuiIO& RaeptorApplication::getGui() {
 
 GLFWwindow* RaeptorApplication::getWindow() {
     return this->window;
+}
+
+
+
+int main() {
+    RaeptorApplication app = RaeptorApplication();
+
+    int8_t ret_value = 0;
+    while (!(ret_value = app.update()));
+
+    return ret_value;
 }

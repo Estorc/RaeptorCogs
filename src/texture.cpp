@@ -1,5 +1,5 @@
-#include <texture.hpp>
-#include <bit_op.hpp>
+#include <RaeptorLab/texture.hpp>
+#include <RaeptorLab/bit_op.hpp>
 
 #pragma region TextureAtlas
 

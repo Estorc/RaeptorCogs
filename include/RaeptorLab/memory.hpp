@@ -1,8 +1,8 @@
 #pragma once
 #include <unordered_map>
 #include <string>
-#include <texture.hpp>
-#include <io/font.hpp>
+#include <RaeptorLab/texture.hpp>
+#include <RaeptorLab/io/font.hpp>
 
 class RessourceManager {
     private:

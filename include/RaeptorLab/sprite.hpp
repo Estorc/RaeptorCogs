@@ -1,9 +1,8 @@
 #pragma once
-#include <main.hpp>
-#include <texture.hpp>
-#include <renderer.hpp>
-#include <graphic.hpp>
-#include <flags.hpp>
+#include <RaeptorLab/texture.hpp>
+#include <RaeptorLab/renderer.hpp>
+#include <RaeptorLab/graphic.hpp>
+#include <RaeptorLab/flags.hpp>
 
 class Renderer;
 

@@ -2,8 +2,8 @@
 #include <stb_truetype.h>
 #include <stb_image.h>
 #include <stb_image_write.h>
-#include <io/font.hpp>
-#include <io/string.hpp>
+#include <RaeptorLab/io/font.hpp>
+#include <RaeptorLab/io/string.hpp>
 #include <cstdlib>
 #include <iostream>
 #include <memory>
@@ -101,30 +101,30 @@ GLuint Font::getID() const {
     return this->textureID;
 }
 
-GlyphData* Font::getGlyph(char character) const {
-    if (character < 0 || character >= 128) return nullptr;
+GlyphData* Font::getGlyph(unsigned char character) const {
+    if (character >= 128) return nullptr;
     return glyphs[character].get();
 }
 
-glm::vec4 Font::getGlyphUVRect(char character) const {
+glm::vec4 Font::getGlyphUVRect(unsigned char character) const {
     GlyphData* glyph = getGlyph(character);
     if (!glyph) return glm::vec4(0.0f);
     return glyph->getUVRect();
 }
 
-glm::vec2 Font::getGlyphOffset(char character) const {
+glm::vec2 Font::getGlyphOffset(unsigned char character) const {
     GlyphData* glyph = getGlyph(character);
     if (!glyph) return glm::vec2(0.0f);
     return glyph->getOffset();
 }
 
-glm::vec2 Font::getGlyphSize(char character) const {
+glm::vec2 Font::getGlyphSize(unsigned char character) const {
     GlyphData* glyph = getGlyph(character);
     if (!glyph) return glm::vec2(0.0f);
     return glyph->getSize();
 }
 
-float Font::getGlyphXAdvance(char character) const {
+float Font::getGlyphXAdvance(unsigned char character) const {
     GlyphData* glyph = getGlyph(character);
     if (!glyph) return 0.0f;
     return glyph->getXAdvance();

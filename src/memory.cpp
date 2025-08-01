@@ -1,4 +1,4 @@
-#include <memory.hpp>
+#include <RaeptorLab/memory.hpp>
 
 Texture& RessourceManager::loadTextureFromFile(const std::string& filepath) {
     if (textures.find(filepath) == textures.end()) {

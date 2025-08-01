@@ -1,13 +1,11 @@
 #pragma once
-#include <main.hpp>
 #include <unordered_map>
-#include <sprite.hpp>
-#include <graphic.hpp>
+#include <RaeptorLab/graphic.hpp>
 #include <memory>
-#include <flags.hpp>
+#include <RaeptorLab/flags.hpp>
 #include <constants.glsl>
+#include <GLFW/glfw3.h>
 
-class RaeptorApplication;
 class Sprite;
 class Renderer;
 class Graphic;
@@ -16,7 +14,6 @@ typedef int RendererMode;
 
 class Renderer {
     private:
-        RaeptorApplication* app = nullptr;
         std::unordered_map<GLuint, std::vector<Graphic*>> batches; // Maps texture IDs to graphics
         GLuint shader = 0;
         GLuint quadVBO;
@@ -27,10 +24,10 @@ class Renderer {
         RendererMode mode = RENDERER_MODE_2D_SPRITE;
         std::vector<uint8_t> instanceDataBuffer; // Buffer to hold instance data
     public:
-        Renderer(RaeptorApplication* app);
+        Renderer();
         ~Renderer();
 
-        void render();
+        void render(GLFWwindow* window);
 
         void addGraphic(Graphic*);
         void changeGraphicPosition(Graphic* graphic, GLuint newTextureID);

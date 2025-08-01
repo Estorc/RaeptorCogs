@@ -1,4 +1,4 @@
-#include <sprite.hpp>
+#include <RaeptorLab/sprite.hpp>
 #include <iostream>
 
 Sprite::Sprite(Texture &texture) : texture(&texture) {}
