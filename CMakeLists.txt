@@ -154,9 +154,9 @@ target_include_directories(RaeptorLab
     PUBLIC
         ${stb_SOURCE_DIR}
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/shaders>
         $<INSTALL_INTERFACE:include>
-        $<INSTALL_INTERFACE:shaders>
+    INTERFACE
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/shaders>
     PRIVATE
         ${GLAD_DIR}/include
         ${httplib_SOURCE_DIR}
