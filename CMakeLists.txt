@@ -115,14 +115,14 @@ FetchContent_MakeAvailable(httplib)
 # BUILD SHADERS
 #========================================================================#
 
-set(SHADER_DIR ${CMAKE_SOURCE_DIR}/shaders)
+set(SHADER_DIR ${CMAKE_CURRENT_SOURCE_DIR}/shaders)
 set(EMBEDDED_SHADER_HEADER ${CMAKE_BINARY_DIR}/shaders_embed.h)
 file(GLOB_RECURSE SHADER_SOURCES "${SHADER_DIR}/*.glsl" "${SHADER_DIR}/*.vert" "${SHADER_DIR}/*.frag" "${SHADER_DIR}/*.fs" "${SHADER_DIR}/*.vs")
 
 add_custom_command(
     OUTPUT ${EMBEDDED_SHADER_HEADER}
-    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/process_shaders.py ${EMBEDDED_SHADER_HEADER} ${SHADER_SOURCES}
-    DEPENDS ${SHADER_SOURCES} ${CMAKE_SOURCE_DIR}/process_shaders.py
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/process_shaders.py ${EMBEDDED_SHADER_HEADER} ${SHADER_SOURCES}
+    DEPENDS ${SHADER_SOURCES} ${CMAKE_CURRENT_SOURCE_DIR}/process_shaders.py
     COMMENT "Embedding shaders into ${EMBEDDED_SHADER_HEADER}"
     VERBATIM
 )
