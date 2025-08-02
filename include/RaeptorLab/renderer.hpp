@@ -4,7 +4,7 @@
 #include <memory>
 #include <RaeptorLab/flags.hpp>
 #include <RaeptorLab/window.hpp>
-#include "../shaders/embedded_shaders.h"
+#include "../../shaders/constants.glsl"
 #include <GLFW/glfw3.h>
 
 class Sprite;
