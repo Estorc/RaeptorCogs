@@ -11,10 +11,6 @@ void Sprite::addToRenderer(Renderer &renderer) {
     renderer.addGraphic(this);
 }
 
-void Sprite::prepareRender(Renderer* renderer) {
-    //renderer->setMode(RENDERER_MODE_2D_SPRITE);
-}
-
 void Sprite::computeInstanceData(InstanceData &data, std::vector<uint8_t> &instanceDataBuffer) {
     data.model = this->getModelMatrix();
     data.uvRect = texture ? texture->getUVRect() : glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);

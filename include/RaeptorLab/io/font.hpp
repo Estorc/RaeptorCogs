@@ -3,6 +3,7 @@
 #include <glm/glm.hpp>
 #include <array>
 #include <memory>
+#include <string>
 
 class GlyphData {
     private:
@@ -55,6 +56,9 @@ class Font {
         glm::vec2 getGlyphSize(unsigned char character) const;
         float getGlyphXAdvance(unsigned char character) const;
         float getFontSize() const;
+        float measureTextWidth(const std::string& text) const;
+        float measureTextHeight(const std::string& text) const;
+        glm::vec2 measureTextSize(const std::string& text) const;
 };
 
 Font loadFont(const char* fontPath, int fontSize);

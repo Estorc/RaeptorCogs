@@ -67,7 +67,7 @@ class Texture {
 
     public:
         Texture() : atlas(nullptr) {}
-        Texture(const Image &img) : image(img), atlas(nullptr) {}
+        Texture(const Image &img);
         Texture(const char *filepath);
 
         void bind() const;

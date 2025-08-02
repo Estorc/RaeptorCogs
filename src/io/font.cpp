@@ -133,3 +133,51 @@ float Font::getGlyphXAdvance(unsigned char character) const {
 float Font::getFontSize() const {
     return font_size;
 }
+
+float Font::measureTextWidth(const std::string& text) const {
+    float width = 0.0f;
+    for (char c : text) {
+        if (c == '\n') {
+            break;
+        }
+        GlyphData* glyph = getGlyph(c);
+        if (glyph) {
+            width += glyph->getXAdvance();
+            width += glyph->getSize().x / 2.0f;
+        }
+    }
+    return width;
+}
+
+float Font::measureTextHeight(const std::string& text) const {
+    float height = 0.0f;
+    float lineHeight = this->getFontSize();
+    for (char c : text) {
+        if (c == '\n') {
+            height += lineHeight; // Move down by font size for new line
+        }
+    }
+    return height + lineHeight; // Add last line height
+}
+
+glm::vec2 Font::measureTextSize(const std::string& text) const {
+    glm::vec2 size(0.0f, 0.0f);
+    float currentLineWidth = 0.0f;
+    float lineHeight = this->getFontSize();
+    for (char c : text) {
+        if (c == '\n') {
+            size.x = std::max(size.x, currentLineWidth);
+            size.y += lineHeight;
+            currentLineWidth = 0.0f; // Reset for new line
+            continue;
+        }
+        GlyphData* glyph = getGlyph(c);
+        if (glyph) {
+            currentLineWidth += glyph->getXAdvance();
+            currentLineWidth += glyph->getSize().x / 2.0f;
+        }
+    }
+    size.x = std::max(size.x, currentLineWidth);
+    size.y += lineHeight;
+    return size;
+}

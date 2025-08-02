@@ -30,7 +30,6 @@ class Graphic {
     public:
         virtual ~Graphic();
 
-        virtual void prepareRender(Renderer* renderer) {};
         virtual void computeInstanceData(InstanceData &data, std::vector<uint8_t> &instanceDataBuffer) {};
         virtual void bind() const {};
         virtual GLuint getID() const {return 0;};
@@ -52,16 +51,19 @@ class TransformableGraphic2D : public Graphic {
         glm::vec2 position;
         glm::vec2 size;
         float rotation;
+        float zIndex;
         glm::vec2 anchor;
         glm::mat4 modelMatrix;
-        glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f); // Default color is white
+        glm::vec3 color;
 
         GraphicFlags flags;
 
     public:
+        TransformableGraphic2D() : position(0.0f), size(1.0f), rotation(0.0f), zIndex(0.0f), anchor(0.0f), modelMatrix(1.0f), color(1.0f, 1.0f, 1.0f) {}
         virtual void rebuild();
 
         virtual void setPosition(const glm::vec2 &pos);
+        virtual void setZIndex(float z);
         virtual void setSize(const glm::vec2 &size);
         virtual void setRotation(float angle);
         virtual void setColor(const glm::vec3 &color);
@@ -72,7 +74,9 @@ class TransformableGraphic2D : public Graphic {
         virtual bool needsRebuild() const;
 
         virtual glm::vec2 getPosition() const;
+
         virtual glm::vec2 getSize() const;
+        virtual float getZIndex() const;
         virtual float getRotation() const;
         virtual glm::vec3 getColor() const;
         virtual glm::vec2 getAnchor() const;

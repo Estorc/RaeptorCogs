@@ -1,20 +1,61 @@
+#include <RaeptorLab/raeptorLab.hpp>
 #include <RaeptorLab/memory.hpp>
 #include <RaeptorLab/io/font.hpp>
 #include <RaeptorLab/text.hpp>
-#include <RaeptorLab/renderer.hpp>
 #include <RaeptorLab/sprite.hpp>
+#include <RaeptorLab/io/string.hpp>
 #include <backends/imgui_impl_glfw.h>
 #include <backends/imgui_impl_opengl3.h>
+#include <format>
 #include <imgui.h>
 #include <nfd.h>
+#include <httplib.h>
+#include <nlohmann/json.hpp>
 
-const char* CLIENT_ID = "oimks47i3t5pnlb2vm7hy3rdfkwh6j";
-const char* CLIENT_SECRET = "6jlc8bcesyj1cukiga7aji44cba78i";
+#include <iostream>
+
+#if defined(_WIN32)
+    #include <windows.h>
+    #include <direct.h>
+#elif defined(__linux__) || defined(__APPLE__)
+    #include <unistd.h>
+    #include <limits.h>
+    #include <libgen.h>
+    #include <string.h>
+#endif
+
+bool setCWDToExecutableLocation() {
+#if defined(_WIN32)
+    char path[MAX_PATH];
+    if (GetModuleFileNameA(NULL, path, MAX_PATH) == 0) return false;
+
+    // Remove filename to get directory
+    *strrchr(path, '\\') = '\0';
+    return _chdir(path) == 0;
+
+#elif defined(__linux__) || defined(__APPLE__)
+    char path[PATH_MAX];
+    ssize_t count = readlink("/proc/self/exe", path, PATH_MAX);
+    if (count == -1) return false;
+    path[count] = '\0';
+
+    char *dir = dirname(path);
+    return chdir(dir) == 0;
+
+#else
+    return false; // Not supported on unknown platform
+#endif
+}
+
+Texture testTexture;
+Font font;
+std::array<Sprite, 0> sprites;
+int fontSize = 72;
+Window * second_window = nullptr;
 
 class RaeptorApplication {
     private:
-        GLFWwindow* window;
-        Renderer* renderer;
+        Window* window;
 
     public:
         RaeptorApplication();
@@ -23,29 +64,10 @@ class RaeptorApplication {
         int update();
 
         ImGuiIO& getGui();
-        GLFWwindow* getWindow();
+        Window* getWindow();
 };
 
-GLFWwindow* create_window() {
-    if (!glfwInit()) return nullptr;
-
-    GLFWwindow* window = glfwCreateWindow(1280, 720, "RaeptorLab", NULL, NULL);
-    if (!window) {
-        glfwTerminate();
-        return nullptr;
-    }
-
-    glfwMakeContextCurrent(window);
-
-    if (!gladLoadGL()) {
-        glfwTerminate();
-        return nullptr;
-    }
-
-    return window;
-}
-
-void create_gui(GLFWwindow* window) {
+void create_gui(Window* window) {
     // Setup ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -54,19 +76,105 @@ void create_gui(GLFWwindow* window) {
     ImGui::StyleColorsDark();
 
     // Setup Platform/Renderer bindings
-    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplGlfw_InitForOpenGL(window->getGLFWWindow(), true);
     ImGui_ImplOpenGL3_Init("#version 460");
 }
 
-Texture testTexture;
-Font font;
-std::array<Sprite, 0> sprites;
-int fontSize = 72;
+
+void load_texture_test() {
+    const char* CLIENT_ID = reinterpret_cast<const char*>(load_file("protected/id.txt"));
+    const char* CLIENT_SECRET = reinterpret_cast<const char*>(load_file("protected/secret.txt"));
+
+    std::cout << "Client ID: " << CLIENT_ID << std::endl;
+    std::cout << "Client Secret: " << CLIENT_SECRET << std::endl;
+
+    httplib::Client cli("https://id.twitch.tv");
+
+
+    char * randomString = new char[16];
+    for (int i = 0; i < 15; ++i) {
+        randomString[i] = 'a' + rand() % 26; // Generate a random lowercase letter
+    }
+    randomString[15] = '\0'; // Null-terminate the string
+
+    // Twitch requires HTTPS
+    cli.set_follow_location(true); // Follow redirects if needed
+
+    // Construct query string safely
+    httplib::Headers headers = {
+        { "Content-Type", "application/json" }
+    };
+
+    std::string body = R"({
+        "client_id": ")" + std::string(CLIENT_ID) + R"(",
+        "client_secret": ")" + std::string(CLIENT_SECRET) + R"(",
+        "grant_type": "client_credentials"
+    })";
+
+    std::string accessToken;
+
+    if (auto res = cli.Post("/oauth2/token", headers, body, "application/json")) {
+        if (res->status == 200) {
+            nlohmann::json response = nlohmann::json::parse(res->body);
+            accessToken = response["access_token"];
+        } else {
+            std::cerr << "HTTP error: " << res->status << std::endl;
+        }
+    } else {
+        std::cerr << "Request failed: " << res.error() << std::endl;
+    }
+
+    if (accessToken.empty()) {
+        std::cerr << "Failed to obtain access token." << std::endl;
+        exit(EXIT_FAILURE);
+    }
+
+    std::cout << "Access Token: " << accessToken << std::endl;
+
+    httplib::Client igdb("https://api.igdb.com");
+
+    igdb.set_follow_location(true); // Follow redirects if needed
+
+    headers = {
+        { "Accept", "application/json" },
+        { "Client-ID", std::string(CLIENT_ID) },
+        { "Authorization", std::string("Bearer ") + accessToken }
+    };
+
+    body = R"(
+        fields cover.image_id; where id=332780;
+    )";
+
+    std::string cover_image_id;
+
+    if (auto res = igdb.Post("/v4/games", headers, body, "application/json")) {
+        if (res->status == 200) {
+            nlohmann::json response = nlohmann::json::parse(res->body);
+            cover_image_id = response[0]["cover"]["image_id"];
+            std::cout << "Cover Image ID: " << cover_image_id << std::endl;
+        } else {
+            std::cerr << "HTTP error: " << res->status << std::endl;
+        }
+    } else {
+        std::cerr << "Request failed: " << res.error() << std::endl;
+    }
+
+    const std::string cover_type = "cover_big"; // Replace with actual image ID from the response
+    std::string cover_image_url = "https://images.igdb.com/igdb/image/upload/t_" + cover_type + "/" + cover_image_id + ".jpg";
+
+    std::cout << "Cover Image URL: " << cover_image_url << std::endl;
+
+    Image coverImage = load_image_from_url(cover_image_url.c_str());
+    stbi_write_png("cover_image.jpg", coverImage.width, coverImage.height, coverImage.channels, coverImage.data, 0);
+    testTexture = Texture(coverImage);
+}
+
 RaeptorApplication::RaeptorApplication() {
     NFD_Init();
-    this->window = create_window();
+    this->window = RaeptorLab::Renderer().initialize(1280, 720, "RaeptorLab Demo");
+    second_window = RaeptorLab::Renderer().createWindow(800, 600, "Second Window");
     create_gui(this->window);
-    testTexture = Texture("assets/textures/texture.png");
+    load_texture_test();
     font = Font("assets/fonts/Alef-Bold.ttf", 72);
     for (size_t i = 0; i < sprites.size(); ++i) {
         sprites[i] = Sprite(testTexture);
@@ -77,13 +185,11 @@ RaeptorApplication::RaeptorApplication() {
         sprites[i].setAnchor(glm::vec2(0.5f, 0.5f));
         sprites[i].setVisibility(true);
     }
-    this->renderer = new Renderer();
     for (auto& sprite : sprites) {
-        sprite.addToRenderer(*this->renderer);
+        sprite.addToRenderer(RaeptorLab::Renderer());
     }
     GLint maxSSBOSize;
     glGetIntegerv(GL_MAX_SHADER_STORAGE_BLOCK_SIZE, &maxSSBOSize);
-    std::cout << "Max SSBO size: " << maxSSBOSize / (1024.0 * 1024.0) << " MB\n";
 }
 
 RaeptorApplication::~RaeptorApplication() {
@@ -91,7 +197,8 @@ RaeptorApplication::~RaeptorApplication() {
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
-    glfwDestroyWindow(this->window);
+    delete this->window;
+    delete second_window;
     glfwTerminate();
 }
 
@@ -107,7 +214,7 @@ std::vector<Node> nodes;
 int RaeptorApplication::update() {
     int width, height;
 
-    glfwGetWindowSize(window, &width, &height);
+    glfwGetWindowSize(window->getGLFWWindow(), &width, &height);
     glfwPollEvents();
 
     ImGui_ImplOpenGL3_NewFrame();
@@ -148,12 +255,14 @@ int RaeptorApplication::update() {
                 glm::vec2 rectanglePosition = sprite->getPosition();
                 glm::vec2 rectangleSize = sprite->getSize();
                 float rectangleRotation = sprite->getRotation();
+                float rectangleZIndex = sprite->getZIndex();
                 glm::vec3 rectangleColor = sprite->getColor();
 
                 ImGui::Indent();
                 ImGui::Text("Position");
                 ImGui::SliderFloat("X", &rectanglePosition.x, 0.0f, width);
                 ImGui::SliderFloat("Y", &rectanglePosition.y, 0.0f, height);
+                ImGui::SliderFloat("Z Index", &rectangleZIndex, -100.0f, 100.0f);
                 ImGui::SliderFloat2("Size", &rectangleSize[0], 0.0f, 2000.0f);
                 ImGui::SliderAngle("Rotation", &rectangleRotation, 0.0f, 360.0f);
                 ImGui::ColorEdit3("Color", &rectangleColor[0]); // Example of color edit, replace with actual color
@@ -178,6 +287,7 @@ int RaeptorApplication::update() {
                 sprite->setSize(rectangleSize);
                 sprite->setRotation(rectangleRotation);
                 sprite->setColor(rectangleColor);
+                sprite->setZIndex(rectangleZIndex);
 
             } else if (node.type == "text") {
                 ImGui::Text("Text Properties");
@@ -192,11 +302,13 @@ int RaeptorApplication::update() {
                 glm::vec2 textPosition = text->getPosition();
                 glm::vec2 textSize = text->getSize();
                 float textRotation = text->getRotation();
+                float zIndex = text->getZIndex();
                 glm::vec3 textColor = text->getColor();
                 ImGui::Indent();
                 ImGui::Text("Position");
                 ImGui::SliderFloat("X", &textPosition.x, 0.0f, width);
                 ImGui::SliderFloat("Y", &textPosition.y, 0.0f, height);
+                ImGui::SliderFloat("Z Index", &zIndex, -100.0f, 100.0f);
                 ImGui::SliderFloat2("Size", &textSize[0], 0.0f, 2000.0f);
                 ImGui::SliderAngle("Rotation", &textRotation, 0.0f, 360.0f);
                 ImGui::ColorEdit3("Color", &textColor[0]); // Example of color edit, replace with actual color
@@ -205,6 +317,7 @@ int RaeptorApplication::update() {
                 text->setSize(textSize);
                 text->setRotation(textRotation);
                 text->setColor(textColor);
+                text->setZIndex(zIndex);
 
                 if (ImGui::Button("Open Font")) {
                     nfdu8char_t *outPath;
@@ -231,24 +344,25 @@ int RaeptorApplication::update() {
     if (ImGui::Button("Add Sprite")) {
         Sprite* sprite = new Sprite(testTexture);
         sprite->setPosition(glm::vec2(100.0f, 100.0f));
-        sprite->setSize(glm::vec2(100.0f, 100.0f));
+        sprite->setSize(glm::vec2(264.0f, 352.0f));
         sprite->setRotation(0.0f);
         sprite->setColor(glm::vec3(1.0f, 1.0f, 1.0f));
         sprite->setAnchor(glm::vec2(0.5f, 0.5f));
         sprite->setVisibility(true);
         nodes.push_back(Node{false, "sprite", sprite});
-        sprite->addToRenderer(*this->renderer);
+        sprite->addToRenderer(RaeptorLab::Renderer());
     }
 
     if (ImGui::Button("Add Text")) {
         Text* text = new Text(font, "Sample Text");
         text->setPosition(glm::vec2(100.0f, 100.0f));
-        text->setSize(glm::vec2(100.0f, 100.0f));
+        text->setSize(font.measureTextSize("Sample Text"));
         text->setRotation(0.0f);
         text->setColor(glm::vec3(1.0f, 1.0f, 1.0f));
+        text->setAnchor(glm::vec2(0.5f, 0.5f));
         text->setVisibility(true);
         nodes.push_back(Node{false, "text", text});
-        text->addToRenderer(*this->renderer);
+        text->addToRenderer(RaeptorLab::Renderer());
     }
 
     ImGui::Separator();
@@ -256,25 +370,24 @@ int RaeptorApplication::update() {
 
     ImGui::Render();
 
-    glViewport(0, 0, width, height);
-    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    this->renderer->render(this->window);
+    RaeptorLab::Renderer().render(this->window);
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+    glfwSwapBuffers(this->window->getGLFWWindow());
+    RaeptorLab::Renderer().render(second_window);
+    glfwSwapBuffers(second_window->getGLFWWindow());
     //this->renderer->clearBatches();
 
-    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+    GLenum err;
+    while ((err = glGetError()) != GL_NO_ERROR) {
+        std::cerr << "GL error: " << err << std::endl;
+    }
 
-    glfwSwapBuffers(this->window);
-
-    if (glfwWindowShouldClose(this->window)) {
-        this->renderer->clearBatches();
+    if (glfwWindowShouldClose(this->window->getGLFWWindow())) {
+        RaeptorLab::Renderer().clearBatches();
         for (auto& node : nodes) {
             delete node.sprite; // Clean up sprites
         }
+        RaeptorLab::Renderer().destroy();
         return -1;
     }
     return 0;
@@ -284,13 +397,15 @@ ImGuiIO& RaeptorApplication::getGui() {
     return ImGui::GetIO();
 }
 
-GLFWwindow* RaeptorApplication::getWindow() {
+Window* RaeptorApplication::getWindow() {
     return this->window;
 }
 
 
 
 int main() {
+    setCWDToExecutableLocation();
+
     RaeptorApplication app = RaeptorApplication();
 
     int8_t ret_value = 0;

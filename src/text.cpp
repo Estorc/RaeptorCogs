@@ -10,31 +10,45 @@ Glyph::Glyph(Text &text, char character, glm::vec2 advance) : text(&text), chara
 
 Glyph::Glyph() : text(nullptr), character('\0') {}
 
-void Glyph::setCharacter(char character, glm::vec2 advance) {
-    this->character = character;
-    this->setSize(this->text->getFont()->getGlyphSize(character));
+void Glyph::setCharacter(char _character, glm::vec2 advance) {
+    this->character = _character;
+    this->setSize(this->text->getFont()->getGlyphSize(_character));
     this->setPosition(this->text->getPosition());
     this->setRotation(this->text->getRotation());
-    this->setAnchor(this->text->getAnchor());
+    this->setZIndex(this->text->getZIndex());
+    this->setAnchor(glm::vec2(0.0f, 0.0f)); // Reset anchor to top-left
     this->setColor(this->text->getColor());
-    if (character == '\n') {
-        this->setVisibility(false); // Hide glyph for newline character
+    if (_character == '\n') {
+        this->setVisibility(false); // Hide glyph for newline _character
     } else {
         this->setVisibility(this->text->isVisible()); // Set visibility based on text visibility
     }
-    this->position += this->text->getFont()->getGlyphOffset(character) * 2.0f;
-    this->position += advance;
+
+    // Apply rotation to the glyph offset and advance
+    float sinRot = sin(this->text->getRotation());
+    float cosRot = cos(this->text->getRotation());
+    
+    // Rotate glyph offset
+    glm::vec2 rotatedOffset = glm::vec2(
+        this->text->getFont()->getGlyphOffset(_character).x * cosRot - this->text->getFont()->getGlyphOffset(_character).y * sinRot,
+        this->text->getFont()->getGlyphOffset(_character).x * sinRot + this->text->getFont()->getGlyphOffset(_character).y * cosRot
+    );
+    
+    // Rotate advance
+    glm::vec2 rotatedAdvance = glm::vec2(
+        advance.x * cosRot - advance.y * sinRot,
+        advance.x * sinRot + advance.y * cosRot
+    );
+    
+    this->position += rotatedOffset * 2.0f;
+    this->position += rotatedAdvance;
 }
 
-void Glyph::addToRenderer(Renderer &renderer) {
+void Glyph::addToRenderer(Renderer &_renderer) {
     if (!isVisible()) return;
 
     // Add to renderer's batch
-    renderer.addGraphic(this);
-}
-
-void Glyph::prepareRender(Renderer* renderer) {
-    //renderer->setMode(RENDERER_MODE_2D_TEXT);
+    _renderer.addGraphic(this);
 }
 
 void Glyph::computeInstanceData(InstanceData &data, std::vector<uint8_t> &instanceDataBuffer) {
@@ -45,9 +59,9 @@ void Glyph::computeInstanceData(InstanceData &data, std::vector<uint8_t> &instan
     data.uvRect = this->text->getFont()->getGlyphUVRect(character);
     data.type = RENDERER_MODE_2D_TEXT;
 
-    glm::vec3 color = this->getColor();
+    glm::vec3 col = this->getColor();
     data.dataOffset = instanceDataBuffer.size() / sizeof(uint8_t); // Offset into the instance data buffer
-    instanceDataBuffer.insert(instanceDataBuffer.end(), reinterpret_cast<uint8_t*>(&color), reinterpret_cast<uint8_t*>(&color) + sizeof(color));
+    instanceDataBuffer.insert(instanceDataBuffer.end(), reinterpret_cast<uint8_t*>(&col), reinterpret_cast<uint8_t*>(&col) + sizeof(col));
 }
 
 void Glyph::bind() const {
@@ -68,11 +82,11 @@ Text::~Text() {
 }
 
 
-void Text::addToRenderer(Renderer &renderer) {
+void Text::addToRenderer(Renderer &_renderer) {
     if (!isVisible()) return;
 
     // Add to renderer's batch
-    renderer.addGraphic(this);
+    _renderer.addGraphic(this);
     this->rebuild(); // Ensure text is rebuilt before adding to renderer
 }
 
@@ -91,8 +105,11 @@ void Text::rebuild() {
 
     // Rebuild glyphs based on content and font
 
+    glm::vec2 size = font->measureTextSize(content);
+    float lineHeight = font->getFontSize();
+
     if (font) {
-        glm::vec2 advance = glm::vec2(0.0f, 0.0f); // Initialize advance vector
+        glm::vec2 advance = glm::vec2(-font->getGlyphXAdvance(content[0]) * 0.25f, lineHeight*0.75f); // Initialize advance vector
         if (glyphs.size() > content.size()) {
             glyphs.resize(content.size()); // Resize glyphs vector if it has more elements than content
         }
@@ -102,11 +119,11 @@ void Text::rebuild() {
                 glyphs.push_back(std::make_shared<Glyph>(*this, c, advance));
                 glyphs[i]->addToRenderer(*this->getRenderer()); // Add glyph to renderer
             } else {
-                glyphs[i]->setCharacter(c, advance);
+                glyphs[i]->setCharacter(c, advance - size * this->anchor);
             }
             if (c == '\n') {
                 advance.x = 0.0f; // Reset x offset for new line
-                advance.y += font->getFontSize(); // Move down by font size
+                advance.y += lineHeight; // Move down by line height
                 continue; // Skip to the next character
             }
             advance.x += font->getGlyphXAdvance(c); // Subtract the x advance of the glyph

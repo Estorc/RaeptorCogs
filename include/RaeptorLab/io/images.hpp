@@ -10,4 +10,5 @@ typedef struct Image {
 } Image;
 
 GLuint load_texture(const char* filename);
+Image load_image_from_url(const char* url);
 Image load_image(const char* filename);

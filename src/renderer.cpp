@@ -8,7 +8,48 @@
 #define SSBO_INSTANCE_SIZE 32
 #define SSBO_DEFAULT_SIZE (MAX_SPRITES * SSBO_INSTANCE_SIZE)
 
-Renderer::Renderer() {
+
+Window* Renderer::initialize(int width, int height, const char* title) {
+    this->mainWindow = this->initGraphics(width, height, title);
+    this->buildBuffers();
+    this->buildVAO(this->mainWindow);
+    this->buildShader();
+    return this->mainWindow;
+}
+
+
+void Renderer::destroy() {
+    glDeleteBuffers(1, &this->quadVBO);
+    glDeleteBuffers(1, &this->quadEBO);
+    glDeleteBuffers(1, &this->instanceVBO);
+    glDeleteBuffers(1, &this->instanceSSBO);
+    glDeleteProgram(this->shader);
+}
+
+Window* Renderer::initGraphics(int width, int height, const char* title) {
+    if (!glfwInit()) {
+        std::cerr << "Failed to initialize GLFW" << std::endl;
+        exit(EXIT_FAILURE);
+    }
+
+    Window* window = new Window(width, height, title, nullptr, nullptr);
+    if (!window) {
+        std::cerr << "Failed to create GLFW window" << std::endl;
+        glfwTerminate();
+        exit(EXIT_FAILURE);
+    }
+    glfwMakeContextCurrent(window->getGLFWWindow());
+
+    if (!gladLoadGL()) {
+        std::cerr << "Failed to initialize GLAD" << std::endl;
+        glfwTerminate();
+        exit(EXIT_FAILURE);
+    }
+
+    return window;
+} 
+
+void Renderer::buildBuffers() {
     float vertices[] = {
         0.0f,  0.0f,      0.0f,   0.0f,
          1.0f,  0.0f,      1.0f,   0.0f,
@@ -21,12 +62,10 @@ Renderer::Renderer() {
         2, 3, 0    // Second triangle
     };
 
-    glGenVertexArrays(1, &this->quadVAO);
     glGenBuffers(1, &this->quadVBO);
     glGenBuffers(1, &this->instanceVBO);
     glGenBuffers(1, &this->quadEBO);
-
-    glBindVertexArray(this->quadVAO);
+    glGenBuffers(1, &this->instanceSSBO);
 
     // Vertex buffer
     glBindBuffer(GL_ARRAY_BUFFER, this->quadVBO);
@@ -35,6 +74,19 @@ Renderer::Renderer() {
     // Element buffer
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->quadEBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+    // Instance buffer
+    glBindBuffer(GL_ARRAY_BUFFER, this->instanceVBO);
+    glBufferData(GL_ARRAY_BUFFER, MAX_SPRITES * sizeof(InstanceData), nullptr, GL_DYNAMIC_DRAW);
+}
+
+void Renderer::buildVAO(Window* window) {
+    //glfwMakeContextCurrent(window->getGLFWWindow());
+
+    glGenVertexArrays(1, &window->getQuadVAO());
+    glBindVertexArray(window->getQuadVAO());
+    glBindBuffer(GL_ARRAY_BUFFER, this->quadVBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->quadEBO);
 
     // Vertex attributes
     // Position (0)
@@ -47,7 +99,6 @@ Renderer::Renderer() {
 
     // Instance matrix (location 2-5)
     glBindBuffer(GL_ARRAY_BUFFER, this->instanceVBO);
-    glBufferData(GL_ARRAY_BUFFER, MAX_SPRITES * sizeof(InstanceData), nullptr, GL_DYNAMIC_DRAW);
 
     for (int i = 0; i < 4; ++i) {
         glEnableVertexAttribArray(2 + i);
@@ -71,14 +122,14 @@ Renderer::Renderer() {
 
     glBindVertexArray(0);
 
-    glGenBuffers(1, &this->instanceSSBO);
+    // Shader Storage Buffer Object (SSBO) for instance data
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, this->instanceSSBO);
     glBufferData(GL_SHADER_STORAGE_BUFFER, SSBO_DEFAULT_SIZE, nullptr, GL_DYNAMIC_DRAW);
     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, this->instanceSSBO); // binding = 0
+}
 
 
-    // Load and compile shaders
-
+void Renderer::buildShader() {
     GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &__shader__main_vs, nullptr);
     glCompileShader(vertexShader);
@@ -115,18 +166,51 @@ Renderer::Renderer() {
 }
 
 
-Renderer::~Renderer() {
-    glDeleteVertexArrays(1, &this->quadVAO);
-    glDeleteBuffers(1, &this->quadVBO);
-    glDeleteBuffers(1, &this->quadEBO);
+Window* Renderer::createWindow(int width, int height, const char* title) {
+    Window* window = new Window(width, height, title, nullptr, this->mainWindow->getGLFWWindow());
+    if (!window) {
+        std::cerr << "Failed to create GLFW window" << std::endl;
+        glfwTerminate();
+        return nullptr;
+    }
+
+    this->buildVAO(window);
+
+    return window;
 }
 
-void Renderer::render(GLFWwindow* window) {
-    int width, height;
-    glfwGetWindowSize(window, &width, &height);
+void Renderer::destroyWindow(Window* window) {
+    if (window) {
+        delete window;
+    }
+}
+
+
+void Renderer::render(Window* window) {
+    int width = window->getWidth();
+    int height = window->getHeight();
+    glfwMakeContextCurrent(window->getGLFWWindow());
+
+    glViewport(0, 0, width, height);
+    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     glUseProgram(this->shader);
-    glBindVertexArray(this->quadVAO);
+    glBindVertexArray(window->getQuadVAO());
+    
+    glUniform1f(glGetUniformLocation(this->shader, "Time"), static_cast<float>(glfwGetTime()));
+    float nearPlane = -100.0f;
+    float farPlane = 100.0f;
+    glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(width), static_cast<float>(height), 0.0f, nearPlane, farPlane);
+    GLint projLoc = glGetUniformLocation(this->shader, "projection");
+    glActiveTexture(GL_TEXTURE0);
+    glUniform1i(glGetUniformLocation(this->shader, "Texture"), 0);
+    glUniformMatrix4fv(projLoc, 1, GL_FALSE, &projection[0][0]);
 
     for (auto& pair : this->batches) {
         this->instanceDataBuffer.clear(); // Clear the instance data buffer for each batch
@@ -138,36 +222,23 @@ void Renderer::render(GLFWwindow* window) {
             graphic->computeInstanceData(instanceData[i], this->instanceDataBuffer);
         }
 
+        // Shared data for all instances
         glBindBuffer(GL_ARRAY_BUFFER, this->instanceVBO);
         glBufferSubData(GL_ARRAY_BUFFER, 0, instanceData.size() * sizeof(InstanceData), instanceData.data());
 
+        // Per instance data
         glBindBuffer(GL_SHADER_STORAGE_BUFFER, this->instanceSSBO);
         glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, this->instanceDataBuffer.size(), this->instanceDataBuffer.data());
         
-
-        // Set texture
-        glActiveTexture(GL_TEXTURE0);
+        // Bind texture
         pair.second[0]->bind();
-
-        glUniform1i(glGetUniformLocation(this->shader, "Texture"), 0);
-        glUniform1f(glGetUniformLocation(this->shader, "Time"), static_cast<float>(glfwGetTime()));
-
-        // Set uniforms for position, size, rotation, and color
-        // Assuming you have set up the shader with appropriate uniform locations
-        //glm::mat4 model = glm::mat4(1.0f);
-
-        glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(width), static_cast<float>(height), 0.0f, -1.0f, 1.0f);
-
-        GLint projLoc = glGetUniformLocation(this->shader, "projection");
-        glUniformMatrix4fv(projLoc, 1, GL_FALSE, &projection[0][0]);
 
         // Draw the quad
         glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, instanceData.size());
-
-        
     }
-    
+    glUseProgram(0);
     glBindVertexArray(0);
+    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 
@@ -218,16 +289,4 @@ void Renderer::removeGraphic(Graphic *graphic) {
 
 void Renderer::clearBatches() {
     this->batches.clear();
-}
-
-
-void Renderer::setMode(RendererMode mode) {
-    if (mode != this->mode) {
-        this->mode = mode;
-        glUniform1i(glGetUniformLocation(this->shader, "mode"), static_cast<int>(mode));
-    }
-}
-
-RendererMode Renderer::getMode() const {
-    return this->mode;
 }

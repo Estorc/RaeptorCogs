@@ -33,7 +33,7 @@ void TransformableGraphic2D::rebuild() {
 
     // Rebuild the model matrix
     modelMatrix = glm::mat4(1.0f);
-    modelMatrix = glm::translate(modelMatrix, glm::vec3(position, 0.0f));
+    modelMatrix = glm::translate(modelMatrix, glm::vec3(position, zIndex));
     modelMatrix = glm::rotate(modelMatrix, rotation, glm::vec3(0.0f, 0.0f, 1.0f));
     modelMatrix = glm::translate(modelMatrix, glm::vec3(-anchor * size, 0.0f));
     modelMatrix = glm::scale(modelMatrix, glm::vec3(size, 1.0f));
@@ -41,6 +41,11 @@ void TransformableGraphic2D::rebuild() {
 
 void TransformableGraphic2D::setPosition(const glm::vec2 &pos) {
     this->position = pos;
+    this->flags |= GraphicFlags::NEEDS_REBUILD;
+}
+
+void TransformableGraphic2D::setZIndex(float z) {
+    this->zIndex = z;
     this->flags |= GraphicFlags::NEEDS_REBUILD;
 }
 
@@ -81,6 +86,10 @@ bool TransformableGraphic2D::needsRebuild() const {
 
 glm::vec2 TransformableGraphic2D::getPosition() const {
     return position;
+}
+
+float TransformableGraphic2D::getZIndex() const {
+    return zIndex;
 }
 
 glm::vec2 TransformableGraphic2D::getSize() const {

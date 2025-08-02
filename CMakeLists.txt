@@ -6,16 +6,21 @@
 cmake_minimum_required(VERSION 3.14)
 project(RaeptorLab VERSION 1.0 LANGUAGES C CXX)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 #========================================================================#
 # CMAKE CONFIGURATION
 #========================================================================#
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -Werror")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-parameter -Wno-unused-variable")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated-declarations -Wno-missing-field-initializers")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+if (MSVC)
+  set(ENV{VSLANG} "1033")
+  add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+  add_compile_options(/wd4005)  # Désactive "macro redefinition"
+  add_compile_options(/wd4244 /wd4267) # Désactive "conversion de type possible"
+  add_compile_options(/wd4100)
+endif()
 set(GL_VERSION 4.6)
 set(GL_PROFILE core)
 
@@ -99,6 +104,13 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(stb)
 
+FetchContent_Declare(
+  httplib
+  GIT_REPOSITORY https://github.com/yhirose/cpp-httplib.git
+  GIT_TAG        master  # or a specific commit/tag for stability
+)
+FetchContent_MakeAvailable(httplib)
+
 #========================================================================#
 # BUILD SHADERS
 #========================================================================#
@@ -130,6 +142,13 @@ file(GLOB_RECURSE LIB_SOURCES
 
 add_library(RaeptorLab STATIC ${LIB_SOURCES})
 
+# OpenSSL if needed
+find_package(OpenSSL)
+if(OpenSSL_FOUND)
+    target_compile_definitions(RaeptorLab PRIVATE CPPHTTPLIB_OPENSSL_SUPPORT)
+    target_link_libraries(RaeptorLab PRIVATE OpenSSL::SSL OpenSSL::Crypto)
+endif()
+
 # ---- Include dirs ----
 target_include_directories(RaeptorLab 
     PUBLIC
@@ -139,6 +158,7 @@ target_include_directories(RaeptorLab
         $<INSTALL_INTERFACE:include>
     PRIVATE
         ${GLAD_DIR}/include
+        ${httplib_SOURCE_DIR}
 )
 
 #========================================================================#
@@ -158,6 +178,7 @@ target_link_libraries(RaeptorLab
         glfw
         glm
         glad
+        httplib
         ${CMAKE_DL_LIBS}
 )
 
@@ -184,6 +205,13 @@ if(RAEPTORLAB_BUILD_EXAMPLES)
     )
     FetchContent_MakeAvailable(nfd)
 
+    FetchContent_Declare(
+      json
+      GIT_REPOSITORY https://github.com/nlohmann/json.git
+      GIT_TAG        v3.11.2 # Use a specific release
+    )
+
+    FetchContent_MakeAvailable(json)
 
     add_library(imgui STATIC
         ${imgui_SOURCE_DIR}/imgui.cpp
@@ -218,7 +246,19 @@ if(RAEPTORLAB_BUILD_EXAMPLES)
         RaeptorLab
         imgui
         nfd
+        nlohmann_json::nlohmann_json
     )
+
+    # Copy assets (textures, shaders, etc.)
+    add_custom_command(TARGET RaeptorLabDemo POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+            ${CMAKE_SOURCE_DIR}/examples/demo/assets
+            $<TARGET_FILE_DIR:RaeptorLabDemo>/assets
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+            ${CMAKE_SOURCE_DIR}/examples/demo/protected
+            $<TARGET_FILE_DIR:RaeptorLabDemo>/protected
+    )
+
 endif()
 
 #========================================================================#

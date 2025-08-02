@@ -21,7 +21,6 @@ class Glyph : public TransformableGraphic2D {
         void setCharacter(char character, glm::vec2 advance = glm::vec2(0.0f, 0.0f));
 
         void addToRenderer(Renderer &renderer);
-        virtual void prepareRender(Renderer* renderer) override;
         void computeInstanceData(InstanceData &data, std::vector<uint8_t> &instanceDataBuffer) override;
         void bind() const override;
         GLuint getID() const override;

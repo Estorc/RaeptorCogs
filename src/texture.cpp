@@ -1,5 +1,5 @@
 #include <RaeptorLab/texture.hpp>
-#include <RaeptorLab/bit_op.hpp>
+#include <RaeptorLab/bitOp.hpp>
 
 #pragma region TextureAtlas
 
@@ -78,34 +78,35 @@ int TextureAtlas::getHeight() const {
 #pragma endregion
 #pragma region Texture
 
-Texture::Texture(const char *filepath) {
-    this->image = load_image(filepath);
+Texture::Texture(const Image &img) : image(img), atlas(nullptr) {
     if (!this->image.data) {
-        std::cerr << "Failed to load texture from file: " << filepath << std::endl;
+        std::cerr << "Failed to load texture from image data." << std::endl;
+        return;
+    }
+    TextureAtlas *atlas = textureAtlasManager.getAtlas();
+    uint64_t allocatedSize = next_power_of_2_64(std::max(this->image.width + ATLAS_PADDING * 2, this->image.height + ATLAS_PADDING * 2));
+    if (allocatedSize < COMMON_ATLAS_WIDTH) {
+        allocatedSize = COMMON_ATLAS_WIDTH;
+    }
+
+    if (!atlas) atlas = new TextureAtlas(glm::ivec2(allocatedSize, allocatedSize));
+
+    if (atlas->tryAddTexture(*this)) {
+        atlas->uploadTexture(this->rect.x, this->rect.y, this->rect.z, this->rect.w, this->image.data);
+        textureAtlasManager.addAtlas(*atlas);
     } else {
-        TextureAtlas *atlas = textureAtlasManager.getAtlas();
-        uint64_t allocatedSize = next_power_of_2_64(std::max(this->image.width + ATLAS_PADDING * 2, this->image.height + ATLAS_PADDING * 2));
-        if (allocatedSize < COMMON_ATLAS_WIDTH) {
-            allocatedSize = COMMON_ATLAS_WIDTH;
-        }
-
-        if (!atlas) atlas = new TextureAtlas(glm::ivec2(allocatedSize, allocatedSize));
-
+        atlas = new TextureAtlas(glm::ivec2(allocatedSize, allocatedSize));
         if (atlas->tryAddTexture(*this)) {
             atlas->uploadTexture(this->rect.x, this->rect.y, this->rect.z, this->rect.w, this->image.data);
             textureAtlasManager.addAtlas(*atlas);
         } else {
-            atlas = new TextureAtlas(glm::ivec2(allocatedSize, allocatedSize));
-            if (atlas->tryAddTexture(*this)) {
-                atlas->uploadTexture(this->rect.x, this->rect.y, this->rect.z, this->rect.w, this->image.data);
-                textureAtlasManager.addAtlas(*atlas);
-            } else {
-                std::cerr << "Failed to add texture to new atlas." << std::endl;
-                this->atlas = nullptr;
-            }
+            std::cerr << "Failed to add texture to new atlas." << std::endl;
+            this->atlas = nullptr;
         }
     }
 }
+
+Texture::Texture(const char *filepath) : Texture::Texture(load_image(filepath)) {}
 
 void Texture::bind() const {
     if (this->atlas) {
