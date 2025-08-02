@@ -1,4 +1,4 @@
-#include <RaeptorLab/renderer.hpp>
+#include "../shaders/constants.glsl"
 #include <iostream>
 #include "shaders_embed.h"
 #include <glm/ext/matrix_transform.hpp>
