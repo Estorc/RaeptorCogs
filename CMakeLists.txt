@@ -170,25 +170,12 @@ add_dependencies(RaeptorLab embed_shaders)
 target_include_directories(RaeptorLab PRIVATE ${CMAKE_BINARY_DIR})
 
 #========================================================================#
-# LINKING
+# IMGUI
 #========================================================================#
 
-target_link_libraries(RaeptorLab 
-    PUBLIC
-        glfw
-        glm
-        glad
-        httplib
-        ${CMAKE_DL_LIBS}
-)
+option(RAEPTORLAB_BUILD_IMGUI "Build with ImGui support" ON)
 
-#========================================================================#
-# EXAMPLES
-#========================================================================#
-
-option(RAEPTORLAB_BUILD_EXAMPLES "Build example apps" OFF)
-
-if(RAEPTORLAB_BUILD_EXAMPLES)
+if(RAEPTORLAB_BUILD_IMGUI)
 
     # --- Fetch ImGUI ---
     FetchContent_Declare(
@@ -197,21 +184,6 @@ if(RAEPTORLAB_BUILD_EXAMPLES)
         GIT_TAG         v1.89.8  # or latest stable tag
     )
     FetchContent_MakeAvailable(imgui)
-
-    # --- Fetch NFD ---
-    FetchContent_Declare(
-        nfd
-        GIT_REPOSITORY  https://github.com/btzy/nativefiledialog-extended.git
-    )
-    FetchContent_MakeAvailable(nfd)
-
-    FetchContent_Declare(
-      json
-      GIT_REPOSITORY https://github.com/nlohmann/json.git
-      GIT_TAG        v3.11.2 # Use a specific release
-    )
-
-    FetchContent_MakeAvailable(json)
 
     add_library(imgui STATIC
         ${imgui_SOURCE_DIR}/imgui.cpp
@@ -233,18 +205,59 @@ if(RAEPTORLAB_BUILD_EXAMPLES)
 
     target_compile_definitions(imgui PUBLIC IMGUI_IMPL_OPENGL_LOADER_GLAD)
 
+    target_include_directories(RaeptorLab PUBLIC
+        ${imgui_SOURCE_DIR}
+        ${imgui_SOURCE_DIR}/backends
+    )
+
+    target_link_libraries(RaeptorLab PUBLIC imgui)
+endif()
+
+#========================================================================#
+# LINKING
+#========================================================================#
+
+target_link_libraries(RaeptorLab 
+    PUBLIC
+        glfw
+        glm
+        glad
+        httplib
+        ${CMAKE_DL_LIBS}
+)
+
+#========================================================================#
+# EXAMPLES
+#========================================================================#
+
+option(RAEPTORLAB_BUILD_EXAMPLES "Build example apps" OFF)
+
+if(RAEPTORLAB_BUILD_EXAMPLES)
+
+    # --- Fetch NFD ---
+    FetchContent_Declare(
+        nfd
+        GIT_REPOSITORY  https://github.com/btzy/nativefiledialog-extended.git
+    )
+    FetchContent_MakeAvailable(nfd)
+
+    FetchContent_Declare(
+      json
+      GIT_REPOSITORY https://github.com/nlohmann/json.git
+      GIT_TAG        v3.11.2 # Use a specific release
+    )
+
+    FetchContent_MakeAvailable(json)
+
 
     add_executable(RaeptorLabDemo examples/demo/main.cpp)
 
     target_include_directories(RaeptorLabDemo PRIVATE
-        ${imgui_SOURCE_DIR}
-        ${imgui_SOURCE_DIR}/backends
         ${nfd_SOURCE_DIR}/src/include
     )
 
     target_link_libraries(RaeptorLabDemo PRIVATE
         RaeptorLab
-        imgui
         nfd
         nlohmann_json::nlohmann_json
     )
