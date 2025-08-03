@@ -116,7 +116,7 @@ void Text::rebuild() {
         for (size_t i = 0; i < content.size(); ++i) {
             char c = content[i];
             if (glyphs.size() < i + 1) {
-                glyphs.push_back(std::make_shared<Glyph>(*this, c, advance));
+                glyphs.push_back(std::make_shared<Glyph>(*this, c, advance - size * this->anchor));
                 glyphs[i]->addToRenderer(*this->getRenderer()); // Add glyph to renderer
             } else {
                 glyphs[i]->setCharacter(c, advance - size * this->anchor);
