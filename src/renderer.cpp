@@ -276,6 +276,10 @@ void Renderer::removeGraphic(Graphic *graphic) {
         std::cerr << "Graphic not managed by this renderer!" << std::endl;
         return;
     }
+    if (this->batches.empty()) {
+        std::cerr << "No batches available to remove graphic from!" << std::endl;
+        return;
+    }
 
     GLuint key = graphic->getRendererKey();
     auto& batch = this->batches[key];
