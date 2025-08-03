@@ -277,7 +277,6 @@ void Renderer::removeGraphic(Graphic *graphic) {
         return;
     }
     if (this->batches.empty()) {
-        std::cerr << "No batches available to remove graphic from!" << std::endl;
         return;
     }
 

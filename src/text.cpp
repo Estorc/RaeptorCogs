@@ -45,8 +45,6 @@ void Glyph::setCharacter(char _character, glm::vec2 advance) {
 }
 
 void Glyph::addToRenderer(Renderer &_renderer) {
-    if (!isVisible()) return;
-
     // Add to renderer's batch
     _renderer.addGraphic(this);
 }
@@ -83,8 +81,6 @@ Text::~Text() {
 
 
 void Text::addToRenderer(Renderer &_renderer) {
-    if (!isVisible()) return;
-
     // Add to renderer's batch
     _renderer.addGraphic(this);
     this->rebuild(); // Ensure text is rebuilt before adding to renderer

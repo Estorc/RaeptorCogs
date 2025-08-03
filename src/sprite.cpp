@@ -5,8 +5,6 @@ Sprite::Sprite(Texture &texture) : texture(&texture) {}
 
 
 void Sprite::addToRenderer(Renderer &renderer) {
-    if (!isVisible()) return;
-
     // Add to renderer's batch
     renderer.addGraphic(this);
 }
