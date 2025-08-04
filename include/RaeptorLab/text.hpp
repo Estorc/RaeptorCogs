@@ -12,13 +12,13 @@ class Glyph;
 class Glyph : public TransformableGraphic2D {
     private:
         Text *text; // Pointer to the text this glyph belongs to
-        char character; // The character represented by this glyph
+        const unsigned char *character; // The character represented by this glyph
 
     public:
-        Glyph(Text &text, char character, glm::vec2 advance = glm::vec2(0.0f, 0.0f));
+        Glyph(Text &text, const unsigned char *character, glm::vec2 advance = glm::vec2(0.0f, 0.0f));
         Glyph();
 
-        void setCharacter(char character, glm::vec2 advance = glm::vec2(0.0f, 0.0f));
+        void setCharacter(const unsigned char *character, glm::vec2 advance = glm::vec2(0.0f, 0.0f));
 
         void addToRenderer(Renderer &renderer);
         void computeInstanceData(InstanceData &data, std::vector<uint8_t> &instanceDataBuffer) override;

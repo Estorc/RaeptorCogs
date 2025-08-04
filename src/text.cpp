@@ -1,28 +1,25 @@
 #include <RaeptorLab/text.hpp>
 #include <iostream>
 #include <glm/ext/matrix_transform.hpp>
+#include <RaeptorLab/io/string.hpp>
 
 
-Glyph::Glyph(Text &text, char character, glm::vec2 advance) : text(&text), character(character) {
+Glyph::Glyph(Text &text, const unsigned char *character, glm::vec2 advance) : text(&text), character(character) {
     this->setAnchor(glm::vec2(0.0f, 0.0f)); // Set default anchor to center
     setCharacter(character, advance);
 }
 
-Glyph::Glyph() : text(nullptr), character('\0') {}
+Glyph::Glyph() : text(nullptr), character(nullptr) {}
 
-void Glyph::setCharacter(char _character, glm::vec2 advance) {
+void Glyph::setCharacter(const unsigned char *_character, glm::vec2 advance) {
     this->character = _character;
     this->setSize(this->text->getFont()->getGlyphSize(_character));
+    this->setVisibility(this->text->isVisible());
     this->setPosition(this->text->getPosition());
     this->setRotation(this->text->getRotation());
     this->setZIndex(this->text->getZIndex());
     this->setAnchor(glm::vec2(0.0f, 0.0f)); // Reset anchor to top-left
     this->setColor(this->text->getColor());
-    if (_character == '\n') {
-        this->setVisibility(false); // Hide glyph for newline _character
-    } else {
-        this->setVisibility(this->text->isVisible()); // Set visibility based on text visibility
-    }
 
     // Apply rotation to the glyph offset and advance
     float sinRot = sin(this->text->getRotation());
@@ -105,26 +102,28 @@ void Text::rebuild() {
     float lineHeight = font->getFontSize();
 
     if (font) {
-        glm::vec2 advance = glm::vec2(-font->getGlyphXAdvance(content[0]) * 0.25f, lineHeight*0.75f); // Initialize advance vector
-        if (glyphs.size() > content.size()) {
-            glyphs.resize(content.size()); // Resize glyphs vector if it has more elements than content
-        }
-        for (size_t i = 0; i < content.size(); ++i) {
-            char c = content[i];
+        glm::vec2 advance = glm::vec2(-font->getGlyphXAdvance(reinterpret_cast<const unsigned char*>(&content[0])) * 0.25f, lineHeight*0.75f); // Initialize advance vector
+        size_t i = 0, j = 0;
+        for (; content[j] != '\0'; ++i) {
+            char c = content[j];
             if (glyphs.size() < i + 1) {
-                glyphs.push_back(std::make_shared<Glyph>(*this, c, advance - size * this->anchor));
+                glyphs.push_back(std::make_shared<Glyph>(*this, reinterpret_cast<const unsigned char*>(&content[j]), advance - size * this->anchor));
                 glyphs[i]->addToRenderer(*this->getRenderer()); // Add glyph to renderer
             } else {
-                glyphs[i]->setCharacter(c, advance - size * this->anchor);
+                glyphs[i]->setCharacter(reinterpret_cast<const unsigned char*>(&content[j]), advance - size * this->anchor);
             }
             if (c == '\n') {
                 advance.x = 0.0f; // Reset x offset for new line
                 advance.y += lineHeight; // Move down by line height
+                j++;
+                i--;
                 continue; // Skip to the next character
             }
-            advance.x += font->getGlyphXAdvance(c); // Subtract the x advance of the glyph
-            advance.x += font->getGlyphSize(c).x / 2.0f; // Add the x offset of the glyph
+            advance.x += font->getGlyphXAdvance(reinterpret_cast<const unsigned char*>(&content[j])); // Subtract the x advance of the glyph
+            advance.x += font->getGlyphSize(reinterpret_cast<const unsigned char*>(&content[j])).x / 2.0f; // Add the x offset of the glyph
+            j += utf8_char_length(reinterpret_cast<const unsigned char*>(&content[j]));
         }
+        glyphs.resize(i); // Resize glyphs vector to match the number of characters processed
     } else {
         std::cerr << "No font set for Text object." << std::endl;
     }

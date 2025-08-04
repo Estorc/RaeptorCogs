@@ -37,6 +37,8 @@ class Graphic {
         virtual void setRenderer(Renderer* renderer);
         virtual void setRendererKey(GLuint key);
 
+        virtual bool isVisible() const { return true; }
+
         virtual Renderer* getRenderer() const;
         virtual GLuint getRendererKey() const;
 };
@@ -70,7 +72,7 @@ class TransformableGraphic2D : public Graphic {
         virtual void setAnchor(const glm::vec2 &anchor);
         virtual void setVisibility(bool visible);
 
-        virtual bool isVisible() const;
+        virtual bool isVisible() const override;
         virtual bool needsRebuild() const;
 
         virtual glm::vec2 getPosition() const;

@@ -28,7 +28,7 @@ class GlyphData {
 class Font {
     private:
         GLuint textureID;           // OpenGL texture
-        std::array<std::unique_ptr<GlyphData>, 128> glyphs;       // ASCII for now
+        std::unordered_map<uint32_t, std::unique_ptr<GlyphData>> glyphs; // UTF-8 support
         float font_size;
         bool is_dynamic;          // true = loaded from TTF
     public:
@@ -50,11 +50,11 @@ class Font {
         void bind() const;
 
         GLuint getID() const;
-        GlyphData* getGlyph(unsigned char character) const;
-        glm::vec4 getGlyphUVRect(unsigned char character) const;
-        glm::vec2 getGlyphOffset(unsigned char character) const;
-        glm::vec2 getGlyphSize(unsigned char character) const;
-        float getGlyphXAdvance(unsigned char character) const;
+        GlyphData* getGlyph(const unsigned char *character) const;
+        glm::vec4 getGlyphUVRect(const unsigned char *character) const;
+        glm::vec2 getGlyphOffset(const unsigned char *character) const;
+        glm::vec2 getGlyphSize(const unsigned char *character) const;
+        float getGlyphXAdvance(const unsigned char *character) const;
         float getFontSize() const;
         float measureTextWidth(const std::string& text) const;
         float measureTextHeight(const std::string& text) const;

@@ -192,13 +192,15 @@ void Renderer::render(Window* window) {
     glfwMakeContextCurrent(window->getGLFWWindow());
 
     glViewport(0, 0, width, height);
-    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+    glClearColor(0.8f, 0.8f, 0.8f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    glDepthMask(GL_FALSE);
 
     glUseProgram(this->shader);
     glBindVertexArray(window->getQuadVAO());
@@ -211,7 +213,7 @@ void Renderer::render(Window* window) {
     glActiveTexture(GL_TEXTURE0);
     glUniform1i(glGetUniformLocation(this->shader, "Texture"), 0);
     glUniformMatrix4fv(projLoc, 1, GL_FALSE, &projection[0][0]);
-
+    
     for (auto& pair : this->batches) {
         this->instanceDataBuffer.clear(); // Clear the instance data buffer for each batch
         if (pair.second.empty()) continue; // Skip empty batches
@@ -220,6 +222,9 @@ void Renderer::render(Window* window) {
         for (size_t i = 0; i < pair.second.size(); ++i) {
             auto& graphic = pair.second[i];
             graphic->computeInstanceData(instanceData[i], this->instanceDataBuffer);
+            if (!graphic->isVisible()) {
+                instanceData[i].type = RENDERER_MODE_DEFAULT; // Default type
+            }
         }
 
         // Shared data for all instances

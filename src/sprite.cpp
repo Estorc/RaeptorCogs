@@ -30,7 +30,7 @@ void Sprite::setTexture(Texture &texture) {
     if (this->texture->getID() != texture.getID()) {
         this->renderer->changeGraphicPosition(this, texture.getID());
     }
-    this->texture = &texture;
+    *this->texture = texture;
 }
 
 

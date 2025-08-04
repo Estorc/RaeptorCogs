@@ -257,8 +257,10 @@ int RaeptorApplication::update() {
                 float rectangleRotation = sprite->getRotation();
                 float rectangleZIndex = sprite->getZIndex();
                 glm::vec3 rectangleColor = sprite->getColor();
+                bool visible = sprite->isVisible();
 
                 ImGui::Indent();
+                ImGui::Checkbox("Visible", &visible);
                 ImGui::Text("Position");
                 ImGui::SliderFloat("X", &rectanglePosition.x, 0.0f, width);
                 ImGui::SliderFloat("Y", &rectanglePosition.y, 0.0f, height);
@@ -288,6 +290,7 @@ int RaeptorApplication::update() {
                 sprite->setRotation(rectangleRotation);
                 sprite->setColor(rectangleColor);
                 sprite->setZIndex(rectangleZIndex);
+                sprite->setVisibility(visible);
 
             } else if (node.type == "text") {
                 ImGui::Text("Text Properties");
@@ -304,7 +307,9 @@ int RaeptorApplication::update() {
                 float textRotation = text->getRotation();
                 float zIndex = text->getZIndex();
                 glm::vec3 textColor = text->getColor();
+                bool visible = text->isVisible();
                 ImGui::Indent();
+                ImGui::Checkbox("Visible", &visible);
                 ImGui::Text("Position");
                 ImGui::SliderFloat("X", &textPosition.x, 0.0f, width);
                 ImGui::SliderFloat("Y", &textPosition.y, 0.0f, height);
@@ -318,6 +323,7 @@ int RaeptorApplication::update() {
                 text->setRotation(textRotation);
                 text->setColor(textColor);
                 text->setZIndex(zIndex);
+                text->setVisibility(visible);
 
                 if (ImGui::Button("Open Font")) {
                     nfdu8char_t *outPath;

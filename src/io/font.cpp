@@ -48,7 +48,8 @@ Font::Font(const char *fontPath, int fontSize) : textureID(0), font_size(fontSiz
 Font::~Font() {
     if (!textureID) return;
     for (auto& glyph : glyphs) {
-        glyph.reset(); // Clean up GlyphData pointers
+        if (glyph.second)
+            glyph.second.reset(); // Clean up GlyphData pointers
     }
     //glDeleteTextures(1, &textureID);
 }
@@ -63,10 +64,17 @@ void Font::uploadTexture(unsigned char* data, int width, int height, unsigned ch
         return; // Return empty font
     }
 
-    stbtt_packedchar packed_glyphs[128];
+    // Support for larger character set (Basic Multilingual Plane)
+    const int num_chars = 1024; // Increase to cover more Unicode points
+    stbtt_packedchar* packed_glyphs = new stbtt_packedchar[num_chars];
+    
     stbtt_PackSetOversampling(&ctx, 2, 2); // better quality
-    stbtt_PackFontRange(&ctx, ttf_buffer, 0, this->font_size, 0, 128, packed_glyphs); // ASCII 0–127
-    for (int i = 0; i < 128; ++i) {
+    
+    // Pack characters in the Basic Multilingual Plane (BMP)
+    stbtt_PackFontRange(&ctx, ttf_buffer, 0, this->font_size, 0, num_chars, packed_glyphs);
+    
+    // Create glyph data for each character
+    for (int i = 0; i < num_chars; ++i) {
         this->glyphs[i] = std::make_unique<GlyphData>(
             packed_glyphs[i].x0 / (float)width,
             packed_glyphs[i].y0 / (float)height,
@@ -79,6 +87,8 @@ void Font::uploadTexture(unsigned char* data, int width, int height, unsigned ch
             (packed_glyphs[i].xadvance)/2.0f
         );
     }
+    
+    delete[] packed_glyphs;
     stbtt_PackEnd(&ctx);
 
     glGenTextures(1, &this->textureID);
@@ -101,30 +111,55 @@ GLuint Font::getID() const {
     return this->textureID;
 }
 
-GlyphData* Font::getGlyph(unsigned char character) const {
-    if (character >= 128) return nullptr;
-    return glyphs[character].get();
+GlyphData* Font::getGlyph(const unsigned char* character) const {
+    size_t char_length = utf8_char_length(character);
+    if (char_length == 0) return nullptr; // Invalid character
+    uint32_t codepoint = 0;
+    if (char_length == 1) {
+        // ASCII (0xxxxxxx)
+        codepoint = static_cast<unsigned char>(character[0]);
+    } else if (char_length == 2) {
+        codepoint = static_cast<unsigned char>(character[0]) & 0x1F; // 00011111
+        codepoint <<= 6;
+        codepoint |= static_cast<unsigned char>(character[1]) & 0x3F; // 00111111
+    } else if (char_length == 3) {
+        codepoint = static_cast<unsigned char>(character[0]) & 0x0F; // 00001111
+        codepoint <<= 6;
+        codepoint |= static_cast<unsigned char>(character[1]) & 0x3F;
+        codepoint <<= 6;
+        codepoint |= static_cast<unsigned char>(character[2]) & 0x3F;
+    } else if (char_length == 4) {
+        codepoint = static_cast<unsigned char>(character[0]) & 0x07; // 00000111
+        codepoint <<= 6;
+        codepoint |= static_cast<unsigned char>(character[1]) & 0x3F;
+        codepoint <<= 6;
+        codepoint |= static_cast<unsigned char>(character[2]) & 0x3F;
+        codepoint <<= 6;
+        codepoint |= static_cast<unsigned char>(character[3]) & 0x3F;
+    }
+
+    return glyphs.find(codepoint) != glyphs.end() ? glyphs.at(codepoint).get() : nullptr;
 }
 
-glm::vec4 Font::getGlyphUVRect(unsigned char character) const {
+glm::vec4 Font::getGlyphUVRect(const unsigned char* character) const {
     GlyphData* glyph = getGlyph(character);
     if (!glyph) return glm::vec4(0.0f);
     return glyph->getUVRect();
 }
 
-glm::vec2 Font::getGlyphOffset(unsigned char character) const {
+glm::vec2 Font::getGlyphOffset(const unsigned char* character) const {
     GlyphData* glyph = getGlyph(character);
     if (!glyph) return glm::vec2(0.0f);
     return glyph->getOffset();
 }
 
-glm::vec2 Font::getGlyphSize(unsigned char character) const {
+glm::vec2 Font::getGlyphSize(const unsigned char* character) const {
     GlyphData* glyph = getGlyph(character);
     if (!glyph) return glm::vec2(0.0f);
     return glyph->getSize();
 }
 
-float Font::getGlyphXAdvance(unsigned char character) const {
+float Font::getGlyphXAdvance(const unsigned char* character) const {
     GlyphData* glyph = getGlyph(character);
     if (!glyph) return 0.0f;
     return glyph->getXAdvance();
@@ -136,15 +171,18 @@ float Font::getFontSize() const {
 
 float Font::measureTextWidth(const std::string& text) const {
     float width = 0.0f;
-    for (char c : text) {
+    size_t i = 0, j = 0;
+    for (; text[j] != '\0'; ++i) {
+        unsigned char c = static_cast<unsigned char>(text[j]);
         if (c == '\n') {
             break;
         }
-        GlyphData* glyph = getGlyph(c);
+        GlyphData* glyph = getGlyph(reinterpret_cast<const unsigned char*>(&text[j]));
         if (glyph) {
             width += glyph->getXAdvance();
             width += glyph->getSize().x / 2.0f;
         }
+        j += utf8_char_length(reinterpret_cast<const unsigned char*>(&text[j]));
     }
     return width;
 }
@@ -164,18 +202,22 @@ glm::vec2 Font::measureTextSize(const std::string& text) const {
     glm::vec2 size(0.0f, 0.0f);
     float currentLineWidth = 0.0f;
     float lineHeight = this->getFontSize();
-    for (char c : text) {
+    size_t i = 0, j = 0;
+    for (; text[j] != '\0'; ++i) {
+        unsigned char c = static_cast<unsigned char>(text[j]);
         if (c == '\n') {
             size.x = std::max(size.x, currentLineWidth);
             size.y += lineHeight;
             currentLineWidth = 0.0f; // Reset for new line
+            j++;
             continue;
         }
-        GlyphData* glyph = getGlyph(c);
+        GlyphData* glyph = getGlyph(reinterpret_cast<const unsigned char*>(&text[j]));
         if (glyph) {
             currentLineWidth += glyph->getXAdvance();
             currentLineWidth += glyph->getSize().x / 2.0f;
         }
+        j += utf8_char_length(reinterpret_cast<const unsigned char*>(&text[j]));
     }
     size.x = std::max(size.x, currentLineWidth);
     size.y += lineHeight;

@@ -243,7 +243,6 @@ if(RAEPTORLAB_BUILD_EXAMPLES)
     FetchContent_Declare(
       json
       GIT_REPOSITORY https://github.com/nlohmann/json.git
-      GIT_TAG        v3.11.2 # Use a specific release
     )
 
     FetchContent_MakeAvailable(json)

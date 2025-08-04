@@ -14,6 +14,10 @@ out vec4 UVOffset; // Offset for UV coordinates
 uniform mat4 projection;
 
 void main() {
+    if (instanceType == 0) {
+        gl_Position = vec4(2.0, 2.0, 2.0, 1.0);
+        return;
+    }
     gl_Position = projection * instanceModel * vec4(aPos, 0.0, 1.0);
     TexCoord = instanceUV.xy + aTexCoord * instanceUV.zw;
     Type = instanceType;
