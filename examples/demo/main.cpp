@@ -49,7 +49,7 @@ bool setCWDToExecutableLocation() {
 
 Texture testTexture;
 Font font;
-std::array<Sprite, 0> sprites;
+std::array<Sprite, 100000> sprites;
 int fontSize = 72;
 Window * second_window = nullptr;
 
@@ -165,7 +165,7 @@ void load_texture_test() {
     std::cout << "Cover Image URL: " << cover_image_url << std::endl;
 
     Image coverImage = load_image_from_url(cover_image_url.c_str());
-    stbi_write_png("cover_image.jpg", coverImage.width, coverImage.height, coverImage.channels, coverImage.data, 0);
+    stbi_write_png("cover_image.jpg", coverImage.width, coverImage.height, coverImage.channels, coverImage.data.get(), 0);
     testTexture = Texture(coverImage);
 }
 
@@ -184,6 +184,7 @@ RaeptorApplication::RaeptorApplication() {
         sprites[i].setColor(glm::vec3(1.0f, 1.0f, 1.0f));
         sprites[i].setAnchor(glm::vec2(0.5f, 0.5f));
         sprites[i].setVisibility(true);
+        //sprites[i].setZIndex(static_cast<float>(i)/100.0f);
     }
     for (auto& sprite : sprites) {
         sprite.addToRenderer(RaeptorLab::Renderer());
@@ -379,8 +380,8 @@ int RaeptorApplication::update() {
     RaeptorLab::Renderer().render(this->window);
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     glfwSwapBuffers(this->window->getGLFWWindow());
-    RaeptorLab::Renderer().render(second_window);
-    glfwSwapBuffers(second_window->getGLFWWindow());
+    //RaeptorLab::Renderer().render(second_window);
+    //glfwSwapBuffers(second_window->getGLFWWindow());
     //this->renderer->clearBatches();
 
     GLenum err;

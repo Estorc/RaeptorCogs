@@ -12,7 +12,7 @@ void Graphic::setRenderer(Renderer* renderer) {
     this->renderer = renderer;
 }
 
-void Graphic::setRendererKey(GLuint key) {
+void Graphic::setRendererKey(BatchKey key) {
     this->rendererKey = key;
 }
 
@@ -20,8 +20,19 @@ Renderer* Graphic::getRenderer() const {
     return this->renderer;
 }
 
-GLuint Graphic::getRendererKey() const {
+BatchKey Graphic::getRendererKey() const {
     return this->rendererKey;
+}
+
+void Graphic::setZIndex(float z) {
+    this->zIndex = z;
+    if (this->renderer) {
+        this->renderer->changeGraphicPosition(this);
+    }
+}
+
+float Graphic::getZIndex() const {
+    return this->zIndex;
 }
 
 void TransformableGraphic2D::rebuild() {
@@ -41,11 +52,6 @@ void TransformableGraphic2D::rebuild() {
 
 void TransformableGraphic2D::setPosition(const glm::vec2 &pos) {
     this->position = pos;
-    this->flags |= GraphicFlags::NEEDS_REBUILD;
-}
-
-void TransformableGraphic2D::setZIndex(float z) {
-    this->zIndex = z;
     this->flags |= GraphicFlags::NEEDS_REBUILD;
 }
 
@@ -88,10 +94,6 @@ glm::vec2 TransformableGraphic2D::getPosition() const {
     return position;
 }
 
-float TransformableGraphic2D::getZIndex() const {
-    return zIndex;
-}
-
 glm::vec2 TransformableGraphic2D::getSize() const {
     return size;
 }
@@ -111,4 +113,9 @@ glm::vec2 TransformableGraphic2D::getAnchor() const {
 glm::mat4 TransformableGraphic2D::getModelMatrix() {
     this->rebuild();
     return modelMatrix;
+}
+
+void TransformableGraphic2D::setZIndex(float z) {
+    Graphic::setZIndex(z);
+    this->flags |= GraphicFlags::NEEDS_REBUILD; // Ensure rebuild on z-index change
 }

@@ -1,6 +1,6 @@
 #pragma once
 #include <unordered_map>
-#include <RaeptorLab/graphic.hpp>
+#include <map>
 #include <memory>
 #include <RaeptorLab/flags.hpp>
 #include <RaeptorLab/window.hpp>
@@ -11,9 +11,12 @@ class Sprite;
 class Renderer;
 class Graphic;
 
+using BatchKey = std::tuple<int /*zindex*/, bool /*isOpaque*/, GLuint /*textureID*/>;
+using BatchVector = std::vector<Graphic*>;
+
 class Renderer {
     private:
-        std::unordered_map<GLuint, std::vector<Graphic*>> batches; // Maps texture IDs to graphics
+        std::map<BatchKey, BatchVector> batches; // Maps batch keys to graphics
         GLuint shader = 0;
         GLuint quadVBO;
         GLuint quadEBO;
@@ -35,7 +38,7 @@ class Renderer {
         void destroyWindow(Window* window);
 
         void addGraphic(Graphic*);
-        void changeGraphicPosition(Graphic* graphic, GLuint newTextureID);
+        void changeGraphicPosition(Graphic* graphic);
         void removeGraphic(Graphic*);
         void clearBatches();
 };

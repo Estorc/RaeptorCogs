@@ -27,10 +27,11 @@ void Sprite::bind() const {
 
 
 void Sprite::setTexture(Texture &texture) {
-    if (this->texture->getID() != texture.getID()) {
-        this->renderer->changeGraphicPosition(this, texture.getID());
+    bool needChangeGraphicPosition = (this->getID() != texture.getID());
+    this->texture = &texture;
+    if (needChangeGraphicPosition) {
+        this->renderer->changeGraphicPosition(this);
     }
-    *this->texture = texture;
 }
 
 
@@ -40,4 +41,8 @@ Texture* Sprite::getTexture() const {
 
 GLuint Sprite::getID() const {
     return texture ? texture->getID() : 0;
+}
+
+bool Sprite::isOpaque() const {
+    return texture ? texture->isOpaque() : true;
 }

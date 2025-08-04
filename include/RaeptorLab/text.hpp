@@ -24,6 +24,7 @@ class Glyph : public TransformableGraphic2D {
         void computeInstanceData(InstanceData &data, std::vector<uint8_t> &instanceDataBuffer) override;
         void bind() const override;
         GLuint getID() const override;
+        virtual bool isOpaque() const override { return false; }
 };
 
 class Text : public TransformableGraphic2D {
@@ -42,6 +43,8 @@ class Text : public TransformableGraphic2D {
         virtual void rebuild() override;
         virtual void bind() const override;
         virtual GLuint getID() const override;
+        virtual bool isOpaque() const override { return false; }
+        virtual void setZIndex(float z) override;
 
         void setContent(const std::string &content);
         void setFont(Font &font);

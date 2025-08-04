@@ -8,6 +8,9 @@
 #include <RaeptorLab/io/images.hpp>
 #include <httplib.h>
 
+Image::Image() : data(nullptr, stbi_image_free), width(0), height(0), channels(0) {}
+Image::Image(unsigned char* data, int width, int height, int channels) : data(data, stbi_image_free), width(width), height(height), channels(channels) {}
+
 GLuint load_texture(const char* filename) {
     GLuint textureID = 0;
     int width, height, channels;
@@ -34,15 +37,15 @@ Image load_image_from_url(const char* url) {
     auto res = client.Get(path.c_str());
     if (!res || res->status != 200) {
         std::cerr << "Failed to load image from URL: " << url << std::endl;
-        return {nullptr, 0, 0, 0};
+        return Image(nullptr, 0, 0, 0);
     }
     int width, height, channels;
     stbi_uc* data = stbi_load_from_memory(reinterpret_cast<const stbi_uc*>(res->body.data()), res->body.size(), &width, &height, &channels, 4);
     if (!data) {
         std::cerr << "Failed to decode image from URL: " << url << std::endl;
-        return {nullptr, 0, 0, 0};
+        return Image(nullptr, 0, 0, 0);
     }
-    return {data, width, height, channels};
+    return Image(data, width, height, channels);
 }
 
 Image load_image(const char* filename) {
@@ -50,6 +53,7 @@ Image load_image(const char* filename) {
     unsigned char* data = stbi_load(filename, &width, &height, &channels, 4);
     if (!data) {
         std::cerr << "Failed to load image: " << filename << std::endl;
+        return Image(nullptr, 0, 0, 0);
     }
-    return {data, width, height, channels};
+    return Image(data, width, height, channels);
 }

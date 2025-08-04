@@ -2,6 +2,7 @@
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <RaeptorLab/flags.hpp>
+#include <RaeptorLab/renderer.hpp>
 
 class Renderer;
 
@@ -26,7 +27,8 @@ struct EnableBitmaskOperators<GraphicFlags> {
 class Graphic {
     protected:
         Renderer* renderer = nullptr;
-        GLuint rendererKey = 0; // Unique key for renderer to identify the graphic
+        BatchKey rendererKey = std::make_tuple(0, true, 0); // Default key with z-index 0, opaque, and no texture
+        float zIndex = 0.0f;
     public:
         virtual ~Graphic();
 
@@ -35,12 +37,15 @@ class Graphic {
         virtual GLuint getID() const {return 0;};
 
         virtual void setRenderer(Renderer* renderer);
-        virtual void setRendererKey(GLuint key);
+        virtual void setRendererKey(BatchKey key);
+        virtual void setZIndex(float z);
 
         virtual bool isVisible() const { return true; }
-
+        virtual bool isOpaque() const { return true; }
+        virtual float getZIndex() const;
+    
         virtual Renderer* getRenderer() const;
-        virtual GLuint getRendererKey() const;
+        virtual BatchKey getRendererKey() const;
 };
 
 class Graphic2D : public Graphic {
@@ -53,7 +58,6 @@ class TransformableGraphic2D : public Graphic {
         glm::vec2 position;
         glm::vec2 size;
         float rotation;
-        float zIndex;
         glm::vec2 anchor;
         glm::mat4 modelMatrix;
         glm::vec3 color;
@@ -61,11 +65,13 @@ class TransformableGraphic2D : public Graphic {
         GraphicFlags flags;
 
     public:
-        TransformableGraphic2D() : position(0.0f), size(1.0f), rotation(0.0f), zIndex(0.0f), anchor(0.0f), modelMatrix(1.0f), color(1.0f, 1.0f, 1.0f) {}
+        TransformableGraphic2D() : position(0.0f), size(1.0f), rotation(0.0f), anchor(0.0f), modelMatrix(1.0f), color(1.0f, 1.0f, 1.0f) {
+            flags = GraphicFlags::NEEDS_REBUILD | GraphicFlags::IS_VISIBLE;
+        }
         virtual void rebuild();
 
         virtual void setPosition(const glm::vec2 &pos);
-        virtual void setZIndex(float z);
+        virtual void setZIndex(float z) override;
         virtual void setSize(const glm::vec2 &size);
         virtual void setRotation(float angle);
         virtual void setColor(const glm::vec3 &color);
@@ -78,7 +84,6 @@ class TransformableGraphic2D : public Graphic {
         virtual glm::vec2 getPosition() const;
 
         virtual glm::vec2 getSize() const;
-        virtual float getZIndex() const;
         virtual float getRotation() const;
         virtual glm::vec3 getColor() const;
         virtual glm::vec2 getAnchor() const;

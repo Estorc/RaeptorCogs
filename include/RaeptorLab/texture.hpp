@@ -50,7 +50,7 @@ class TextureAtlas {
         void unbind() const;
 
         void uploadTexture(GLuint x, GLuint y, GLuint width, GLuint height, const void *data);
-        bool tryAddTexture(Texture &texture);
+        bool tryAddTexture(Texture &texture, const Image &img);
         void removeTexture(const Texture &texture);
 
         GLuint getID() const;
@@ -60,17 +60,19 @@ class TextureAtlas {
 
 class Texture {
     private:
-        Image image; // Image data for the texture
         TextureAtlas *atlas; // Reference to the texture atlas this texture belongs to
         glm::vec4 rect; // Rectangle in the atlas
         glm::vec4 uvRect; // UV rectangle in the atlas
+        bool opaque;
 
     public:
-        Texture() : atlas(nullptr) {}
+        Texture() : atlas(nullptr), opaque(false) {}
         Texture(const Image &img);
         Texture(const char *filepath);
 
         void bind() const;
+
+        bool isOpaque() const;
 
         void setAtlas(TextureAtlas *atlas);
         void setRect(const glm::vec4 &rect);
@@ -78,7 +80,6 @@ class Texture {
 
         glm::vec4 getRect();
         glm::vec4 getUVRect();
-        Image *getImage();
         TextureAtlas *getAtlas() const;
         GLuint getID() const;
 };

@@ -38,10 +38,10 @@ void TextureAtlas::uploadTexture(GLuint x, GLuint y, GLuint width, GLuint height
     glGenerateMipmap(GL_TEXTURE_2D);
 }
 
-bool TextureAtlas::tryAddTexture(Texture &texture) {
+bool TextureAtlas::tryAddTexture(Texture &texture, const Image &img) {
     stbrp_rect r;
-    r.w = texture.getImage()->width + ATLAS_PADDING * 2;
-    r.h = texture.getImage()->height + ATLAS_PADDING * 2;
+    r.w = img.width + ATLAS_PADDING * 2;
+    r.h = img.height + ATLAS_PADDING * 2;
     r.id = 0;
 
     if (!stbrp_pack_rects(&this->ctx, &r, 1) || !r.was_packed) {
@@ -78,26 +78,28 @@ int TextureAtlas::getHeight() const {
 #pragma endregion
 #pragma region Texture
 
-Texture::Texture(const Image &img) : image(img), atlas(nullptr) {
-    if (!this->image.data) {
+Texture::Texture(const Image &img) : atlas(nullptr) {
+    std::cout << "Creating Texture from Image with size: " << img.width << "x" << img.height << std::endl;
+    if (!img.data) {
         std::cerr << "Failed to load texture from image data." << std::endl;
         return;
     }
+    this->opaque = img.isOpaque();
     TextureAtlas *atlas = textureAtlasManager.getAtlas();
-    uint64_t allocatedSize = next_power_of_2_64(std::max(this->image.width + ATLAS_PADDING * 2, this->image.height + ATLAS_PADDING * 2));
+    uint64_t allocatedSize = next_power_of_2_64(std::max(img.width + ATLAS_PADDING * 2, img.height + ATLAS_PADDING * 2));
     if (allocatedSize < COMMON_ATLAS_WIDTH) {
         allocatedSize = COMMON_ATLAS_WIDTH;
     }
 
     if (!atlas) atlas = new TextureAtlas(glm::ivec2(allocatedSize, allocatedSize));
 
-    if (atlas->tryAddTexture(*this)) {
-        atlas->uploadTexture(this->rect.x, this->rect.y, this->rect.z, this->rect.w, this->image.data);
+    if (atlas->tryAddTexture(*this, img)) {
+        atlas->uploadTexture(this->rect.x, this->rect.y, this->rect.z, this->rect.w, img.data.get());
         textureAtlasManager.addAtlas(*atlas);
     } else {
         atlas = new TextureAtlas(glm::ivec2(allocatedSize, allocatedSize));
-        if (atlas->tryAddTexture(*this)) {
-            atlas->uploadTexture(this->rect.x, this->rect.y, this->rect.z, this->rect.w, this->image.data);
+        if (atlas->tryAddTexture(*this, img)) {
+            atlas->uploadTexture(this->rect.x, this->rect.y, this->rect.z, this->rect.w, img.data.get());
             textureAtlasManager.addAtlas(*atlas);
         } else {
             std::cerr << "Failed to add texture to new atlas." << std::endl;
@@ -142,16 +144,16 @@ glm::vec4 Texture::getUVRect() {
     return this->uvRect;
 }
 
-Image *Texture::getImage() {
-    return &this->image;
-}
-
 TextureAtlas *Texture::getAtlas() const {
     return this->atlas;
 }
 
 GLuint Texture::getID() const {
     return this->atlas->getID();
+}
+
+bool Texture::isOpaque() const {
+    return this->opaque;
 }
 
 #pragma endregion

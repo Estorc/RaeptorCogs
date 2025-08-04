@@ -1,4 +1,5 @@
 #include <RaeptorLab/renderer.hpp>
+#include <RaeptorLab/graphic.hpp>
 #include <iostream>
 #include "shaders_embed.h"
 #include <glm/ext/matrix_transform.hpp>
@@ -186,21 +187,25 @@ void Renderer::destroyWindow(Window* window) {
 }
 
 
+/**
+ * TODO: Make sorting smarter by forming smart groups of graphics
+ * based on their properties (e.g., texture, z-index, etc.)
+ * This will reduce the number of batches and improve performance.
+ */
 void Renderer::render(Window* window) {
     int width = window->getWidth();
     int height = window->getHeight();
     glfwMakeContextCurrent(window->getGLFWWindow());
 
     glViewport(0, 0, width, height);
-    glClearColor(0.8f, 0.8f, 0.8f, 1.0f);
+    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LESS);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    glDepthMask(GL_FALSE);
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS); // Opaque objects
 
     glUseProgram(this->shader);
     glBindVertexArray(window->getQuadVAO());
@@ -227,6 +232,14 @@ void Renderer::render(Window* window) {
             }
         }
 
+        if (pair.second[0]->isOpaque()) {
+            glEnable(GL_DEPTH_TEST);
+            glDisable(GL_BLEND); // Disable blending for opaque objects
+        } else {
+            glDisable(GL_DEPTH_TEST); // Disable depth testing
+            glEnable(GL_BLEND); // Enable blending for transparent objects
+        }
+
         // Shared data for all instances
         glBindBuffer(GL_ARRAY_BUFFER, this->instanceVBO);
         glBufferSubData(GL_ARRAY_BUFFER, 0, instanceData.size() * sizeof(InstanceData), instanceData.data());
@@ -249,31 +262,32 @@ void Renderer::render(Window* window) {
 
 
 void Renderer::addGraphic(Graphic *graphic) {
-    GLuint textureID = graphic->getID();
+    BatchKey key = std::make_tuple(graphic->getZIndex(), graphic->isOpaque(), graphic->getID());
     graphic->setRenderer(this);
-    graphic->setRendererKey(textureID);
-    this->batches[textureID].push_back(graphic);
+    graphic->setRendererKey(key);
+    this->batches[key].push_back(graphic);
 }
 
-void Renderer::changeGraphicPosition(Graphic *graphic, GLuint newTextureID) {
+void Renderer::changeGraphicPosition(Graphic *graphic) {
     if (graphic->getRenderer() != this) {
         std::cerr << "Graphic not managed by this renderer!" << std::endl;
         return;
     }
 
-    GLuint oldTextureID = graphic->getRendererKey();
-    if (oldTextureID == newTextureID) return; // No change needed
+    BatchKey newKey = std::make_tuple(graphic->getZIndex(), graphic->isOpaque(), graphic->getID());
+    BatchKey oldKey = graphic->getRendererKey();
+    if (oldKey == newKey) return; // No change needed
 
     // Remove from old batch
-    auto& oldBatch = this->batches[oldTextureID];
+    auto& oldBatch = this->batches[oldKey];
     auto it = std::remove(oldBatch.begin(), oldBatch.end(), graphic);
     if (it != oldBatch.end()) {
         oldBatch.erase(it, oldBatch.end());
     }
 
     // Add to new batch
-    this->batches[newTextureID].push_back(graphic);
-    graphic->setRendererKey(newTextureID);
+    this->batches[newKey].push_back(graphic);
+    graphic->setRendererKey(newKey);
 }
 
 void Renderer::removeGraphic(Graphic *graphic) {
@@ -285,7 +299,7 @@ void Renderer::removeGraphic(Graphic *graphic) {
         return;
     }
 
-    GLuint key = graphic->getRendererKey();
+    BatchKey key = graphic->getRendererKey();
     auto& batch = this->batches[key];
     auto it = std::remove(batch.begin(), batch.end(), graphic);
     if (it != batch.end()) {

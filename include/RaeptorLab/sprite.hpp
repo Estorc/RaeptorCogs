@@ -18,6 +18,7 @@ class Sprite : public TransformableGraphic2D {
         virtual void computeInstanceData(InstanceData &data, std::vector<uint8_t> &instanceDataBuffer) override;
         virtual void bind() const override;
         virtual GLuint getID() const override;
+        virtual bool isOpaque() const override;
 
         void setTexture(Texture &texture);
 

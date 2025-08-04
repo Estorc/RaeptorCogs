@@ -135,6 +135,15 @@ void Text::bind() const {
     }
 }
 
+void Text::setZIndex(float z) {
+    this->zIndex = z;
+    this->rendererKey = std::make_tuple(z, this->isOpaque(), this->getID());
+    this->renderer->changeGraphicPosition(this);
+    for (auto& glyph : glyphs) {
+        glyph->setZIndex(z);
+    }
+}
+
 void Text::setContent(const std::string &content) {
     if (content == this->content) return; // No change in content
     this->content = content;
@@ -147,14 +156,15 @@ const std::string& Text::getContent() const {
 }
 
 void Text::setFont(Font &font) {
-    if (this->font->getID() != font.getID()) {
-        this->renderer->changeGraphicPosition(this, font.getID());
-        for (auto& glyph : glyphs) {
-            this->renderer->changeGraphicPosition(glyph.get(), font.getID());
-        }
-    }
+    bool needChangeGraphicPosition = (this->font && this->font->getID() != font.getID());
     this->font = &font;
     this->flags |= GraphicFlags::NEEDS_REBUILD;
+    if (needChangeGraphicPosition) {
+        this->renderer->changeGraphicPosition(this);
+        for (auto& glyph : glyphs) {
+            this->renderer->changeGraphicPosition(glyph.get());
+        }
+    }
 }
 
 
