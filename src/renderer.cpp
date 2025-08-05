@@ -192,9 +192,11 @@ void Renderer::destroyWindow(Window* window) {
  * based on their properties (e.g., texture, z-index, etc.)
  * This will reduce the number of batches and improve performance.
  */
-void Renderer::render(Window* window) {
-    int width = window->getWidth();
-    int height = window->getHeight();
+void Renderer::render(Window* window, int width, int height) {
+    if (width == 0 || height == 0) {
+        width = window->getWidth();
+        height = window->getHeight();
+    }
     glfwMakeContextCurrent(window->getGLFWWindow());
 
     glViewport(0, 0, width, height);

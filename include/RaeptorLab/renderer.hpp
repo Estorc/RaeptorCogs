@@ -32,7 +32,7 @@ class Renderer {
         void buildBuffers();
         void buildShader();
         void buildVAO(Window* window);
-        void render(Window* window);
+        void render(Window* window, int width = 0, int height = 0);
 
         Window* createWindow(int width, int height, const char* title);
         void destroyWindow(Window* window);
