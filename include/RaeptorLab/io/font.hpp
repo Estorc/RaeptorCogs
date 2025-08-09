@@ -56,9 +56,4 @@ class Font {
         glm::vec2 getGlyphSize(const unsigned char *character) const;
         float getGlyphXAdvance(const unsigned char *character) const;
         float getFontSize() const;
-        float measureTextWidth(const std::string& text) const;
-        float measureTextHeight(const std::string& text) const;
-        glm::vec2 measureTextSize(const std::string& text) const;
 };
-
-Font loadFont(const char* fontPath, int fontSize);

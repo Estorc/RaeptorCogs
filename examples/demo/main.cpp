@@ -309,6 +309,9 @@ int RaeptorApplication::update() {
                 float zIndex = text->getZIndex();
                 glm::vec3 textColor = text->getColor();
                 bool visible = text->isVisible();
+                int wordWrapType = static_cast<int>(text->getWordWrapType());
+                int alignment = static_cast<int>(text->getAlignment());
+                float wordWrapWidth = text->getWordWrapWidth();
                 ImGui::Indent();
                 ImGui::Checkbox("Visible", &visible);
                 ImGui::Text("Position");
@@ -318,7 +321,26 @@ int RaeptorApplication::update() {
                 ImGui::SliderFloat2("Size", &textSize[0], 0.0f, 2000.0f);
                 ImGui::SliderAngle("Rotation", &textRotation, 0.0f, 360.0f);
                 ImGui::ColorEdit3("Color", &textColor[0]); // Example of color edit, replace with actual color
+                ImGui::Text("Word Wrap");
+                ImGui::RadioButton("None", &wordWrapType, static_cast<int>(TextWordWrap::NONE));
+                ImGui::SameLine();
+                ImGui::RadioButton("Word", &wordWrapType, static_cast<int>(TextWordWrap::WORD));
+                ImGui::SameLine();
+                ImGui::RadioButton("Character", &wordWrapType, static_cast<int>(TextWordWrap::CHARACTER));
+                if (wordWrapType != static_cast<int>(TextWordWrap::NONE)) {
+                    ImGui::SliderFloat("Width", &wordWrapWidth, 0.0f, 2000.0f);
+                    text->setWordWrap(static_cast<TextWordWrap>(wordWrapType), wordWrapWidth);
+                } else {
+                    text->setWordWrap(TextWordWrap::NONE);
+                }
+                ImGui::Text("Alignment");
+                ImGui::RadioButton("Left", &alignment, static_cast<int>(TextAlignment::LEFT));
+                ImGui::SameLine();
+                ImGui::RadioButton("Center", &alignment, static_cast<int>(TextAlignment::CENTER));
+                ImGui::SameLine();
+                ImGui::RadioButton("Right", &alignment, static_cast<int>(TextAlignment::RIGHT));
                 ImGui::Unindent();
+                text->setAlignment(static_cast<TextAlignment>(alignment));
                 text->setPosition(textPosition);
                 text->setSize(textSize);
                 text->setRotation(textRotation);
@@ -363,7 +385,7 @@ int RaeptorApplication::update() {
     if (ImGui::Button("Add Text")) {
         Text* text = new Text(font, "Sample Text");
         text->setPosition(glm::vec2(100.0f, 100.0f));
-        text->setSize(font.measureTextSize("Sample Text"));
+        text->setSize(text->measureTextSize());
         text->setRotation(0.0f);
         text->setColor(glm::vec3(1.0f, 1.0f, 1.0f));
         text->setAnchor(glm::vec2(0.5f, 0.5f));
