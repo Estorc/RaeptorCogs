@@ -34,7 +34,85 @@ void TextureAtlas::uploadTexture(GLuint x, GLuint y, GLuint width, GLuint height
     }
 
     glBindTexture(GL_TEXTURE_2D, this->textureID);
-    glTexSubImage2D(GL_TEXTURE_2D, 0, x+ATLAS_PADDING, y+ATLAS_PADDING, width-ATLAS_PADDING*2, height-ATLAS_PADDING*2, GL_RGBA, GL_UNSIGNED_BYTE, data);
+
+    int innerW = width - ATLAS_PADDING * 2;
+    int innerH = height - ATLAS_PADDING * 2;
+    const unsigned char *pixels = (const unsigned char*)data;
+
+    // --- Upload the center region ---
+    glPixelStorei(GL_UNPACK_ROW_LENGTH, innerW);
+    glTexSubImage2D(GL_TEXTURE_2D, 0,
+        x + ATLAS_PADDING, y + ATLAS_PADDING,
+        innerW, innerH,
+        GL_RGBA, GL_UNSIGNED_BYTE,
+        pixels + (0 * innerW + 0) * 4);
+
+    // --- Left padding ---
+    glPixelStorei(GL_UNPACK_ROW_LENGTH, innerW);
+    glTexSubImage2D(GL_TEXTURE_2D, 0,
+        x, y + ATLAS_PADDING,
+        ATLAS_PADDING, innerH,
+        GL_RGBA, GL_UNSIGNED_BYTE,
+        pixels + (0 * innerW + 0) * 4);
+
+    // --- Right padding ---
+    glPixelStorei(GL_UNPACK_ROW_LENGTH, innerW);
+    glTexSubImage2D(GL_TEXTURE_2D, 0,
+        x + ATLAS_PADDING + innerW, y + ATLAS_PADDING,
+        ATLAS_PADDING, innerH,
+        GL_RGBA, GL_UNSIGNED_BYTE,
+        pixels + (0 * innerW + (innerW - 1)) * 4);
+
+    // --- Top padding ---
+    glPixelStorei(GL_UNPACK_ROW_LENGTH, innerW);
+    glTexSubImage2D(GL_TEXTURE_2D, 0,
+        x + ATLAS_PADDING, y,
+        innerW, ATLAS_PADDING,
+        GL_RGBA, GL_UNSIGNED_BYTE,
+        pixels + (0 * innerW + 0) * 4);
+
+    // --- Bottom padding ---
+    glPixelStorei(GL_UNPACK_ROW_LENGTH, innerW);
+    glTexSubImage2D(GL_TEXTURE_2D, 0,
+        x + ATLAS_PADDING, y + ATLAS_PADDING + innerH,
+        innerW, ATLAS_PADDING,
+        GL_RGBA, GL_UNSIGNED_BYTE,
+        pixels + ((innerH - 1) * innerW + 0) * 4);
+
+    // --- Top-left corner ---
+    glPixelStorei(GL_UNPACK_ROW_LENGTH, 1);
+    glTexSubImage2D(GL_TEXTURE_2D, 0,
+        x, y,
+        ATLAS_PADDING, ATLAS_PADDING,
+        GL_RGBA, GL_UNSIGNED_BYTE,
+        pixels + (0 * innerW + 0) * 4);
+
+    // --- Top-right corner ---
+    glPixelStorei(GL_UNPACK_ROW_LENGTH, 1);
+    glTexSubImage2D(GL_TEXTURE_2D, 0,
+        x + ATLAS_PADDING + innerW, y,
+        ATLAS_PADDING, ATLAS_PADDING,
+        GL_RGBA, GL_UNSIGNED_BYTE,
+        pixels + (0 * innerW + (innerW - 1)) * 4);
+
+    // --- Bottom-left corner ---
+    glPixelStorei(GL_UNPACK_ROW_LENGTH, 1);
+    glTexSubImage2D(GL_TEXTURE_2D, 0,
+        x, y + ATLAS_PADDING + innerH,
+        ATLAS_PADDING, ATLAS_PADDING,
+        GL_RGBA, GL_UNSIGNED_BYTE,
+        pixels + ((innerH - 1) * innerW + 0) * 4);
+
+    // --- Bottom-right corner ---
+    glPixelStorei(GL_UNPACK_ROW_LENGTH, 1);
+    glTexSubImage2D(GL_TEXTURE_2D, 0,
+        x + ATLAS_PADDING + innerW, y + ATLAS_PADDING + innerH,
+        ATLAS_PADDING, ATLAS_PADDING,
+        GL_RGBA, GL_UNSIGNED_BYTE,
+        pixels + ((innerH - 1) * innerW + (innerW - 1)) * 4);
+
+    glPixelStorei(GL_UNPACK_ROW_LENGTH, 0); // reset
+
     glGenerateMipmap(GL_TEXTURE_2D);
 }
 
