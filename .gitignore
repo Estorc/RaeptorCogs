@@ -3,12 +3,13 @@ protected/
 *.protected
 
 # Build directories
-/build/
+/build_*/
 /cmake-build-*/
 
 # CMake files
 CMakeFiles/
 CMakeCache.txt
+CMakePresets.json
 cmake_install.cmake
 Makefile
 

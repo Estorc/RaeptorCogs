@@ -1,22 +1,23 @@
-#include <RaeptorLab/sprite.hpp>
+#include <RaeptorCogs/Sprite.hpp>
 #include <iostream>
+namespace RaeptorCogs {
 
 Sprite::Sprite(Texture &texture) : texture(&texture) {}
 
 
-void Sprite::addToRenderer(Renderer &renderer) {
+void Sprite::addToRenderer(Singletons::Renderer &renderer) {
     // Add to renderer's batch
     renderer.addGraphic(this);
 }
 
-void Sprite::computeInstanceData(InstanceData &data, std::vector<uint8_t> &instanceDataBuffer) {
+void Sprite::computeInstanceData(InstanceData &data, std::vector<float> &instanceDataBuffer) {
     data.model = this->getModelMatrix();
     data.uvRect = texture ? texture->getUVRect() : glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
     data.type = RENDERER_MODE_2D_SPRITE;
 
     glm::vec3 color = this->getColor();
-    data.dataOffset = instanceDataBuffer.size() / sizeof(uint8_t); // Offset into the instance data buffer
-    instanceDataBuffer.insert(instanceDataBuffer.end(), reinterpret_cast<uint8_t*>(&color), reinterpret_cast<uint8_t*>(&color) + sizeof(color));
+    data.dataOffset = instanceDataBuffer.size(); // Offset into the instance data buffer
+    instanceDataBuffer.insert(instanceDataBuffer.end(), reinterpret_cast<float*>(&color), reinterpret_cast<float*>(&color) + sizeof(color) / sizeof(float));
 }
 
 void Sprite::bind() const {
@@ -45,4 +46,6 @@ GLuint Sprite::getID() const {
 
 bool Sprite::isOpaque() const {
     return texture ? texture->isOpaque() : true;
+}
+
 }

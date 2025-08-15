@@ -1,4 +1,5 @@
-#include <RaeptorLab/bitOp.hpp>
+#include <RaeptorCogs/BitOp.hpp>
+namespace RaeptorCogs {
 
 uint64_t next_power_of_2_64(uint64_t n) {
     if (n == 0) return 1; // Handle the case for 0
@@ -10,4 +11,6 @@ uint64_t next_power_of_2_64(uint64_t n) {
     n |= n >> 16;
     n |= n >> 32; // For 64-bit integers
     return n + 1;
+}
+
 }

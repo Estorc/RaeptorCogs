@@ -1,10 +1,13 @@
-#version 430 core
-#include <constants.glsl>
-#include <data.glsl>
+#version 300 es
+precision highp float;
 
-in flat int Type;
-in flat int DataOffset;
+#include <constants.glsl>
+#include <data_gles.glsl>
+
+flat in int Type;
+flat in int DataOffset;
 in vec2 TexCoord;
+in vec4 UVOffset;
 out vec4 FragColor;
 
 uniform sampler2D Texture;

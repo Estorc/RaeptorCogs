@@ -4,6 +4,8 @@
 #include <glm/glm.hpp>
 #include <string>
 
+namespace RaeptorCogs {
+
 class Window {
     private:
         GLFWwindow* window;
@@ -22,4 +24,7 @@ class Window {
         GLuint& getQuadVAO();
 
         void setTitle(const std::string& newTitle);
+        void setSize(int width, int height);
 };
+
+}

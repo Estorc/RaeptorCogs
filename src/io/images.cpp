@@ -4,14 +4,18 @@
 #include <stb_image_write.h>
 #define STB_RECT_PACK_IMPLEMENTATION
 #include <stb_rect_pack.h>
-#include <RaeptorLab/io/string.hpp>
-#include <RaeptorLab/io/images.hpp>
+#include <RaeptorCogs/IO/String.hpp>
+#include <RaeptorCogs/IO/Images.hpp>
+#include <RaeptorCogs/IO/FileIO.hpp>
+#ifndef __EMSCRIPTEN__
 #include <httplib.h>
+#endif
+namespace RaeptorCogs {
 
 Image::Image() : data(nullptr, stbi_image_free), width(0), height(0), channels(0) {}
 Image::Image(unsigned char* data, int width, int height, int channels) : data(data, stbi_image_free), width(width), height(height), channels(channels) {}
 
-GLuint load_texture(const char* filename) {
+GLuint LoadTexture(const char* filename) {
     GLuint textureID = 0;
     int width, height, channels;
     unsigned char* data = stbi_load(filename, &width, &height, &channels, 4);
@@ -27,7 +31,8 @@ GLuint load_texture(const char* filename) {
     return textureID;
 }
 
-Image load_image_from_url(const char* url) {
+Image LoadImageFromURL(const char* url) {
+    #ifndef __EMSCRIPTEN__
     // Parse URL to extract domain and path
     std::string domain, path;
     separate_domain_and_path(url, domain, path);
@@ -46,9 +51,22 @@ Image load_image_from_url(const char* url) {
         return Image(nullptr, 0, 0, 0);
     }
     return Image(data, width, height, channels);
+    #else
+    return Image(nullptr, 0, 0, 0);
+    #endif
 }
 
-Image load_image(const char* filename) {
+Image LoadImageFromMemory(const FileData& data) {
+    int width, height, channels;
+    unsigned char* img_data = stbi_load_from_memory(data.data(), data.size(), &width, &height, &channels, 4);
+    if (!img_data) {
+        std::cerr << "Failed to load image from memory" << std::endl;
+        return Image(nullptr, 0, 0, 0);
+    }
+    return Image(img_data, width, height, channels);
+}
+
+Image LoadImageFromFile(const char* filename) {
     int width, height, channels;
     unsigned char* data = stbi_load(filename, &width, &height, &channels, 4);
     if (!data) {
@@ -56,4 +74,6 @@ Image load_image(const char* filename) {
         return Image(nullptr, 0, 0, 0);
     }
     return Image(data, width, height, channels);
+}
+
 }

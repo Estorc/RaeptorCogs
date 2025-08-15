@@ -2,11 +2,14 @@
 #include <stb_truetype.h>
 #include <stb_image.h>
 #include <stb_image_write.h>
-#include <RaeptorLab/io/font.hpp>
-#include <RaeptorLab/io/string.hpp>
+#include <RaeptorCogs/IO/Font.hpp>
+#include <RaeptorCogs/IO/String.hpp>
+#include <RaeptorCogs/IO/FileIO.hpp>
 #include <cstdlib>
 #include <iostream>
 #include <memory>
+
+namespace RaeptorCogs {
 
 
 glm::vec4 GlyphData::getUVRect() const {
@@ -25,10 +28,9 @@ float GlyphData::getXAdvance() const {
     return x_advance;
 }
 
-Font::Font(const char *fontPath, int fontSize) : textureID(0), font_size(fontSize), is_dynamic(true) {
-    unsigned char* ttf_buffer = load_file(fontPath);
-    if (!ttf_buffer) {
-        std::cerr << "Failed to load font file: " << fontPath << std::endl;
+Font::Font(const FileData& ttf_buffer, int fontSize) : textureID(0), font_size(fontSize), is_dynamic(true) {
+    if (ttf_buffer.empty()) {
+        std::cerr << "Failed to load font file." << std::endl;
         return;
     }
 
@@ -36,13 +38,14 @@ Font::Font(const char *fontPath, int fontSize) : textureID(0), font_size(fontSiz
     unsigned char* data = (unsigned char*)malloc(atlas_width * atlas_height);
     if (!data) {
         std::cerr << "Failed to allocate memory for font texture." << std::endl;
-        delete[] ttf_buffer;
         return;
     }
 
-    uploadTexture(data, atlas_width, atlas_height, ttf_buffer);
-    std::cout << "Font loaded successfully: " << fontPath << std::endl;
+    uploadTexture(data, atlas_width, atlas_height, ttf_buffer.data());
+    std::cout << "Font loaded successfully!" << std::endl;
 }
+
+Font::Font(const char* fontPath, int fontSize) : Font::Font(LoadFile(fontPath), fontSize) {};
 
 
 Font::~Font() {
@@ -54,12 +57,11 @@ Font::~Font() {
     //glDeleteTextures(1, &textureID);
 }
 
-void Font::uploadTexture(unsigned char* data, int width, int height, unsigned char* ttf_buffer) {
+void Font::uploadTexture(unsigned char* data, int width, int height, const unsigned char* ttf_buffer) {
 
     stbtt_pack_context ctx;
     if (stbtt_PackBegin(&ctx, data, width, height, 0, 1, NULL) == 0) {
         std::cerr << "Failed to initialize font packing context." << std::endl;
-        delete[] ttf_buffer;
         free(data);
         return; // Return empty font
     }
@@ -93,14 +95,17 @@ void Font::uploadTexture(unsigned char* data, int width, int height, unsigned ch
 
     glGenTextures(1, &this->textureID);
     glBindTexture(GL_TEXTURE_2D, this->textureID);
+    #ifdef __EMSCRIPTEN__
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, width, height, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, data);
+    #else
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, width, height, 0, GL_RED, GL_UNSIGNED_BYTE, data);
+    #endif
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
     free(data);
-    delete[] ttf_buffer;
 }
 
 void Font::bind() const {
@@ -167,4 +172,6 @@ float Font::getGlyphXAdvance(const unsigned char* character) const {
 
 float Font::getFontSize() const {
     return font_size;
+}
+
 }

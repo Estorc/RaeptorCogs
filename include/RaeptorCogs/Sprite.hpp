@@ -1,10 +1,12 @@
 #pragma once
-#include <RaeptorLab/texture.hpp>
-#include <RaeptorLab/renderer.hpp>
-#include <RaeptorLab/graphic.hpp>
-#include <RaeptorLab/flags.hpp>
-
+#include <RaeptorCogs/IO/Texture.hpp>
+#include <RaeptorCogs/Renderer.hpp>
+#include <RaeptorCogs/Graphic.hpp>
+#include <RaeptorCogs/Flags.hpp>
+namespace RaeptorCogs::Singletons {
 class Renderer;
+}
+namespace RaeptorCogs {
 
 class Sprite : public TransformableGraphic2D {
     private:
@@ -14,8 +16,8 @@ class Sprite : public TransformableGraphic2D {
         Sprite(Texture &texture);
         Sprite() : texture(nullptr) {}
 
-        void addToRenderer(Renderer &renderer);
-        virtual void computeInstanceData(InstanceData &data, std::vector<uint8_t> &instanceDataBuffer) override;
+        void addToRenderer(Singletons::Renderer &renderer);
+        virtual void computeInstanceData(InstanceData &data, std::vector<float> &instanceDataBuffer) override;
         virtual void bind() const override;
         virtual GLuint getID() const override;
         virtual bool isOpaque() const override;
@@ -24,3 +26,5 @@ class Sprite : public TransformableGraphic2D {
 
         Texture* getTexture() const;
 };
+
+}

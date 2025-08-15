@@ -1,6 +1,7 @@
-#include <RaeptorLab/graphic.hpp>
-#include <RaeptorLab/renderer.hpp>
+#include <RaeptorCogs/Graphic.hpp>
+#include <RaeptorCogs/Renderer.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+namespace RaeptorCogs {
 
 Graphic::~Graphic() {
     if (renderer) {
@@ -8,7 +9,7 @@ Graphic::~Graphic() {
     }
 }
 
-void Graphic::setRenderer(Renderer* renderer) {
+void Graphic::setRenderer(Singletons::Renderer* renderer) {
     this->renderer = renderer;
 }
 
@@ -16,7 +17,7 @@ void Graphic::setRendererKey(BatchKey key) {
     this->rendererKey = key;
 }
 
-Renderer* Graphic::getRenderer() const {
+Singletons::Renderer* Graphic::getRenderer() const {
     return this->renderer;
 }
 
@@ -118,4 +119,6 @@ glm::mat4 TransformableGraphic2D::getModelMatrix() {
 void TransformableGraphic2D::setZIndex(float z) {
     Graphic::setZIndex(z);
     this->flags |= GraphicFlags::NEEDS_REBUILD; // Ensure rebuild on z-index change
+}
+
 }

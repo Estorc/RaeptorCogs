@@ -5,11 +5,14 @@
 #include <glm/ext/matrix_clip_space.hpp>
 #include <vector>
 #include <stack>
-#include <RaeptorLab/io/images.hpp>
-#include <RaeptorLab/flags.hpp>
+#include <RaeptorCogs/IO/Images.hpp>
+#include <RaeptorCogs/IO/FileIO.hpp>
+#include <RaeptorCogs/Flags.hpp>
 #include <stb_image.h>
 #include <stb_image_write.h>
 #include <stb_rect_pack.h>
+
+namespace RaeptorCogs {
 
 /** TODO:
  * - Constant atlas loader
@@ -68,6 +71,7 @@ class Texture {
     public:
         Texture() : atlas(nullptr), opaque(false) {}
         Texture(const Image &img);
+        Texture(const FileData &fileData);
         Texture(const char *filepath);
 
         void bind() const;
@@ -84,6 +88,9 @@ class Texture {
         GLuint getID() const;
 };
 
+}
+
+namespace RaeptorCogs::Singletons {
 class TextureAtlasManager {
     private:
         std::stack<TextureAtlas> atlases; // Stack of texture atlases
@@ -95,5 +102,4 @@ class TextureAtlasManager {
         void removeAtlas(const TextureAtlas &atlas);
         TextureAtlas* getAtlas();
 };
-
-extern TextureAtlasManager textureAtlasManager;
+}

@@ -1,6 +1,7 @@
 #pragma once
 #include <type_traits>
 
+namespace RaeptorCogs {
 template<typename Enum>
 struct EnableBitmaskOperators {
     static constexpr bool enable = false;
@@ -70,4 +71,5 @@ constexpr typename std::enable_if_t<EnableBitmaskOperators_v<Enum>, bool>
 any(Enum flags) {
     using Under = std::underlying_type_t<Enum>;
     return static_cast<Under>(flags) != 0;
+}
 }

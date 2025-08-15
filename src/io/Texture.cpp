@@ -1,5 +1,7 @@
-#include <RaeptorLab/texture.hpp>
-#include <RaeptorLab/bitOp.hpp>
+#include <RaeptorCogs/RaeptorCogs.hpp>
+#include <RaeptorCogs/IO/Texture.hpp>
+#include <RaeptorCogs/BitOp.hpp>
+namespace RaeptorCogs {
 
 #pragma region TextureAtlas
 
@@ -27,8 +29,10 @@ void TextureAtlas::uploadTexture(GLuint x, GLuint y, GLuint width, GLuint height
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+        #ifndef __EMSCRIPTEN__
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, -0.5f);
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY, 4.0f);
+        #endif
 
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, this->size.x, this->size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
     }
@@ -163,7 +167,7 @@ Texture::Texture(const Image &img) : atlas(nullptr) {
         return;
     }
     this->opaque = img.isOpaque();
-    TextureAtlas *atlas = textureAtlasManager.getAtlas();
+    TextureAtlas *atlas = RaeptorCogs::TextureAtlasManager().getAtlas();
     uint64_t allocatedSize = next_power_of_2_64(std::max(img.width + ATLAS_PADDING * 2, img.height + ATLAS_PADDING * 2));
     if (allocatedSize < COMMON_ATLAS_WIDTH) {
         allocatedSize = COMMON_ATLAS_WIDTH;
@@ -173,12 +177,12 @@ Texture::Texture(const Image &img) : atlas(nullptr) {
 
     if (atlas->tryAddTexture(*this, img)) {
         atlas->uploadTexture(this->rect.x, this->rect.y, this->rect.z, this->rect.w, img.data.get());
-        textureAtlasManager.addAtlas(*atlas);
+        RaeptorCogs::TextureAtlasManager().addAtlas(*atlas);
     } else {
         atlas = new TextureAtlas(glm::ivec2(allocatedSize, allocatedSize));
         if (atlas->tryAddTexture(*this, img)) {
             atlas->uploadTexture(this->rect.x, this->rect.y, this->rect.z, this->rect.w, img.data.get());
-            textureAtlasManager.addAtlas(*atlas);
+            RaeptorCogs::TextureAtlasManager().addAtlas(*atlas);
         } else {
             std::cerr << "Failed to add texture to new atlas." << std::endl;
             this->atlas = nullptr;
@@ -186,7 +190,8 @@ Texture::Texture(const Image &img) : atlas(nullptr) {
     }
 }
 
-Texture::Texture(const char *filepath) : Texture::Texture(load_image(filepath)) {}
+Texture::Texture(const FileData &fileData) : Texture::Texture(LoadImageFromMemory(fileData)) {}
+Texture::Texture(const char *filepath) : Texture::Texture(LoadImageFromFile(filepath)) {}
 
 void Texture::bind() const {
     if (this->atlas) {
@@ -235,6 +240,11 @@ bool Texture::isOpaque() const {
 }
 
 #pragma endregion
+
+}
+
+namespace RaeptorCogs::Singletons {
+
 #pragma region TextureAtlasManager
 
 TextureAtlasManager::TextureAtlasManager() = default;
@@ -255,6 +265,6 @@ TextureAtlas* TextureAtlasManager::getAtlas() {
     return &this->atlases.top();
 }
 
-TextureAtlasManager textureAtlasManager = TextureAtlasManager();
-
 #pragma endregion
+
+}

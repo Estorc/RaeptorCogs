@@ -1,7 +1,8 @@
 #pragma once
+#include <RaeptorCogs/IO/FileIO.hpp>
 #include <glad/glad.h>
 #include <iostream>
-
+namespace RaeptorCogs {
 class Image {
     public:
         std::unique_ptr<unsigned char[], void(*)(void*)> data;
@@ -22,6 +23,9 @@ class Image {
         }
 };
 
-GLuint load_texture(const char* filename);
-Image load_image_from_url(const char* url);
-Image load_image(const char* filename);
+GLuint LoadTexture(const char* filename);
+Image LoadImageFromURL(const char* url);
+Image LoadImageFromMemory(const FileData& data);
+Image LoadImageFromFile(const char* filename);
+
+}

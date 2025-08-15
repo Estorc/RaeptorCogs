@@ -1,5 +1,7 @@
-#include <RaeptorLab/window.hpp>
+#include <RaeptorCogs/Window.hpp>
 #include <iostream>
+
+namespace RaeptorCogs {
 
 Window::Window(int width, int height, const std::string& title, GLFWmonitor* monitor, GLFWwindow* share) 
     : title(title) {
@@ -51,3 +53,8 @@ void Window::setTitle(const std::string& newTitle) {
     glfwSetWindowTitle(this->window, newTitle.c_str());
 }
 
+void Window::setSize(int width, int height) {
+    glfwSetWindowSize(this->window, width, height);
+}
+
+}

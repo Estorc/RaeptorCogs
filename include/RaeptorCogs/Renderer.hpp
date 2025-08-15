@@ -2,31 +2,43 @@
 #include <unordered_map>
 #include <map>
 #include <memory>
-#include <RaeptorLab/flags.hpp>
-#include <RaeptorLab/window.hpp>
+#include <RaeptorCogs/Flags.hpp>
+#include <RaeptorCogs/Window.hpp>
 #include "../../shaders/constants.glsl"
 #include <GLFW/glfw3.h>
+#ifdef USE_IMGUI
+#include <backends/imgui_impl_glfw.h>
+#include <backends/imgui_impl_opengl3.h>
+#include <imgui.h>
+#endif
 
-class Sprite;
-class Renderer;
+namespace RaeptorCogs {
+
 class Graphic;
-
-using BatchKey = std::tuple<int /*zindex*/, bool /*isOpaque*/, GLuint /*textureID*/>;
+using BatchKey = std::tuple<int /*zindex*/, bool /*isOpaque*/, GLuint /*programID*/, GLuint /*textureID*/>;
 using BatchVector = std::vector<Graphic*>;
+
+}
+
+namespace RaeptorCogs::Singletons {
 
 class Renderer {
     private:
+        std::vector<Window*> windows;
         std::map<BatchKey, BatchVector> batches; // Maps batch keys to graphics
         GLuint shader = 0;
         GLuint quadVBO;
         GLuint quadEBO;
         GLuint instanceVBO;
+        #ifdef __EMSCRIPTEN__
+        GLuint iDataTex;
+        #else
         GLuint instanceSSBO;
-        Window *mainWindow;
-        std::vector<uint8_t> instanceDataBuffer; // Buffer to hold instance data
+        #endif
+        std::vector<float> instanceDataBuffer; // Buffer to hold instance data
     public:
         Window* initialize(int width, int height, const char* title);
-        void destroy();
+        ~Renderer();
 
         Window* initGraphics(int width, int height, const char* title);
         void buildBuffers();
@@ -41,4 +53,7 @@ class Renderer {
         void changeGraphicPosition(Graphic* graphic);
         void removeGraphic(Graphic*);
         void clearBatches();
+
+        void NewImGuiFrame();
 };
+}

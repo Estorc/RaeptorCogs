@@ -1,11 +1,15 @@
 #pragma once
-#include <RaeptorLab/io/font.hpp>
-#include <RaeptorLab/renderer.hpp>
-#include <RaeptorLab/graphic.hpp>
-#include <RaeptorLab/flags.hpp>
+#include <RaeptorCogs/IO/Font.hpp>
+#include <RaeptorCogs/Renderer.hpp>
+#include <RaeptorCogs/Graphic.hpp>
+#include <RaeptorCogs/Flags.hpp>
 #include <string>
 
+namespace RaeptorCogs::Singletons {
 class Renderer;
+}
+namespace RaeptorCogs {
+
 class Text;
 class Glyph;
 
@@ -20,8 +24,8 @@ class Glyph : public TransformableGraphic2D {
 
         void setCharacter(const unsigned char *character, glm::vec2 advance = glm::vec2(0.0f, 0.0f));
 
-        void addToRenderer(Renderer &renderer);
-        void computeInstanceData(InstanceData &data, std::vector<uint8_t> &instanceDataBuffer) override;
+        void addToRenderer(Singletons::Renderer &renderer);
+        void computeInstanceData(InstanceData &data, std::vector<float> &instanceDataBuffer) override;
         void bind() const override;
         GLuint getID() const override;
         virtual bool isOpaque() const override { return false; }
@@ -55,7 +59,7 @@ class Text : public TransformableGraphic2D {
         Text() : font(nullptr) {}
         virtual ~Text() override;
 
-        void addToRenderer(Renderer &renderer);
+        void addToRenderer(Singletons::Renderer &renderer);
         virtual void rebuild() override;
         virtual void bind() const override;
         virtual GLuint getID() const override;
@@ -76,3 +80,5 @@ class Text : public TransformableGraphic2D {
         glm::vec2 measureTextSize() const;
         float measureLineWidth(const std::string& text) const;
 };
+
+}

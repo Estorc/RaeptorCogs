@@ -1,0 +1,45 @@
+{
+  "version": 3,
+  "configurePresets": [
+    {
+      "name": "emscripten-build",
+      "displayName": "Emscripten Build",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build_emscripten",
+      "cacheVariables": {
+        "CMAKE_TOOLCHAIN_FILE": "C:/Users/loupe/Documents/Programmation/RaeptorCogs/.vscode/emscripten_with_vcpkg.cmake"
+      }
+    },
+    {
+      "name": "windows-build",
+      "displayName": "Windows Build",
+      "generator": "Visual Studio 17 2022",
+      "binaryDir": "${sourceDir}/build_win",
+      "cacheVariables": {
+        "CMAKE_TOOLCHAIN_FILE": "C:/Users/loupe/Documents/Programmation/vcpkg/scripts/buildsystems/vcpkg.cmake"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "emscripten-debug",
+      "configurePreset": "emscripten-build",
+      "configuration": "Debug"
+    },
+    {
+      "name": "emscripten-release",
+      "configurePreset": "emscripten-build",
+      "configuration": "Release"
+    },
+    {
+      "name": "windows-debug",
+      "configurePreset": "windows-build",
+      "configuration": "Debug"
+    },
+    {
+      "name": "windows-release",
+      "configurePreset": "windows-build",
+      "configuration": "Release"
+    }
+  ]
+}

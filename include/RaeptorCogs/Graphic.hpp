@@ -1,10 +1,13 @@
 #pragma once
 #include <glad/glad.h>
 #include <glm/glm.hpp>
-#include <RaeptorLab/flags.hpp>
-#include <RaeptorLab/renderer.hpp>
-
+#include <RaeptorCogs/Flags.hpp>
+#include <RaeptorCogs/Renderer.hpp>
+namespace RaeptorCogs::Singletons {
 class Renderer;
+}
+
+namespace RaeptorCogs {
 
 struct InstanceData {
     glm::mat4 model;
@@ -26,17 +29,18 @@ struct EnableBitmaskOperators<GraphicFlags> {
 // Proxy class for Renderer to manage rendering of various graphics
 class Graphic {
     protected:
-        Renderer* renderer = nullptr;
-        BatchKey rendererKey = std::make_tuple(0, true, 0); // Default key with z-index 0, opaque, and no texture
+        Singletons::Renderer* renderer = nullptr;
+        BatchKey rendererKey = std::make_tuple(0, true, 0, 0); // Default key with z-index 0, opaque, and no texture
         float zIndex = 0.0f;
     public:
         virtual ~Graphic();
 
-        virtual void computeInstanceData(InstanceData &data, std::vector<uint8_t> &instanceDataBuffer) {};
+        virtual void computeInstanceData(InstanceData &data, std::vector<float> &instanceDataBuffer) {};
         virtual void bind() const {};
         virtual GLuint getID() const {return 0;};
+        virtual GLuint getProgramID() const {return 0;};
 
-        virtual void setRenderer(Renderer* renderer);
+        virtual void setRenderer(Singletons::Renderer* renderer);
         virtual void setRendererKey(BatchKey key);
         virtual void setZIndex(float z);
 
@@ -44,7 +48,7 @@ class Graphic {
         virtual bool isOpaque() const { return true; }
         virtual float getZIndex() const;
     
-        virtual Renderer* getRenderer() const;
+        virtual Singletons::Renderer* getRenderer() const;
         virtual BatchKey getRendererKey() const;
 };
 
@@ -89,3 +93,5 @@ class TransformableGraphic2D : public Graphic {
         virtual glm::vec2 getAnchor() const;
         virtual glm::mat4 getModelMatrix();
 };
+
+}

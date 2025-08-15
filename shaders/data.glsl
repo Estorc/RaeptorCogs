@@ -1,24 +1,18 @@
 layout(std430, binding = 0) buffer RawDataBuffer {
-    uint data[];
+    float data[];
 };
 
-float unpackFloat(uint indexBytes)
+float unpackFloat(int indexFloats)
 {
-    // Rebuild 4 bytes from 4 * 8-bit offsets
-    uint byte0 = data[indexBytes / 4] >> ((indexBytes % 4) * 8) & 0xFFu;
-    uint byte1 = data[(indexBytes + 1) / 4] >> (((indexBytes + 1) % 4) * 8) & 0xFFu;
-    uint byte2 = data[(indexBytes + 2) / 4] >> (((indexBytes + 2) % 4) * 8) & 0xFFu;
-    uint byte3 = data[(indexBytes + 3) / 4] >> (((indexBytes + 3) % 4) * 8) & 0xFFu;
-
-    uint combined = (byte3 << 24) | (byte2 << 16) | (byte1 << 8) | byte0;
-    return uintBitsToFloat(combined);
+    // Now just retrieve the float directly
+    return data[indexFloats];
 }
 
-vec3 unpackVec3(uint indexBytes)
+vec3 unpackVec3(int indexFloats)
 {
-    // Rebuild 3 floats from 12 * 8-bit offsets
-    float x = unpackFloat(indexBytes);
-    float y = unpackFloat(indexBytes + 4);
-    float z = unpackFloat(indexBytes + 8);
+    // Retrieve 3 consecutive floats to form a vec3
+    float x = data[indexFloats];
+    float y = data[indexFloats + 1];
+    float z = data[indexFloats + 2];
     return vec3(x, y, z);
 }

@@ -1,8 +1,8 @@
-#include <RaeptorLab/text.hpp>
+#include <RaeptorCogs/Text.hpp>
 #include <iostream>
 #include <glm/ext/matrix_transform.hpp>
-#include <RaeptorLab/io/string.hpp>
-
+#include <RaeptorCogs/IO/String.hpp>
+namespace RaeptorCogs {
 
 Glyph::Glyph(Text &text, const unsigned char *character, glm::vec2 advance) : text(&text), character(character) {
     this->setAnchor(glm::vec2(0.0f, 0.0f)); // Set default anchor to center
@@ -41,12 +41,12 @@ void Glyph::setCharacter(const unsigned char *_character, glm::vec2 advance) {
     this->position += rotatedAdvance;
 }
 
-void Glyph::addToRenderer(Renderer &_renderer) {
+void Glyph::addToRenderer(Singletons::Renderer &_renderer) {
     // Add to renderer's batch
     _renderer.addGraphic(this);
 }
 
-void Glyph::computeInstanceData(InstanceData &data, std::vector<uint8_t> &instanceDataBuffer) {
+void Glyph::computeInstanceData(InstanceData &data, std::vector<float> &instanceDataBuffer) {
     if (this->text->needsRebuild()) {
         this->text->rebuild(); // Ensure text is rebuilt before computing instance data
     }
@@ -54,9 +54,9 @@ void Glyph::computeInstanceData(InstanceData &data, std::vector<uint8_t> &instan
     data.uvRect = this->text->getFont()->getGlyphUVRect(character);
     data.type = RENDERER_MODE_2D_TEXT;
 
-    glm::vec3 col = this->getColor();
-    data.dataOffset = instanceDataBuffer.size() / sizeof(uint8_t); // Offset into the instance data buffer
-    instanceDataBuffer.insert(instanceDataBuffer.end(), reinterpret_cast<uint8_t*>(&col), reinterpret_cast<uint8_t*>(&col) + sizeof(col));
+    glm::vec3 color = this->getColor();
+    data.dataOffset = instanceDataBuffer.size(); // Offset into the instance data buffer
+    instanceDataBuffer.insert(instanceDataBuffer.end(), reinterpret_cast<float*>(&color), reinterpret_cast<float*>(&color) + sizeof(color) / sizeof(float));
 }
 
 void Glyph::bind() const {
@@ -77,7 +77,7 @@ Text::~Text() {
 }
 
 
-void Text::addToRenderer(Renderer &_renderer) {
+void Text::addToRenderer(Singletons::Renderer &_renderer) {
     // Add to renderer's batch
     _renderer.addGraphic(this);
     this->rebuild(); // Ensure text is rebuilt before adding to renderer
@@ -183,7 +183,7 @@ void Text::bind() const {
 
 void Text::setZIndex(float z) {
     this->zIndex = z;
-    this->rendererKey = std::make_tuple(z, this->isOpaque(), this->getID());
+    //this->rendererKey = std::make_tuple(z, this->isOpaque(), this->getID());
     this->renderer->changeGraphicPosition(this);
     for (auto& glyph : glyphs) {
         glyph->setZIndex(z);
@@ -298,7 +298,7 @@ glm::vec2 Text::measureTextSize() const {
 }
 
 float Text::measureLineWidth(const std::string& text) const {
-    float width = 0.0f;
+    float width = -font->getGlyphXAdvance(reinterpret_cast<const unsigned char*>(&content[0])) * 0.25f;
     float lastSpaceWidth = 0.0f; // Width of the last space character
     size_t i = 0;
     for (; text[i] != '\0';) {
@@ -326,4 +326,6 @@ float Text::measureLineWidth(const std::string& text) const {
         i += utf8_char_length(reinterpret_cast<const unsigned char*>(&text[i]));
     }
     return width;
+}
+
 }

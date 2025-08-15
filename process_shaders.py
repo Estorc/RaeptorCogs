@@ -79,7 +79,7 @@ def main():
         for shader_path in shader_files:
             var_name = shader_path.name.replace('.', '_')
             processed = preprocess_shader(shader_path, system_include_dirs=system_include_dirs)
-            out_file.write(f'static const char* __shader__{var_name} = R"(\n{processed})";\n\n')
+            out_file.write(f'static const char* __shader__{var_name} = R"({processed})";\n\n')
 
 if __name__ == "__main__":
     main()

@@ -1,10 +1,11 @@
 #pragma once
+#include <RaeptorCogs/IO/FileIO.hpp>
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <array>
 #include <memory>
 #include <string>
-
+namespace RaeptorCogs {
 class GlyphData {
     private:
         float u0, v0, u1, v1; // texture coordinates
@@ -32,7 +33,8 @@ class Font {
         float font_size;
         bool is_dynamic;          // true = loaded from TTF
     public:
-        Font(const char *fontPath, int fontSize);
+        Font(const FileData& ttf_buffer, int fontSize);
+        Font(const char* fontPath, int fontSize);
         Font() {};
         ~Font();
 
@@ -46,7 +48,7 @@ class Font {
         Font(const Font&) = delete;
         Font& operator=(const Font&) = delete;
 
-        void uploadTexture(unsigned char* data, int width, int height, unsigned char* ttf_buffer);
+        void uploadTexture(unsigned char* data, int width, int height, const unsigned char* ttf_buffer);
         void bind() const;
 
         GLuint getID() const;
@@ -57,3 +59,5 @@ class Font {
         float getGlyphXAdvance(const unsigned char *character) const;
         float getFontSize() const;
 };
+
+}
