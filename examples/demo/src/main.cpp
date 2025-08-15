@@ -36,6 +36,10 @@ void update() {
 int main() {
     RaeptorCogs::Initialize();
     main_window = RaeptorCogs::Renderer().initialize(WINDOW_WIDTH, WINDOW_HEIGHT, "RaeptorCogs Demo");
+    main_window->setIcon({"assets/icons/raeptor-cogs-icon-16.png",
+                          "assets/icons/raeptor-cogs-icon-32.png",
+                          "assets/icons/raeptor-cogs-icon-48.png",
+                          "assets/icons/raeptor-cogs-icon-128.png"});
     init();
     RaeptorCogs::StartLoop(update, main_window);
     RaeptorCogs::Destroy();

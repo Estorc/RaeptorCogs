@@ -37,10 +37,10 @@ class Renderer {
         #endif
         std::vector<float> instanceDataBuffer; // Buffer to hold instance data
     public:
-        Window* initialize(int width, int height, const char* title);
+        Window* initialize(int width = 0, int height = 0, const char* title = nullptr);
         ~Renderer();
 
-        Window* initGraphics(int width, int height, const char* title);
+        Window* initGraphics(int width = 0, int height = 0, const char* title = nullptr);
         void buildBuffers();
         void buildShader();
         void buildVAO(Window* window);

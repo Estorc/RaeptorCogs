@@ -328,7 +328,7 @@ if(RAEPTORLAB_BUILD_EXAMPLES)
     FetchContent_MakeAvailable(json)
 
 
-    add_executable(RaeptorLabDemo examples/demo/src/main.cpp)
+    add_executable(RaeptorLabDemo ${CMAKE_SOURCE_DIR}/examples/demo/src/main.cpp ${CMAKE_SOURCE_DIR}/examples/demo/assets/icons/resources.rc)
 
     file(GLOB_RECURSE SRC_FILES
         "${CMAKE_SOURCE_DIR}/examples/demo/src/*.cpp"

@@ -25,6 +25,7 @@ class Window {
 
         void setTitle(const std::string& newTitle);
         void setSize(int width, int height);
+        void setIcon(const std::vector<std::string>& iconPaths);
 };
 
 }
