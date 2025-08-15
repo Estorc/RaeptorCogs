@@ -1,3 +1,7 @@
+<p align="center">
+    <img src="raeptor-cogs-logo.png" style="width: 60%" /><br/><br/>Simple cross-platform graphic library for C++ using OpenGL.<br/><br/>
+</p>
+
 # RaeptorCogs
 
 **RaeptorCogs** is a cross-platform C++ graphics library using OpenGL and WebGL.  
@@ -95,4 +99,4 @@ int main() {
 ### License
 
 RaeptorCogs is licensed under the MIT License.
-See the LICENSE file for details.
+See the [**LICENSE**](https://github.com/Estorc/RaeptorCogs/blob/main/LICENSE.txt) file for details.
