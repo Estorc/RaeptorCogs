@@ -63,9 +63,9 @@ void createMenu(glm::vec2 windowSize) {
                 
                 if (ImGui::Button("Open Texture")) {
                     RaeptorCogs::OpenFileDialog([sprite](const RaeptorCogs::FileData& data, const std::string& name) {
-                        RaeptorCogs::Texture *texture = RaeptorCogs::ResourceManager<RaeptorCogs::Texture>().get_or_create(name, [&] {
+                        RaeptorCogs::Texture *texture = RaeptorCogs::ResourceManager<RaeptorCogs::Texture>().get_or_create([&] {
                             return RaeptorCogs::Texture(RaeptorCogs::LoadImageFromMemory(data));
-                        });
+                        }, name);
                         sprite->setTexture(*texture);
                     }, RaeptorCogs::FileDialogFilters{ { "Image Files", "png,jpg,jpeg" } });
                 }
@@ -136,9 +136,9 @@ void createMenu(glm::vec2 windowSize) {
 
                 if (ImGui::Button("Open Font")) {
                     RaeptorCogs::OpenFileDialog([text](const RaeptorCogs::FileData& data, const std::string& name) {
-                        RaeptorCogs::Font *font = RaeptorCogs::ResourceManager<RaeptorCogs::Font>().get_or_create(name, [&] {
+                        RaeptorCogs::Font *font = RaeptorCogs::ResourceManager<RaeptorCogs::Font>().get_or_create([&] {
                             return RaeptorCogs::Font(data, fontSize);
-                        });
+                        }, name, fontSize);
                         text->setFont(*font);
                     }, RaeptorCogs::FileDialogFilters{ { "Font Files", "ttf" } });
                 }
