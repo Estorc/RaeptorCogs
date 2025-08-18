@@ -63,11 +63,9 @@ void createMenu(glm::vec2 windowSize) {
                 
                 if (ImGui::Button("Open Texture")) {
                     RaeptorCogs::OpenFileDialog([sprite](const RaeptorCogs::FileData& data, const std::string& name) {
-                        RaeptorCogs::Texture *texture = RaeptorCogs::RessourceManager<RaeptorCogs::Texture>().get(name);
-                        if (!texture) {
-                            texture = RaeptorCogs::RessourceManager<RaeptorCogs::Texture>().create(name);
-                            *texture = RaeptorCogs::Texture(RaeptorCogs::LoadImageFromMemory(data));
-                        }
+                        RaeptorCogs::Texture *texture = RaeptorCogs::ResourceManager<RaeptorCogs::Texture>().get_or_create(name, [&] {
+                            return RaeptorCogs::Texture(RaeptorCogs::LoadImageFromMemory(data));
+                        });
                         sprite->setTexture(*texture);
                     }, RaeptorCogs::FileDialogFilters{ { "Image Files", "png,jpg,jpeg" } });
                 }
@@ -138,11 +136,9 @@ void createMenu(glm::vec2 windowSize) {
 
                 if (ImGui::Button("Open Font")) {
                     RaeptorCogs::OpenFileDialog([text](const RaeptorCogs::FileData& data, const std::string& name) {
-                        RaeptorCogs::Font *font = RaeptorCogs::RessourceManager<RaeptorCogs::Font>().get(name);
-                        if (!font) {
-                            font = RaeptorCogs::RessourceManager<RaeptorCogs::Font>().create(name);
-                            *font = RaeptorCogs::Font(data, fontSize);
-                        }
+                        RaeptorCogs::Font *font = RaeptorCogs::ResourceManager<RaeptorCogs::Font>().get_or_create(name, [&] {
+                            return RaeptorCogs::Font(data, fontSize);
+                        });
                         text->setFont(*font);
                     }, RaeptorCogs::FileDialogFilters{ { "Font Files", "ttf" } });
                 }

@@ -13,8 +13,8 @@ namespace RaeptorCogs {
     Singletons::Renderer& Renderer();
     Singletons::TextureAtlasManager& TextureAtlasManager();
     template<typename T>
-    Singletons::RessourceManager<T>& RessourceManager() {
-        static Singletons::RessourceManager<T> instance;
+    Singletons::ResourceManager<T>& ResourceManager() {
+        static Singletons::ResourceManager<T> instance;
         return instance;
     }
 
