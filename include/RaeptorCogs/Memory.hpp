@@ -22,9 +22,8 @@ auto call_factory(F&& f, Args&&... args)
 }
 
 template <typename... Args>
-std::string getKey(const std::string& key, Args&&... args) {
+std::string getKey(Args&&... args) {
     std::ostringstream oss;
-    oss << key;
     ((oss << ":" << args), ...); // fold expression for all args
     return oss.str();
 }
@@ -35,43 +34,43 @@ class ResourceManager {
         std::unordered_map<std::string, T> resources;
     public:
         template <typename... Args>
-        T *get(const std::string& key, Args&&... args) {
-            auto it = resources.find(getKey(key, std::forward<Args>(args)...));
+        T *get(Args&&... args) {
+            auto it = resources.find(getKey(std::forward<Args>(args)...));
             if (it != resources.end()) {
                 return &it->second;
             }
             return nullptr; // or throw an exception
         }
         template <typename... Args, typename F = std::function<T(Args&&...)>>
-        T *create(F&& factory, const std::string& key, Args&&... args) {
-            std::string compositeKey = getKey(key, std::forward<Args>(args)...);
+        T *create(F&& factory, Args&&... args) {
+            std::string compositeKey = getKey(std::forward<Args>(args)...);
             if constexpr (std::is_same_v<std::decay_t<F>, std::nullptr_t>) {
                 // Default behavior → forward args to T constructor
                 auto [insertedIt, success] = resources.emplace(
                     compositeKey,
-                    T(key, std::forward<Args>(args)...)
+                    T(std::forward<Args>(args)...)
                 );
                 return &insertedIt->second;
             } else {
                 // Custom factory provided
                 auto [insertedIt, success] = resources.emplace(
                     compositeKey,
-                    call_factory(factory, key, std::forward<Args>(args)...)
+                    call_factory(factory, std::forward<Args>(args)...)
                 );
                 return &insertedIt->second;
             }
         }
         template <typename... Args, typename F = std::function<T(Args&&...)>>
-        T* get_or_create(F&& factory, const std::string& key, Args&&... args) {
-            auto* resource = get(key, std::forward<Args>(args)...);
+        T* get_or_create(F&& factory, Args&&... args) {
+            auto* resource = get(std::forward<Args>(args)...);
             if (!resource) {
-                resource = create(std::forward<F>(factory), key, std::forward<Args>(args)...);
+                resource = create(std::forward<F>(factory), std::forward<Args>(args)...);
             }
             return resource;
         }
-        
+
         void clear() {
             resources.clear(); // Clear all loaded resources
         }
 };
-}
+};
