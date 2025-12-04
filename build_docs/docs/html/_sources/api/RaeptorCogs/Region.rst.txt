@@ -1,0 +1,49 @@
+Region
+======
+
+.. doxygenfile:: RaeptorCogs/Region.hpp
+   :project: RaeptorCogs
+   :no-link:
+   :sections: briefdescription detaileddescription
+
+Types
+-----
+
+.. list-table:: Type Definitions
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Type
+     - Description
+   * - ``RaeptorCogs::Region``
+     - Region type representing an interval [begin, end).
+.. doxygentypedef:: RaeptorCogs::Region
+   :project: RaeptorCogs
+
+Classes
+-------
+
+.. list-table:: Classes
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Class
+     - Description
+   * - ``RaeptorCogs::RegionAllocator``
+     - RegionAllocator class.
+   * - ``RaeptorCogs::RegionBuffer``
+     - RegionBuffer class.
+.. doxygenclass:: RaeptorCogs::RegionAllocator
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+
+.. doxygenclass:: RaeptorCogs::RegionBuffer
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+

@@ -1,0 +1,543 @@
+# docs/sphinx/conf.py
+import os
+import sys
+import xml.etree.ElementTree as ET
+from docutils import nodes
+from sphinx.addnodes import pending_xref
+
+
+namespaces = set()
+def find_doxygen_xml_for_file(doxygen_xml_dir, source_rel_path):
+    """
+    Find the Doxygen XML file corresponding to a C++ header (.hpp)
+    using the full relative path inside <location>.
+    """
+    index_path = os.path.join(doxygen_xml_dir, "index.xml")
+    tree = ET.parse(index_path)
+    root = tree.getroot()
+
+    # 1. Iterate over <compound kind="file"> entries
+    for compound in root.findall("compound"):
+        if compound.attrib.get("kind") != "file":
+            continue
+
+        refid = compound.attrib["refid"]
+        xml_file = os.path.join(doxygen_xml_dir, refid + ".xml")
+
+        # 2. Parse each file XML to inspect <location>
+        if not os.path.exists(xml_file):
+            continue
+
+        file_tree = ET.parse(xml_file)
+        file_root = file_tree.getroot()
+
+        # Find <location file="...">
+        for location in file_root.iter("location"):
+            # Normalize slashes
+            loc_file = location.attrib.get("file", "").replace("\\", "/")
+            src_file = source_rel_path.replace("\\", "/")
+
+            if loc_file.endswith(src_file):
+                return xml_file
+
+    return None
+
+import xml.etree.ElementTree as ET
+
+
+def parse_doxygen_file_with_strict_origin(xml_dir, file_xml):
+    """
+    Parse Doxygen XML for a single file.
+    Includes namespace members ONLY if they originate from this file
+    (using <location file="..."> filtering).
+    """
+
+    def load_compound(path):
+        tree = ET.parse(path)
+        return tree.getroot().find("compounddef")
+
+    # Load file
+    file_compound = load_compound(file_xml)
+
+    # Normalize the file path Doxygen uses for comparison
+    file_path_real = os.path.normpath(
+        file_compound.find("location").attrib["file"]
+    )
+    file_basename = os.path.basename(file_path_real)
+
+    result = {
+        "classes": [],
+        "structs": [],
+        "namespaces": [],
+        "functions": [],
+        "typedefs": [],
+        "enums": [],
+        "variables": []
+    }
+
+    # ----------------------------------------------
+    # Helper: check if a <memberdef> comes from this file
+    # ----------------------------------------------
+    def member_belongs_to_file(member):
+        loc = member.find("location")
+        if loc is None:
+            return False
+
+        src = os.path.normpath(loc.attrib.get("file", ""))
+
+        a_name = src.replace("\\", "/")
+        b_name = file_path_real.replace("\\", "/")
+        a_name = os.path.splitext(a_name.split("RaeptorCogs/")[-1])[0]
+        b_name = os.path.splitext(b_name.split("RaeptorCogs/")[-1])[0]
+
+        if (a_name.startswith("src/") is True):
+            a_name = a_name[4:]
+        if (b_name.startswith("src/") is True):
+            b_name = b_name[4:]
+
+        return a_name == b_name
+
+    # ----------------------------------------------
+    # Extract members (with filtering)
+    # ----------------------------------------------
+    def extract_members(compound, result):
+        for section in compound.findall("sectiondef"):
+            for member in section.findall("memberdef"):
+                # Only accept items declared directly in THIS file
+                if not member_belongs_to_file(member):
+                    continue
+
+                kind = member.attrib.get("kind", "")
+                name = (
+                    member.findtext("qualifiedname")
+                    or member.findtext("name")
+                )
+
+                if member.findtext("argsstring") is not None:
+                    name += member.findtext("argsstring")
+
+                brief = "".join(member.find("briefdescription").itertext()).strip()
+                detailed = "".join(member.find("detaileddescription").itertext()).strip()
+
+                if kind == "function":
+                    result["functions"].append({
+                        "name": name,
+                        "brief": brief,
+                        "detailed": detailed
+                    })
+
+                elif kind == "typedef":
+                    result["typedefs"].append({
+                        "name": name,
+                        "brief": brief,
+                        "detailed": detailed
+                    })
+
+                elif kind == "enum":
+                    values = [e.findtext("name", "") for e in member.findall("enumvalue")]
+                    result["enums"].append({
+                        "name": name,
+                        "values": values,
+                        "brief": brief,
+                        "detailed": detailed
+                    })
+
+                elif kind == "variable":
+                    result["variables"].append({
+                        "name": name,
+                        "brief": brief,
+                        "detailed": detailed
+                    })
+
+    # Extract items in the file itself
+    extract_members(file_compound, result)
+
+    # ----------------------------------------------
+    # Extract namespaces — but apply filtering
+    # ----------------------------------------------
+    class_compounds = set()
+    struct_compounds = set()
+    if file_compound.find("programlisting") is not None:
+        for codeline in file_compound.find("programlisting").findall("codeline"):
+            for highlight in codeline.findall("highlight"):
+                for ref in highlight.findall("ref"):
+                    refid = ref.attrib.get("refid")
+                    if (refid.startswith("class") is True):
+                        raw_path = os.path.join(xml_dir, refid + ".xml")
+                        formatted_path = os.path.join(xml_dir, refid.rsplit("_", 1)[0] + ".xml")
+
+                        class_compound = None
+                        if os.path.exists(raw_path):
+                            class_compounds.add(raw_path)
+                        elif os.path.exists(formatted_path):
+                            class_compounds.add(formatted_path)
+                    if (refid.startswith("struct") is True):
+                        raw_path = os.path.join(xml_dir, refid + ".xml")
+                        formatted_path = os.path.join(xml_dir, refid.rsplit("_", 1)[0] + ".xml")
+
+                        struct_compound = None
+                        if os.path.exists(raw_path):
+                            struct_compounds.add(raw_path)
+                        elif os.path.exists(formatted_path):
+                            struct_compounds.add(formatted_path)
+    for class_compound_path in class_compounds:
+        class_compound = load_compound(class_compound_path)
+        if member_belongs_to_file(class_compound) is True:
+            result["classes"].append({
+                "name": class_compound.findtext("compoundname"),
+                "brief": "".join(class_compound.find("briefdescription").itertext()).strip(),
+            })
+    for struct_compound_path in struct_compounds:
+        struct_compound = load_compound(struct_compound_path)
+        if member_belongs_to_file(struct_compound) is True:
+            result["structs"].append({
+                "name": struct_compound.findtext("compoundname"),
+                "brief": "".join(struct_compound.find("briefdescription").itertext()).strip(),
+            })
+    for inner_ns in file_compound.findall("innernamespace"):
+        ns_refid = inner_ns.attrib.get("refid")
+        ns_xml = os.path.join(xml_dir, ns_refid + ".xml")
+
+        if not os.path.exists(ns_xml):
+            continue
+
+        ns_compound = load_compound(ns_xml)
+        ns_name = ns_compound.findtext("compoundname")
+
+        result["namespaces"].append(ns_name)
+        namespaces.add(ns_name)
+
+        extract_members(ns_compound, result)
+
+    return result
+
+
+def write_rst_table(f, title, headers, rows, widths=None):
+
+    f.write(f".. list-table:: {title}\n")
+    f.write("   :header-rows: 1\n")
+    if widths is not None:
+        f.write("   :widths: " + " ".join([str(w) for w in widths]) + "\n")
+    else:
+        f.write("   :widths: " + " ".join(["20"] * len(headers)) + "\n")
+    f.write("\n")
+
+    # Write headers
+    f.write("   * - " + "\n     - ".join(headers) + "\n")
+
+    # Write rows
+    for row in rows:
+        f.write("   * - " + "\n     - ".join(row) + "\n")
+
+def write_doxygen_rst_table(f, title, headers, datas):
+
+    rows = []
+    for item in datas:
+        name = f"``{item['name']}``"
+        brief = item['brief'] if item['brief'] else "No description."
+        brief = brief.replace("\n", " ").replace("|", "\\|")
+        rows.append([name, brief])
+    write_rst_table(
+        f,
+        title,
+        headers,
+        rows,
+        widths=[20, 80]
+    )
+
+
+# make sure Sphinx can find any extension and project docs
+print("Configuring Sphinx...")
+
+src_files = list(filter(lambda x: x.endswith(".hpp"), "@LIB_SOURCES@".split(";")))
+api_path = []
+root_dirs = set()
+root_files = set()
+
+DOXYGEN_XML_DIR = "@DOXYGEN_XML_DIR@"
+SPHINX_SOURCE = "@SPHINX_SOURCE@"
+
+for src_file in src_files:
+    relpath = os.path.dirname(os.path.normpath(os.path.join("RaeptorCogs", src_file.split("RaeptorCogs")[-1][1:])))
+    relapipath = os.path.normpath(os.path.join("api", relpath))
+
+
+    basefilename = os.path.splitext(os.path.basename(src_file))[0]
+    dirs_api = os.path.dirname(os.path.normpath(src_file.split("RaeptorCogs")[-1][1:])).replace("\\", "/").split("/")
+
+    baseext = os.path.splitext(os.path.basename(src_file))[1]
+    dirpath = os.path.normpath(os.path.join(SPHINX_SOURCE, relapipath))
+    basefilepath = os.path.join(relapipath, basefilename)
+    api_path.append(basefilepath.replace("\\", "/"))
+    filepath = f"{os.path.join(SPHINX_SOURCE, relapipath, basefilename)}.rst"
+    
+    doxygen_xml_file = find_doxygen_xml_for_file(DOXYGEN_XML_DIR, src_file)
+    parsed_data = None
+    if doxygen_xml_file is not None:
+        parsed_data = parse_doxygen_file_with_strict_origin(DOXYGEN_XML_DIR, doxygen_xml_file)
+
+    os.makedirs(dirpath, exist_ok=True)
+
+    # Filter out empty dirs
+
+    dirs_api = [d for d in dirs_api if d != ""]
+
+    for i in range(len(dirs_api)):
+        if i > 0:
+            dirs_api[i] = dirs_api[i-1] + "/" + dirs_api[i]
+
+    for d in dirs_api:
+        d = "RaeptorCogs" + "/" + d
+        with open(os.path.join(SPHINX_SOURCE, "api", d, "index.rst"), "w") as f:
+            f.write(f"{d.split('/')[-1]}\n")
+            f.write("=" * len(f"{d.split('/')[-1]}") + "\n\n")
+            f.write(".. toctree::\n")
+            f.write("   :maxdepth: 2\n")
+            f.write("   :caption: Contents:\n\n")
+
+            subdirs = set()
+            for sf in src_files:
+                sf_relpath = os.path.dirname(os.path.normpath(os.path.join("RaeptorCogs", sf.split("RaeptorCogs")[-1][1:])))
+                sf_relpath = sf_relpath.replace("\\", "/")
+                if sf_relpath.startswith(d) and sf_relpath != d:
+                    # Get sf_relpath - d
+                    relative_subdir = sf_relpath[len(d)+1:]
+                    subdir = relative_subdir.split("/")[0]
+                    subdirs.add(subdir)
+            for subdir in sorted(subdirs):
+                f.write(f"   {subdir}/index\n")
+
+            for sf in src_files:
+                sf_relpath = os.path.dirname(os.path.normpath(os.path.join("RaeptorCogs", sf.split("RaeptorCogs")[-1][1:])))
+                sf_relpath = sf_relpath.replace("\\", "/")
+                if sf_relpath == d:
+                    sf_basefilename = os.path.splitext(os.path.basename(sf))[0]
+                    f.write(f"   {sf_basefilename}\n")
+
+    if len(dirs_api) > 0:
+        root_dirs.add(os.path.join("RaeptorCogs", dirs_api[0], "index.rst").replace("\\", "/"))
+    else:
+        root_files.add(os.path.join("RaeptorCogs", basefilename).replace("\\", "/"))
+
+    with open(filepath + ".temp", "w") as f:
+        f.write(f"{basefilename}\n")
+        f.write("=" * len(f"{basefilename}") + "\n\n")
+
+        f.write(f".. doxygenfile:: {os.path.join(relpath, basefilename).replace('\\', '/')}.hpp\n")
+        f.write("   :project: @PROJECT_NAME@\n")
+        f.write("   :no-link:\n")
+        f.write("   :sections: briefdescription detaileddescription\n")
+        f.write("\n")
+
+        if parsed_data is not None:
+            if parsed_data["typedefs"]:
+                typedefs = sorted(parsed_data["typedefs"], key=lambda x: x["name"])
+                f.write("Types\n")
+                f.write("-----\n\n")
+
+                write_doxygen_rst_table(f, "Type Definitions", ["Type", "Description"], typedefs)
+                for typedef in typedefs:
+                    f.write(f".. doxygentypedef:: {typedef['name']}\n")
+                    f.write("   :project: @PROJECT_NAME@\n\n")
+            if parsed_data["enums"]:
+                enums = sorted(parsed_data["enums"], key=lambda x: x["name"])
+                f.write("Enums\n")
+                f.write("-----\n\n")
+
+                write_doxygen_rst_table(f, "Enumerations", ["Enum", "Description"], enums)
+                for enum in enums:
+                    f.write(f".. doxygenenum:: {enum['name']}\n")
+                    f.write("   :project: @PROJECT_NAME@\n\n")
+            if parsed_data["structs"]:
+                structs = sorted(parsed_data["structs"], key=lambda x: x["name"])
+                f.write("Structs\n")
+                f.write("-------\n\n")
+
+                write_doxygen_rst_table(f, "Structures", ["Struct", "Description"], structs)
+
+                for struct in structs:
+                    f.write(f".. doxygenstruct:: {struct['name']}\n")
+                    f.write("   :project: @PROJECT_NAME@\n")
+                    f.write("   :members:\n")
+                    f.write("   :protected-members:\n")
+                    f.write("   :private-members:\n")
+                    f.write("   :undoc-members:\n\n")
+            if parsed_data["classes"]:
+                classes = sorted(parsed_data["classes"], key=lambda x: x["name"])
+                f.write("Classes\n")
+                f.write("-------\n\n")
+
+                write_doxygen_rst_table(f, "Classes", ["Class", "Description"], classes)
+                for cls in classes:
+                    f.write(f".. doxygenclass:: {cls['name']}\n")
+                    f.write("   :project: @PROJECT_NAME@\n")
+                    f.write("   :members:\n")
+                    f.write("   :protected-members:\n")
+                    f.write("   :private-members:\n")
+                    f.write("   :undoc-members:\n\n")
+            if parsed_data["functions"]:
+                functions = sorted(parsed_data["functions"], key=lambda x: x["name"])
+                f.write("Functions\n")
+                f.write("---------\n\n")
+
+                write_doxygen_rst_table(f, "Functions", ["Function", "Description"], functions)
+
+                for func in functions:
+                    f.write(f".. doxygenfunction:: {func['name']}\n")
+                    f.write("   :project: @PROJECT_NAME@\n\n")
+            if parsed_data["variables"]:
+                variables = sorted(parsed_data["variables"], key=lambda x: x["name"])
+                f.write("Variables\n")
+                f.write("---------\n\n")
+                for var in variables:
+                    f.write(f".. doxygenvariable:: {var['name']}\n")
+                    f.write("   :project: @PROJECT_NAME@\n\n")
+    if os.path.exists(filepath):
+        #compare files
+        with open(filepath, "r", encoding="utf-8") as f_old:
+            old_content = f_old.read()
+        with open(filepath + ".temp", "r", encoding="utf-8") as f_new:
+            new_content = f_new.read()
+        if old_content != new_content:
+            print(f"[doxygen] updating file: {filepath}")
+            os.replace(filepath + ".temp", filepath)
+        else:
+            os.remove(filepath + ".temp")
+    else:
+        print(f"[doxygen] creating file: {filepath}")
+        os.replace(filepath + ".temp", filepath)
+
+for ns in sorted(namespaces):
+    print(f"[doxygen] found namespace: {ns}")
+    os.makedirs(os.path.join(SPHINX_SOURCE, "api", "namespaces"), exist_ok=True)
+    namespace_filepath = os.path.join(SPHINX_SOURCE, "api", "namespaces", f"{ns.replace('::', '_')}.rst")
+    with open(namespace_filepath + ".temp", "w") as f:
+        f.write(f"Namespace {ns}\n")
+        f.write("=" * len(f"Namespace {ns}\n") + "\n\n")
+        f.write(f".. doxygennamespace:: {ns}\n")
+        f.write("   :project: @PROJECT_NAME@\n")
+        f.write("   :desc-only:\n")
+    if os.path.exists(namespace_filepath):
+        #compare files
+        with open(namespace_filepath, "r", encoding="utf-8") as f_old:
+            old_content = f_old.read()
+        with open(namespace_filepath + ".temp", "r", encoding="utf-8") as f_new:
+            new_content = f_new.read()
+        if old_content != new_content:
+            os.replace(namespace_filepath + ".temp", namespace_filepath)
+        else:
+            os.remove(namespace_filepath + ".temp")
+    else:
+        os.replace(namespace_filepath + ".temp", namespace_filepath)
+
+
+# Get all files of api folder
+api_files = set()
+for root, dirs, files in os.walk(os.path.join(SPHINX_SOURCE, "api")):
+    for file in files:
+        if file.endswith(".rst"):
+            full_path = os.path.join(root, file)
+            rel_path = os.path.relpath(full_path, SPHINX_SOURCE)
+            api_files.add(rel_path.replace("\\", "/"))
+
+
+for api_file in api_files:
+    with open(os.path.join(SPHINX_SOURCE, api_file), "r", encoding="utf-8") as f:
+        content = f.read()
+
+    is_modified = False
+    # Check for placeholders and replace them
+    if "$$_API_FILES_$$" in content:
+        replacement = "\n   ".join([f"{path}" for path in sorted(root_dirs)]) + "\n   " + "\n   ".join([f"{path}" for path in sorted(root_files)]) + "\n   "
+        content = content.replace("$$_API_FILES_$$", replacement)
+        is_modified = True
+
+    if "$$_API_NAMESPACES_$$" in content:
+        replacement = ""
+        for ns in sorted(namespaces):
+            replacement += f"{"namespaces/" + ns.replace('::', '_')}\n   "
+        content = content.replace("$$_API_NAMESPACES_$$", replacement)
+        is_modified = True
+    if is_modified:
+        with open(os.path.join(SPHINX_SOURCE, api_file), "w", encoding="utf-8") as f:
+            f.write(content)
+
+sys.path.insert(0, os.path.abspath('../'))
+    
+
+
+# -- Project information -----------------------------------------------------
+project = "@PROJECT_NAME@"
+author = "@AUTHOR@"
+copyright = "@YEAR@ @AUTHOR@ — @PROJECT_NAME@"
+
+# -- General configuration ---------------------------------------------------
+extensions = [
+    'breathe',
+    'sphinx.ext.graphviz',
+    'sphinx_copybutton',
+]
+
+breathe_default_options = {
+    "namespace-members": False,
+    "show-namespace-members": False,
+}
+
+# Path where doxygen XML will be (CMake will populate this or we assume build/docs/doxygen/xml)
+breathe_projects = {
+    "@PROJECT_NAME@": "@DOXYGEN_XML_DIR@"
+}
+breathe_default_project = "@PROJECT_NAME@"
+
+templates_path = ['_templates']
+exclude_patterns = []
+
+
+# -- Options for HTML output -------------------------------------------------
+html_theme = 'furo'  # or 'alabaster'
+html_static_path = ['_static']
+html_css_files = [
+    "custom.css",
+]
+html_js_files = [
+
+]
+html_logo = "_static/raeptor-cogs-logo.png"
+html_favicon = "_static/favicon.ico"
+html_theme_options = {
+
+}
+
+from pygments.lexers.c_cpp import CppLexer
+from pygments.token import Name, Keyword
+from sphinx.highlighting import lexers
+
+class CustomCppLexer(CppLexer):
+    tokens = {
+        'statements': [
+            # Match names before ::
+            (r'[A-Z][A-Za-z0-9_]+(?=::)', Name.Namespace),
+
+            # Match names before (
+            (r'[A-Z][A-Za-z0-9_]+(?=\s*\()', Name.Function),
+        ] + CppLexer.tokens['statements']
+    }
+
+lexers['cpp'] = CustomCppLexer()
+lexers['c++'] = CustomCppLexer()
+lexers['c'] = CustomCppLexer()
+
+copybutton_prompt_text = r">>> |\$ "
+copybutton_prompt_is_regexp = True
+
+suppress_warnings = [
+    "cpp.duplicate_declaration",
+    "duplicate_declaration.cpp",
+    "breathe.duplicate_item",
+]
+
+
+extensions.append("cppreference_resolver")
+extensions.append("glmreference_resolver")
+#extensions.append("log_unresolved_references")
+sys.path.append(os.path.abspath("./_ext"))

@@ -1,0 +1,26 @@
+GraphicCore
+===========
+
+.. doxygenfile:: RaeptorCogs/GAPI/Common/Core/Internal/GraphicCore.hpp
+   :project: RaeptorCogs
+   :no-link:
+   :sections: briefdescription detaileddescription
+
+Classes
+-------
+
+.. list-table:: Classes
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Class
+     - Description
+   * - ``RaeptorCogs::GAPI::Common::GraphicCore``
+     - Graphic core interface.
+.. doxygenclass:: RaeptorCogs::GAPI::Common::GraphicCore
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+

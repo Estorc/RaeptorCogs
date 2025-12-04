@@ -1,10 +1,10 @@
-uniform sampler2D IDataTex;
+uniform sampler2D uIDataTexSampler;
 
 float unpackFloat(int indexBytes)
 {
     int texX = (indexBytes/4) % IDATATEX_WIDTH;   // compute texel coordinates
     int texY = (indexBytes/4) / IDATATEX_WIDTH;
-    vec4 texel = texelFetch(IDataTex, ivec2(texX, texY), 0);
+    vec4 texel = texelFetch(uIDataTexSampler, ivec2(texX, texY), 0);
     switch (indexBytes % 4) {
         case 0: return texel.r; // each texel.r is a float
         case 1: return texel.g; // each texel.g is a float

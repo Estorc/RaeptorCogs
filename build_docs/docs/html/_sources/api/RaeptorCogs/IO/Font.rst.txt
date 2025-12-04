@@ -1,0 +1,128 @@
+Font
+====
+
+.. doxygenfile:: RaeptorCogs/IO/Font.hpp
+   :project: RaeptorCogs
+   :no-link:
+   :sections: briefdescription detaileddescription
+
+Enums
+-----
+
+.. list-table:: Enumerations
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Enum
+     - Description
+   * - ``RaeptorCogs::FontType``
+     - Enumeration of font types.
+.. doxygenenum:: RaeptorCogs::FontType
+   :project: RaeptorCogs
+
+Structs
+-------
+
+.. list-table:: Structures
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Struct
+     - Description
+   * - ``RaeptorCogs::Font::OnLoadProxy``
+     - Proxy structure for onLoad callback.
+   * - ``RaeptorCogs::FontOptions``
+     - Font options structure.
+.. doxygenstruct:: RaeptorCogs::Font::OnLoadProxy
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+
+.. doxygenstruct:: RaeptorCogs::FontOptions
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+
+Classes
+-------
+
+.. list-table:: Classes
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Class
+     - Description
+   * - ``RaeptorCogs::Font``
+     - High-level Font handler class.
+   * - ``RaeptorCogs::FontBase``
+     - Base class for font handling.
+   * - ``RaeptorCogs::GlyphData``
+     - Glyph data structure.
+.. doxygenclass:: RaeptorCogs::Font
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+
+.. doxygenclass:: RaeptorCogs::FontBase
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+
+.. doxygenclass:: RaeptorCogs::GlyphData
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+
+Functions
+---------
+
+.. list-table:: Functions
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Function
+     - Description
+   * - ``std::operator<<(std::ostream &os, const RaeptorCogs::Font &font)``
+     - Stream output operator for Font.
+   * - ``std::operator<<(std::ostream &os, const RaeptorCogs::FontBase &font)``
+     - Stream output operator for FontBase.
+   * - ``std::operator<<(std::ostream &os, const RaeptorCogs::FontOptions &options)``
+     - Stream output operator for FontOptions.
+   * - ``std::operator<<(std::ostream &os, const RaeptorCogs::FontType &type)``
+     - Stream output operator for FontType.
+   * - ``std::operator<<(std::ostream &os, const RaeptorCogs::GlyphData &glyph)``
+     - Stream output operator for GlyphData.
+.. doxygenfunction:: std::operator<<(std::ostream &os, const RaeptorCogs::Font &font)
+   :project: RaeptorCogs
+
+.. doxygenfunction:: std::operator<<(std::ostream &os, const RaeptorCogs::FontBase &font)
+   :project: RaeptorCogs
+
+.. doxygenfunction:: std::operator<<(std::ostream &os, const RaeptorCogs::FontOptions &options)
+   :project: RaeptorCogs
+
+.. doxygenfunction:: std::operator<<(std::ostream &os, const RaeptorCogs::FontType &type)
+   :project: RaeptorCogs
+
+.. doxygenfunction:: std::operator<<(std::ostream &os, const RaeptorCogs::GlyphData &glyph)
+   :project: RaeptorCogs
+
+Variables
+---------
+
+.. doxygenvariable:: RaeptorCogs::FONT_PADDING
+   :project: RaeptorCogs
+
+.. doxygenvariable:: RaeptorCogs::NORMAL_FONT_SIZE
+   :project: RaeptorCogs
+

@@ -1,0 +1,40 @@
+Path
+====
+
+.. doxygenfile:: RaeptorCogs/IO/Path.hpp
+   :project: RaeptorCogs
+   :no-link:
+   :sections: briefdescription detaileddescription
+
+Structs
+-------
+
+.. list-table:: Structures
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Struct
+     - Description
+   * - ``RaeptorCogs::URLParts``
+     - URL parts structure.
+.. doxygenstruct:: RaeptorCogs::URLParts
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+
+Functions
+---------
+
+.. list-table:: Functions
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Function
+     - Description
+   * - ``RaeptorCogs::ParseURL(const std::string_view &url)``
+     - Parse a URL into its components.
+.. doxygenfunction:: RaeptorCogs::ParseURL(const std::string_view &url)
+   :project: RaeptorCogs
+

@@ -1,0 +1,1624 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html"><link rel="next" title="Images" href="Images.html"><link rel="prev" title="FileIO" href="FileIO.html">
+        <link rel="prefetch" href="../../../_static/raeptor-cogs-logo.png" as="image">
+
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"><!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+        <title>Font - RaeptorCogs documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=62d81270" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../index.html"><div class="brand">RaeptorCogs  documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../../../_static/raeptor-cogs-logo.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">RaeptorCogs  documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/introduction.html">Introduction</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../getting-started/introduction.html">Introduction</a><input aria-label="Toggle navigation of Introduction" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../getting-started/installation.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../getting-started/first-application.html">First application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../getting-started/and-now-what.html">And now what?</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/introduction.html">Introduction</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../../files.html">Files Reference</a><input aria-label="Toggle navigation of Files Reference" checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="../External/index.html">External</a><input aria-label="Toggle navigation of External" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../External/ImGui/index.html">ImGui</a><input aria-label="Toggle navigation of ImGui" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../External/ImGui/ImGui.html">ImGui</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../External/glad/index.html">glad</a><input aria-label="Toggle navigation of glad" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../External/glad/glad.html">glad</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../External/miniz/index.html">miniz</a><input aria-label="Toggle navigation of miniz" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../External/miniz/miniz.html">miniz</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../External/stb/index.html">stb</a><input aria-label="Toggle navigation of stb" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../External/stb/stb.html">stb</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../GAPI/index.html">GAPI</a><input aria-label="Toggle navigation of GAPI" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../GAPI/Common/index.html">Common</a><input aria-label="Toggle navigation of Common" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../GAPI/Common/Core/index.html">Core</a><input aria-label="Toggle navigation of Core" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../GAPI/Common/Core/Internal/index.html">Internal</a><input aria-label="Toggle navigation of Internal" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../GAPI/Common/Core/Internal/FrameData.html">FrameData</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../GAPI/Common/Core/Internal/GraphicCore.html">GraphicCore</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../GAPI/Common/Core/Internal/ImGuiModule.html">ImGuiModule</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../GAPI/Common/Core/Internal/RenderPipeline.html">RenderPipeline</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../GAPI/Common/Core/Internal/WindowContext.html">WindowContext</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../GAPI/Common/Core/GraphicHandler.html">GraphicHandler</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../GAPI/Common/Core/InstanceData.html">InstanceData</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../GAPI/Common/Core/RenderList.html">RenderList</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../GAPI/Common/Ressources/index.html">Ressources</a><input aria-label="Toggle navigation of Ressources" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../GAPI/Common/Ressources/Buffer.html">Buffer</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../GAPI/Common/Ressources/Object.html">Object</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../GAPI/Common/Ressources/Shader.html">Shader</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../GAPI/Common/Ressources/TextureData.html">TextureData</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../GAPI/Common/Ressources/VertexArray.html">VertexArray</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../GAPI/Common/RendererBackend.html">RendererBackend</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../GAPI/GL/index.html">GL</a><input aria-label="Toggle navigation of GL" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../GAPI/GL/Core/index.html">Core</a><input aria-label="Toggle navigation of Core" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../GAPI/GL/Core/Internal/index.html">Internal</a><input aria-label="Toggle navigation of Internal" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../GAPI/GL/Core/Internal/GraphicCore.html">GraphicCore</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../GAPI/GL/Core/Internal/ImGuiModule.html">ImGuiModule</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../GAPI/GL/Core/Internal/RenderPipeline.html">RenderPipeline</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../GAPI/GL/Core/Internal/WindowContext.html">WindowContext</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../GAPI/GL/Ressources/index.html">Ressources</a><input aria-label="Toggle navigation of Ressources" class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../GAPI/GL/Ressources/Buffer.html">Buffer</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../GAPI/GL/Ressources/Object.html">Object</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../GAPI/GL/Ressources/Shader.html">Shader</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../GAPI/GL/Ressources/TextureData.html">TextureData</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../GAPI/GL/Ressources/VertexArray.html">VertexArray</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../GAPI/GL/Constants.html">Constants</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GAPI/GL/RendererBackend.html">RendererBackend</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../GAPI/Vulkan/index.html">Vulkan</a><input aria-label="Toggle navigation of Vulkan" class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../GAPI/Vulkan/Core/index.html">Core</a><input aria-label="Toggle navigation of Core" class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../GAPI/Vulkan/Core/Internal/index.html">Internal</a><input aria-label="Toggle navigation of Internal" class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../GAPI/Vulkan/Core/Internal/GraphicCore.html">GraphicCore</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../GAPI/Vulkan/Core/Internal/ImGuiModule.html">ImGuiModule</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../GAPI/Vulkan/Core/Internal/RenderPipeline.html">RenderPipeline</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../GAPI/Vulkan/Core/Internal/WindowContext.html">WindowContext</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../GAPI/Vulkan/Core/Memory.html">Memory</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../GAPI/Vulkan/Core/Vulkan.html">Vulkan</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../GAPI/Vulkan/Ressources/index.html">Ressources</a><input aria-label="Toggle navigation of Ressources" class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" role="switch" type="checkbox"/><label for="toctree-checkbox-20"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../GAPI/Vulkan/Ressources/Buffer.html">Buffer</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../GAPI/Vulkan/Ressources/Object.html">Object</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../GAPI/Vulkan/Ressources/Shader.html">Shader</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../GAPI/Vulkan/Ressources/TextureData.html">TextureData</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../GAPI/Vulkan/Ressources/VertexArray.html">VertexArray</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../GAPI/Vulkan/RendererBackend.html">RendererBackend</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 current has-children"><a class="reference internal" href="index.html">IO</a><input aria-label="Toggle navigation of IO" checked="" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="FileIO.html">FileIO</a></li>
+<li class="toctree-l3 current current-page"><a class="current reference internal" href="#">Font</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Images.html">Images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Input.html">Input</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Path.html">Path</a></li>
+<li class="toctree-l3"><a class="reference internal" href="String.html">String</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Texture.html">Texture</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../BitArray.html">BitArray</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../BitOp.html">BitOp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Camera.html">Camera</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Component.html">Component</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Flags.html">Flags</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Graphic.html">Graphic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Measure.html">Measure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Memory.html">Memory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Node.html">Node</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Platform.html">Platform</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../RaeptorCogs.html">RaeptorCogs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Random.html">Random</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Region.html">Region</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Renderer.html">Renderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Serializable.html">Serializable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Shape.html">Shape</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Singleton.html">Singleton</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Sprite.html">Sprite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Text.html">Text</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Time.html">Time</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Vertex.html">Vertex</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Window.html">Window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Worker.html">Worker</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../namespaces.html">Namespaces Reference</a><input aria-label="Toggle navigation of Namespaces Reference" class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" role="switch" type="checkbox"/><label for="toctree-checkbox-22"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../namespaces/RaeptorCogs.html">Namespace RaeptorCogs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../namespaces/RaeptorCogs_GAPI.html">Namespace RaeptorCogs::GAPI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../namespaces/RaeptorCogs_GAPI_Common.html">Namespace RaeptorCogs::GAPI::Common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../namespaces/RaeptorCogs_GAPI_GL.html">Namespace RaeptorCogs::GAPI::GL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../namespaces/RaeptorCogs_GAPI_Vulkan.html">Namespace RaeptorCogs::GAPI::Vulkan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../namespaces/RaeptorCogs_Singletons.html">Namespace RaeptorCogs::Singletons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../namespaces/std.html">Namespace std</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../../../_sources/api/RaeptorCogs/IO/Font.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="font">
+<h1>Font<a class="headerlink" href="#font" title="Link to this heading">¶</a></h1>
+<p>High-level font loading and glyph management. </p>
+<section id="_font_8hpp_1IO_Font_Overview">
+<h2>Overview<a class="headerlink" href="#_font_8hpp_1IO_Font_Overview" title="Link to this heading">¶</a></h2>
+<p>Typical use cases:<ul class="simple">
+<li><p>Loading a font from a TTF file or memory buffer to a SDF atlas</p></li>
+<li><p>Retrieving glyph data for rendering text</p></li>
+<li><p>Managing font options such as size and type </p></li>
+</ul>
+</p>
+</section>
+<section id="_font_8hpp_1IO_Font_Header">
+<h2>Header<a class="headerlink" href="#_font_8hpp_1IO_Font_Header" title="Link to this heading">¶</a></h2>
+<p>&lt;RaeptorCogs/IO/Font.hpp&gt;</p>
+</section>
+<section id="_font_8hpp_1IO_Font_Metadata">
+<h2>Metadata<a class="headerlink" href="#_font_8hpp_1IO_Font_Metadata" title="Link to this heading">¶</a></h2>
+<p><dl class="simple">
+<dt><strong>Author</strong></dt><dd><p>Estorc </p>
+</dd>
+<dt><strong>Version</strong></dt><dd><p>v1.0 </p>
+</dd>
+<dt><strong>Copyright</strong></dt><dd><p>Copyright (c) 2025 Estorc MIT License. </p>
+</dd>
+</dl>
+</p>
+</section>
+<section id="enums">
+<h2>Enums<a class="headerlink" href="#enums" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper colwidths-given docutils container" id="id1">
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-text">Enumerations</span><a class="headerlink" href="#id1" title="Link to this table">¶</a></caption>
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Enum</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">RaeptorCogs::FontType</span></code></p></td>
+<td><p>Enumeration of font types.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="cpp enum-class">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs8FontTypeE">
+<span id="_CPPv3N11RaeptorCogs8FontTypeE"></span><span id="_CPPv2N11RaeptorCogs8FontTypeE"></span><span class="target" id="namespace_raeptor_cogs_1af2659ed1e9a7fb56b4eab6f74b890b48"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../../namespaces/RaeptorCogs.html#_CPPv411RaeptorCogs" title="RaeptorCogs"><span class="n"><span class="pre">RaeptorCogs</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">FontType</span></span></span><a class="headerlink" href="#_CPPv4N11RaeptorCogs8FontTypeE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Enumeration of font types. </p>
+<p>Defines the supported font rendering types. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs8FontType6BITMAPE">
+<span id="_CPPv3N11RaeptorCogs8FontType6BITMAPE"></span><span id="_CPPv2N11RaeptorCogs8FontType6BITMAPE"></span><span class="target" id="namespace_raeptor_cogs_1af2659ed1e9a7fb56b4eab6f74b890b48a75948fda661fec9a2342cec45646e544"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BITMAP</span></span></span><a class="headerlink" href="#_CPPv4N11RaeptorCogs8FontType6BITMAPE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Bitmap font type. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs8FontType3SDFE">
+<span id="_CPPv3N11RaeptorCogs8FontType3SDFE"></span><span id="_CPPv2N11RaeptorCogs8FontType3SDFE"></span><span class="target" id="namespace_raeptor_cogs_1af2659ed1e9a7fb56b4eab6f74b890b48a9c0a2523f776c96bce27eeb5671371e0"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SDF</span></span></span><a class="headerlink" href="#_CPPv4N11RaeptorCogs8FontType3SDFE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Signed Distance Field font type. </p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="structs">
+<h2>Structs<a class="headerlink" href="#structs" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper colwidths-given docutils container" id="id2">
+<table class="docutils align-default" id="id2">
+<caption><span class="caption-text">Structures</span><a class="headerlink" href="#id2" title="Link to this table">¶</a></caption>
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Struct</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">RaeptorCogs::Font::OnLoadProxy</span></code></p></td>
+<td><p>Proxy structure for onLoad callback.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">RaeptorCogs::FontOptions</span></code></p></td>
+<td><p>Font options structure.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs4Font11OnLoadProxyE">
+<span id="_CPPv3N11RaeptorCogs4Font11OnLoadProxyE"></span><span id="_CPPv2N11RaeptorCogs4Font11OnLoadProxyE"></span><span id="RaeptorCogs::Font::OnLoadProxy"></span><span class="target" id="struct_raeptor_cogs_1_1_font_1_1_on_load_proxy"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OnLoadProxy</span></span></span><a class="headerlink" href="#_CPPv4N11RaeptorCogs4Font11OnLoadProxyE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Proxy structure for onLoad callback. </p>
+<p>Allows setting a callback function that is invoked when the font is loaded. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs4Font11OnLoadProxyaSENSt8functionIFvvEEE">
+<span id="_CPPv3N11RaeptorCogs4Font11OnLoadProxyaSENSt8functionIFvvEEE"></span><span id="_CPPv2N11RaeptorCogs4Font11OnLoadProxyaSENSt8functionIFvvEEE"></span><span class="target" id="struct_raeptor_cogs_1_1_font_1_1_on_load_proxy_1ad3b41cadae9fc6f81f56f20d97d3199d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../../namespaces/std.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference external" href="https://en.cppreference.com/w/cpp/utility/functional/function.html"><span class="pre">function</span></a><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">void</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">fn</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N11RaeptorCogs4Font11OnLoadProxyaSENSt8functionIFvvEEE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Assignment operator to set the onLoad callback. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the font is already loaded, the callback is invoked immediately. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fn</strong> – Callback function to be invoked when the font is loaded.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs4Font11OnLoadProxy3ptrE">
+<span id="_CPPv3N11RaeptorCogs4Font11OnLoadProxy3ptrE"></span><span id="_CPPv2N11RaeptorCogs4Font11OnLoadProxy3ptrE"></span><span id="RaeptorCogs::Font::OnLoadProxy::ptr__std::shared_ptr:FontBase:"></span><span class="target" id="struct_raeptor_cogs_1_1_font_1_1_on_load_proxy_1ae2d5add62801e2d70f40fc8f106b3ff8"></span><a class="reference internal" href="../../namespaces/std.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference external" href="https://en.cppreference.com/w/cpp/memory/shared_ptr.html"><span class="pre">shared_ptr</span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N11RaeptorCogs8FontBaseE" title="RaeptorCogs::FontBase"><span class="n"><span class="pre">FontBase</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ptr</span></span></span><a class="headerlink" href="#_CPPv4N11RaeptorCogs4Font11OnLoadProxy3ptrE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Shared pointer to the <a class="reference internal" href="#class_raeptor_cogs_1_1_font_base"><span class="std std-ref">FontBase</span></a> instance. </p>
+<p>Used to access the onLoad_ member of <a class="reference internal" href="#class_raeptor_cogs_1_1_font_base"><span class="std std-ref">FontBase</span></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Used internally by the OnLoadProxy structure. </p>
+</div>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs11FontOptionsE">
+<span id="_CPPv3N11RaeptorCogs11FontOptionsE"></span><span id="_CPPv2N11RaeptorCogs11FontOptionsE"></span><span id="RaeptorCogs::FontOptions"></span><span class="target" id="struct_raeptor_cogs_1_1_font_options"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FontOptions</span></span></span><a class="headerlink" href="#_CPPv4N11RaeptorCogs11FontOptionsE" title="Link to this definition">¶</a><br /></dt>
+<dd><p><a class="reference internal" href="#class_raeptor_cogs_1_1_font"><span class="std std-ref">Font</span></a> options structure. </p>
+<p>Used to specify options when loading a font. <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">FontOptions</span><span class="w"> </span><span class="n">options</span><span class="p">;</span>
+<span class="n">options</span><span class="p">.</span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nn">FontType</span><span class="o">::</span><span class="n">SDF</span><span class="p">;</span>
+<span class="n">options</span><span class="p">.</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">48</span><span class="p">;</span>
+<span class="n">Font</span><span class="w"> </span><span class="n">font</span><span class="p">(</span><span class="s">&quot;path/to/font.ttf&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">options</span><span class="p">);</span>
+</pre></div>
+</div>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs11FontOptions4typeE">
+<span id="_CPPv3N11RaeptorCogs11FontOptions4typeE"></span><span id="_CPPv2N11RaeptorCogs11FontOptions4typeE"></span><span id="RaeptorCogs::FontOptions::type__FontType"></span><span class="target" id="struct_raeptor_cogs_1_1_font_options_1a7f7ef67421ee9bc45ac48ee190833f4d"></span><a class="reference internal" href="#_CPPv4N11RaeptorCogs8FontTypeE" title="RaeptorCogs::FontType"><span class="n"><span class="pre">FontType</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N11RaeptorCogs8FontTypeE" title="RaeptorCogs::FontType"><span class="n"><span class="pre">FontType</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N11RaeptorCogs8FontType3SDFE" title="RaeptorCogs::FontType::SDF"><span class="n"><span class="pre">SDF</span></span></a><a class="headerlink" href="#_CPPv4N11RaeptorCogs11FontOptions4typeE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Type of the font. </p>
+<p><div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#namespace_raeptor_cogs_1af2659ed1e9a7fb56b4eab6f74b890b48"><span class="std std-ref">FontType</span></a></p>
+</div>
+</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Defaults to SDF. </p>
+</div>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs11FontOptions4sizeE">
+<span id="_CPPv3N11RaeptorCogs11FontOptions4sizeE"></span><span id="_CPPv2N11RaeptorCogs11FontOptions4sizeE"></span><span id="RaeptorCogs::FontOptions::size__float"></span><span class="target" id="struct_raeptor_cogs_1_1_font_options_1abf176b3d225817f97a6832ee912997fc"></span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">size</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N11RaeptorCogs16NORMAL_FONT_SIZEE" title="RaeptorCogs::NORMAL_FONT_SIZE"><span class="n"><span class="pre">NORMAL_FONT_SIZE</span></span></a><a class="headerlink" href="#_CPPv4N11RaeptorCogs11FontOptions4sizeE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Size of the font in pixels. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Defaults to NORMAL_FONT_SIZE. </p>
+</div>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs11FontOptions8priorityE">
+<span id="_CPPv3N11RaeptorCogs11FontOptions8priorityE"></span><span id="_CPPv2N11RaeptorCogs11FontOptions8priorityE"></span><span id="RaeptorCogs::FontOptions::priority__i"></span><span class="target" id="struct_raeptor_cogs_1_1_font_options_1a066ef7c84af5d76bc2c2d8305831825d"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">priority</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N11RaeptorCogs11FontOptions8priorityE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Loading priority of the font. </p>
+<p>Priority determines the order in which fonts are loaded when multiple fonts are requested simultaneously. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper colwidths-given docutils container" id="id3">
+<table class="docutils align-default" id="id3">
+<caption><span class="caption-text">Classes</span><a class="headerlink" href="#id3" title="Link to this table">¶</a></caption>
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Class</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">RaeptorCogs::Font</span></code></p></td>
+<td><p>High-level Font handler class.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">RaeptorCogs::FontBase</span></code></p></td>
+<td><p>Base class for font handling.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">RaeptorCogs::GlyphData</span></code></p></td>
+<td><p>Glyph data structure.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs4FontE">
+<span id="_CPPv3N11RaeptorCogs4FontE"></span><span id="_CPPv2N11RaeptorCogs4FontE"></span><span id="RaeptorCogs::Font"></span><span class="target" id="class_raeptor_cogs_1_1_font"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Font</span></span></span><a class="headerlink" href="#_CPPv4N11RaeptorCogs4FontE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>High-level <a class="reference internal" href="#class_raeptor_cogs_1_1_font"><span class="std std-ref">Font</span></a> handler class. </p>
+<p>Provides a user-friendly interface for loading and managing fonts. Encapsulates a shared pointer to <a class="reference internal" href="#class_raeptor_cogs_1_1_font_base"><span class="std std-ref">FontBase</span></a> for resource management.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">FontOptions</span><span class="w"> </span><span class="n">options</span><span class="p">;</span>
+<span class="n">options</span><span class="p">.</span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nn">FontType</span><span class="o">::</span><span class="n">SDF</span><span class="p">;</span>
+<span class="n">options</span><span class="p">.</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">48</span><span class="p">;</span>
+<span class="n">Font</span><span class="w"> </span><span class="n">font</span><span class="p">(</span><span class="s">&quot;path/to/font.ttf&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">options</span><span class="p">);</span>
+<span class="n">font</span><span class="p">.</span><span class="n">bind</span><span class="p">();</span>
+<span class="kt">uint32_t</span><span class="w"> </span><span class="n">textureID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">font</span><span class="p">.</span><span class="n">getID</span><span class="p">();</span>
+<span class="n">GlyphData</span><span class="o">*</span><span class="w"> </span><span class="n">glyph</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">font</span><span class="p">.</span><span class="n">getGlyph</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs4Font4FontEv">
+<span id="_CPPv3N11RaeptorCogs4Font4FontEv"></span><span id="_CPPv2N11RaeptorCogs4Font4FontEv"></span><span id="RaeptorCogs::Font::Font"></span><span class="target" id="class_raeptor_cogs_1_1_font_1a523f9afe6256b1995b702229d4508561"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Font</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N11RaeptorCogs4Font4FontEv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Default constructor for <a class="reference internal" href="#class_raeptor_cogs_1_1_font"><span class="std std-ref">Font</span></a>. </p>
+<p>Initializes an empty <a class="reference internal" href="#class_raeptor_cogs_1_1_font"><span class="std std-ref">Font</span></a> instance. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs4Font4FontE9nullptr_t">
+<span id="_CPPv3N11RaeptorCogs4Font4FontE9nullptr_t"></span><span id="_CPPv2N11RaeptorCogs4Font4FontE9nullptr_t"></span><span id="RaeptorCogs::Font::Font__nullptr_t"></span><span class="target" id="class_raeptor_cogs_1_1_font_1a96472f05e410205bdb9a57ae300fabe3"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Font</span></span></span><span class="sig-paren">(</span><a class="reference external" href="https://en.cppreference.com/w/cpp/types/nullptr_t.html"><span class="pre">nullptr_t</span></a><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N11RaeptorCogs4Font4FontE9nullptr_t" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Constructor for <a class="reference internal" href="#class_raeptor_cogs_1_1_font"><span class="std std-ref">Font</span></a> from nullptr. </p>
+<p>Initializes an empty <a class="reference internal" href="#class_raeptor_cogs_1_1_font"><span class="std std-ref">Font</span></a> instance. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs4Font4FontENSt10shared_ptrI8FontBaseEE">
+<span id="_CPPv3N11RaeptorCogs4Font4FontENSt10shared_ptrI8FontBaseEE"></span><span id="_CPPv2N11RaeptorCogs4Font4FontENSt10shared_ptrI8FontBaseEE"></span><span id="RaeptorCogs::Font::Font__std::shared_ptr:FontBase:"></span><span class="target" id="class_raeptor_cogs_1_1_font_1a4c3e24fdf1d7a3819a5b5eb1e5661bfb"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Font</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../../namespaces/std.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference external" href="https://en.cppreference.com/w/cpp/memory/shared_ptr.html"><span class="pre">shared_ptr</span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N11RaeptorCogs8FontBaseE" title="RaeptorCogs::FontBase"><span class="n"><span class="pre">FontBase</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">p</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N11RaeptorCogs4Font4FontENSt10shared_ptrI8FontBaseEE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Constructor for <a class="reference internal" href="#class_raeptor_cogs_1_1_font"><span class="std std-ref">Font</span></a> from a shared pointer to <a class="reference internal" href="#class_raeptor_cogs_1_1_font_base"><span class="std std-ref">FontBase</span></a>. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Used internally for advanced use cases. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>p</strong> – Shared pointer to an existing <a class="reference internal" href="#class_raeptor_cogs_1_1_font_base"><span class="std std-ref">FontBase</span></a> instance. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs4Font4FontERK8FileData11FontOptions">
+<span id="_CPPv3N11RaeptorCogs4Font4FontERK8FileData11FontOptions"></span><span id="_CPPv2N11RaeptorCogs4Font4FontERK8FileData11FontOptions"></span><span id="RaeptorCogs::Font::Font__FileDataCR.FontOptions"></span><span class="target" id="class_raeptor_cogs_1_1_font_1ad3fc0a4797a372e2210b8c079d2db512"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Font</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="FileIO.html#_CPPv4N11RaeptorCogs8FileDataE" title="RaeptorCogs::FileData"><span class="n"><span class="pre">FileData</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ttf_buffer</span></span>, <a class="reference internal" href="#_CPPv4N11RaeptorCogs11FontOptionsE" title="RaeptorCogs::FontOptions"><span class="n"><span class="pre">FontOptions</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">options</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N11RaeptorCogs11FontOptionsE" title="RaeptorCogs::FontOptions"><span class="n"><span class="pre">FontOptions</span></span></a><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N11RaeptorCogs4Font4FontERK8FileData11FontOptions" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Constructor for <a class="reference internal" href="#class_raeptor_cogs_1_1_font"><span class="std std-ref">Font</span></a> from a TTF buffer. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Loads the font asynchronously. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ttf_buffer</strong> – Buffer containing TTF font data. </p></li>
+<li><p><strong>options</strong> – <a class="reference internal" href="#class_raeptor_cogs_1_1_font"><span class="std std-ref">Font</span></a> loading options.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs4Font4FontENSt10filesystem4pathE11FontOptions">
+<span id="_CPPv3N11RaeptorCogs4Font4FontENSt10filesystem4pathE11FontOptions"></span><span id="_CPPv2N11RaeptorCogs4Font4FontENSt10filesystem4pathE11FontOptions"></span><span id="RaeptorCogs::Font::Font__std::filesystem::path.FontOptions"></span><span class="target" id="class_raeptor_cogs_1_1_font_1a6620a1a7ce8d67e0dcf2bda6571f4088"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Font</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../../namespaces/std.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">filesystem</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">path</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">fontPath</span></span>, <a class="reference internal" href="#_CPPv4N11RaeptorCogs11FontOptionsE" title="RaeptorCogs::FontOptions"><span class="n"><span class="pre">FontOptions</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">options</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N11RaeptorCogs11FontOptionsE" title="RaeptorCogs::FontOptions"><span class="n"><span class="pre">FontOptions</span></span></a><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N11RaeptorCogs4Font4FontENSt10filesystem4pathE11FontOptions" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Constructor for <a class="reference internal" href="#class_raeptor_cogs_1_1_font"><span class="std std-ref">Font</span></a> from a TTF file path. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Loads the font asynchronously. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fontPath</strong> – Path to the TTF font file. </p></li>
+<li><p><strong>options</strong> – <a class="reference internal" href="#class_raeptor_cogs_1_1_font"><span class="std std-ref">Font</span></a> loading options.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK11RaeptorCogs4Font3getEv">
+<span id="_CPPv3NK11RaeptorCogs4Font3getEv"></span><span id="_CPPv2NK11RaeptorCogs4Font3getEv"></span><span id="RaeptorCogs::Font::getC"></span><span class="target" id="class_raeptor_cogs_1_1_font_1a9ee7a61fcf9c7b0946ee9aca45271e59"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N11RaeptorCogs8FontBaseE" title="RaeptorCogs::FontBase"><span class="n"><span class="pre">FontBase</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">get</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK11RaeptorCogs4Font3getEv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Dereference operators for <a class="reference internal" href="#class_raeptor_cogs_1_1_font"><span class="std std-ref">Font</span></a>. </p>
+<p>Provides access to the underlying <a class="reference internal" href="#class_raeptor_cogs_1_1_font_base"><span class="std std-ref">FontBase</span></a> instance. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Reference or pointer to the <a class="reference internal" href="#class_raeptor_cogs_1_1_font_base"><span class="std std-ref">FontBase</span></a> instance. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK11RaeptorCogs4FontmlEv">
+<span id="_CPPv3NK11RaeptorCogs4FontmlEv"></span><span id="_CPPv2NK11RaeptorCogs4FontmlEv"></span><span id="RaeptorCogs::Font::mul-operatorC"></span><span class="target" id="class_raeptor_cogs_1_1_font_1a1ff8f3ec0ca72ed8abdfcf55039d4245"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N11RaeptorCogs8FontBaseE" title="RaeptorCogs::FontBase"><span class="n"><span class="pre">FontBase</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">*</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK11RaeptorCogs4FontmlEv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Dereference operators for <a class="reference internal" href="#class_raeptor_cogs_1_1_font"><span class="std std-ref">Font</span></a>. </p>
+<p>Provides access to the underlying <a class="reference internal" href="#class_raeptor_cogs_1_1_font_base"><span class="std std-ref">FontBase</span></a> instance. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Reference or pointer to the <a class="reference internal" href="#class_raeptor_cogs_1_1_font_base"><span class="std std-ref">FontBase</span></a> instance. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK11RaeptorCogs4FontptEv">
+<span id="_CPPv3NK11RaeptorCogs4FontptEv"></span><span id="_CPPv2NK11RaeptorCogs4FontptEv"></span><span id="RaeptorCogs::Font::pointer-operatorC"></span><span class="target" id="class_raeptor_cogs_1_1_font_1a9576ab8540f138b954749841914484e4"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N11RaeptorCogs8FontBaseE" title="RaeptorCogs::FontBase"><span class="n"><span class="pre">FontBase</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">-&gt;</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK11RaeptorCogs4FontptEv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Dereference operators for <a class="reference internal" href="#class_raeptor_cogs_1_1_font"><span class="std std-ref">Font</span></a>. </p>
+<p>Provides access to the underlying <a class="reference internal" href="#class_raeptor_cogs_1_1_font_base"><span class="std std-ref">FontBase</span></a> instance. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Reference or pointer to the <a class="reference internal" href="#class_raeptor_cogs_1_1_font_base"><span class="std std-ref">FontBase</span></a> instance. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs4Font3getEv">
+<span id="_CPPv3N11RaeptorCogs4Font3getEv"></span><span id="_CPPv2N11RaeptorCogs4Font3getEv"></span><span id="RaeptorCogs::Font::get"></span><span class="target" id="class_raeptor_cogs_1_1_font_1a5ca215b8df0abb57412accffea219409"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N11RaeptorCogs8FontBaseE" title="RaeptorCogs::FontBase"><span class="n"><span class="pre">FontBase</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">get</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N11RaeptorCogs4Font3getEv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Dereference operators for <a class="reference internal" href="#class_raeptor_cogs_1_1_font"><span class="std std-ref">Font</span></a>. </p>
+<p>Provides access to the underlying <a class="reference internal" href="#class_raeptor_cogs_1_1_font_base"><span class="std std-ref">FontBase</span></a> instance. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Reference or pointer to the <a class="reference internal" href="#class_raeptor_cogs_1_1_font_base"><span class="std std-ref">FontBase</span></a> instance. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs4FontmlEv">
+<span id="_CPPv3N11RaeptorCogs4FontmlEv"></span><span id="_CPPv2N11RaeptorCogs4FontmlEv"></span><span id="RaeptorCogs::Font::mul-operator"></span><span class="target" id="class_raeptor_cogs_1_1_font_1a0d84fd195d0643501b74283fdc960d4a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N11RaeptorCogs8FontBaseE" title="RaeptorCogs::FontBase"><span class="n"><span class="pre">FontBase</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">*</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N11RaeptorCogs4FontmlEv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Dereference operators for <a class="reference internal" href="#class_raeptor_cogs_1_1_font"><span class="std std-ref">Font</span></a>. </p>
+<p>Provides access to the underlying <a class="reference internal" href="#class_raeptor_cogs_1_1_font_base"><span class="std std-ref">FontBase</span></a> instance. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Reference or pointer to the <a class="reference internal" href="#class_raeptor_cogs_1_1_font_base"><span class="std std-ref">FontBase</span></a> instance. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs4FontptEv">
+<span id="_CPPv3N11RaeptorCogs4FontptEv"></span><span id="_CPPv2N11RaeptorCogs4FontptEv"></span><span id="RaeptorCogs::Font::pointer-operator"></span><span class="target" id="class_raeptor_cogs_1_1_font_1a67265c50e8288c764d2d56d1e69a6759"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N11RaeptorCogs8FontBaseE" title="RaeptorCogs::FontBase"><span class="n"><span class="pre">FontBase</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">-&gt;</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N11RaeptorCogs4FontptEv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Dereference operators for <a class="reference internal" href="#class_raeptor_cogs_1_1_font"><span class="std std-ref">Font</span></a>. </p>
+<p>Provides access to the underlying <a class="reference internal" href="#class_raeptor_cogs_1_1_font_base"><span class="std std-ref">FontBase</span></a> instance. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Reference or pointer to the <a class="reference internal" href="#class_raeptor_cogs_1_1_font_base"><span class="std std-ref">FontBase</span></a> instance. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK11RaeptorCogs4FontcvbEv">
+<span id="_CPPv3NK11RaeptorCogs4FontcvbEv"></span><span id="_CPPv2NK11RaeptorCogs4FontcvbEv"></span><span id="RaeptorCogs::Font::castto-b-operatorC"></span><span class="target" id="class_raeptor_cogs_1_1_font_1adb87c7d558a18d1cb889d7398d55507a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK11RaeptorCogs4FontcvbEv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Boolean conversion operator for <a class="reference internal" href="#class_raeptor_cogs_1_1_font"><span class="std std-ref">Font</span></a>. </p>
+<p>Allows checking if the <a class="reference internal" href="#class_raeptor_cogs_1_1_font"><span class="std std-ref">Font</span></a> instance is valid (i.e., has an associated <a class="reference internal" href="#class_raeptor_cogs_1_1_font_base"><span class="std std-ref">FontBase</span></a>). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>true if the <a class="reference internal" href="#class_raeptor_cogs_1_1_font"><span class="std std-ref">Font</span></a> instance is valid, false otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs4Font6onLoadE">
+<span id="_CPPv3N11RaeptorCogs4Font6onLoadE"></span><span id="_CPPv2N11RaeptorCogs4Font6onLoadE"></span><span id="RaeptorCogs::Font::onLoad__OnLoadProxy"></span><span class="target" id="class_raeptor_cogs_1_1_font_1a03bc9a8423836895dc7d3dc67a61db04"></span><a class="reference internal" href="#_CPPv4N11RaeptorCogs4Font11OnLoadProxyE" title="RaeptorCogs::Font::OnLoadProxy"><span class="n"><span class="pre">OnLoadProxy</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">onLoad</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><a class="reference internal" href="#_CPPv4N11RaeptorCogs4Font3ptrE" title="RaeptorCogs::Font::ptr"><span class="n"><span class="pre">ptr</span></span></a><span class="p"><span class="pre">}</span></span><a class="headerlink" href="#_CPPv4N11RaeptorCogs4Font6onLoadE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>On-load callback proxy. </p>
+<p>Allows setting a callback function that is invoked when the font is loaded.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">Font</span><span class="w"> </span><span class="n">font</span><span class="p">(</span><span class="s">&quot;path/to/font.ttf&quot;</span><span class="p">);</span>
+<span class="n">font</span><span class="p">.</span><span class="n">onLoad</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[]()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Font loaded!&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-members">Private Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs4Font3ptrE">
+<span id="_CPPv3N11RaeptorCogs4Font3ptrE"></span><span id="_CPPv2N11RaeptorCogs4Font3ptrE"></span><span id="RaeptorCogs::Font::ptr__std::shared_ptr:FontBase:"></span><span class="target" id="class_raeptor_cogs_1_1_font_1a1bcf00f873b6318563b77b240c50058c"></span><a class="reference internal" href="../../namespaces/std.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference external" href="https://en.cppreference.com/w/cpp/memory/shared_ptr.html"><span class="pre">shared_ptr</span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N11RaeptorCogs8FontBaseE" title="RaeptorCogs::FontBase"><span class="n"><span class="pre">FontBase</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ptr</span></span></span><a class="headerlink" href="#_CPPv4N11RaeptorCogs4Font3ptrE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Shared pointer to the underlying <a class="reference internal" href="#class_raeptor_cogs_1_1_font_base"><span class="std std-ref">FontBase</span></a> instance. </p>
+<p>Manages the lifetime of the <a class="reference internal" href="#class_raeptor_cogs_1_1_font_base"><span class="std std-ref">FontBase</span></a> object. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Used internally by the <a class="reference internal" href="#class_raeptor_cogs_1_1_font"><span class="std std-ref">Font</span></a> class. </p>
+</div>
+</dd></dl>
+
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp">
+<span class="target" id="struct_raeptor_cogs_1_1_font_1_1_on_load_proxy"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OnLoadProxy</span></span></span><br /></dt>
+<dd><p>Proxy structure for onLoad callback. </p>
+<p>Allows setting a callback function that is invoked when the font is loaded. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp">
+<span class="target" id="struct_raeptor_cogs_1_1_font_1_1_on_load_proxy_1ad3b41cadae9fc6f81f56f20d97d3199d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../../namespaces/std.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference external" href="https://en.cppreference.com/w/cpp/utility/functional/function.html"><span class="pre">function</span></a><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">void</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">fn</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Assignment operator to set the onLoad callback. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the font is already loaded, the callback is invoked immediately. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fn</strong> – Callback function to be invoked when the font is loaded.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp">
+<span class="target" id="struct_raeptor_cogs_1_1_font_1_1_on_load_proxy_1ae2d5add62801e2d70f40fc8f106b3ff8"></span><a class="reference internal" href="../../namespaces/std.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference external" href="https://en.cppreference.com/w/cpp/memory/shared_ptr.html"><span class="pre">shared_ptr</span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N11RaeptorCogs8FontBaseE" title="RaeptorCogs::FontBase"><span class="n"><span class="pre">FontBase</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ptr</span></span></span><br /></dt>
+<dd><p>Shared pointer to the <a class="reference internal" href="#class_raeptor_cogs_1_1_font_base"><span class="std std-ref">FontBase</span></a> instance. </p>
+<p>Used to access the onLoad_ member of <a class="reference internal" href="#class_raeptor_cogs_1_1_font_base"><span class="std std-ref">FontBase</span></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Used internally by the OnLoadProxy structure. </p>
+</div>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs8FontBaseE">
+<span id="_CPPv3N11RaeptorCogs8FontBaseE"></span><span id="_CPPv2N11RaeptorCogs8FontBaseE"></span><span id="RaeptorCogs::FontBase"></span><span class="target" id="class_raeptor_cogs_1_1_font_base"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FontBase</span></span></span><a class="headerlink" href="#_CPPv4N11RaeptorCogs8FontBaseE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Base class for font handling. </p>
+<p>Provides high-level functionality for loading fonts, managing glyphs, and binding font textures.</p>
+<p><div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">FontOptions</span><span class="w"> </span><span class="n">options</span><span class="p">;</span>
+<span class="n">options</span><span class="p">.</span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nn">FontType</span><span class="o">::</span><span class="n">SDF</span><span class="p">;</span>
+<span class="n">options</span><span class="p">.</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">48</span><span class="p">;</span>
+<span class="n">Font</span><span class="w"> </span><span class="n">font</span><span class="p">(</span><span class="s">&quot;path/to/font.ttf&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">options</span><span class="p">);</span>
+<span class="n">font</span><span class="p">.</span><span class="n">bind</span><span class="p">();</span>
+<span class="kt">uint32_t</span><span class="w"> </span><span class="n">textureID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">font</span><span class="p">.</span><span class="n">getID</span><span class="p">();</span>
+<span class="n">GlyphData</span><span class="o">*</span><span class="w"> </span><span class="n">glyph</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">font</span><span class="p">.</span><span class="n">getGlyph</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+ <div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#class_raeptor_cogs_1_1_font"><span class="std std-ref">Font</span></a></p>
+</div>
+</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Should not be used directly. Use the <a class="reference internal" href="#class_raeptor_cogs_1_1_font"><span class="std std-ref">Font</span></a> wrapper class instead. </p>
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs8FontBaseD0Ev">
+<span id="_CPPv3N11RaeptorCogs8FontBaseD0Ev"></span><span id="_CPPv2N11RaeptorCogs8FontBaseD0Ev"></span><span id="RaeptorCogs::FontBase::~FontBase"></span><span class="target" id="class_raeptor_cogs_1_1_font_base_1aa17e02f3e0d20f21357ce3992e81797d"></span><span class="sig-name descname"><span class="n"><span class="pre">~FontBase</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N11RaeptorCogs8FontBaseD0Ev" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Destructor for <a class="reference internal" href="#class_raeptor_cogs_1_1_font_base"><span class="std std-ref">FontBase</span></a>. </p>
+<p>Cleans up OpenGL resources associated with the font. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Automatically called when the <a class="reference internal" href="#class_raeptor_cogs_1_1_font_base"><span class="std std-ref">FontBase</span></a> instance is destroyed. </p>
+</div>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs8FontBase8FontBaseERK8FontBase">
+<span id="_CPPv3N11RaeptorCogs8FontBase8FontBaseERK8FontBase"></span><span id="_CPPv2N11RaeptorCogs8FontBase8FontBaseERK8FontBase"></span><span id="RaeptorCogs::FontBase::FontBase__FontBaseCR"></span><span class="target" id="class_raeptor_cogs_1_1_font_base_1a3e474331349df24ad1271b94cea70cde"></span><span class="sig-name descname"><span class="n"><span class="pre">FontBase</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N11RaeptorCogs8FontBase8FontBaseERK8FontBase" title="RaeptorCogs::FontBase::FontBase"><span class="n"><span class="pre">FontBase</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">delete</span></span><a class="headerlink" href="#_CPPv4N11RaeptorCogs8FontBase8FontBaseERK8FontBase" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Deleted copy constructor and assignment operator. </p>
+<p><a class="reference internal" href="#class_raeptor_cogs_1_1_font_base"><span class="std std-ref">FontBase</span></a> instances cannot be copied to prevent resource management issues. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs8FontBaseaSERK8FontBase">
+<span id="_CPPv3N11RaeptorCogs8FontBaseaSERK8FontBase"></span><span id="_CPPv2N11RaeptorCogs8FontBaseaSERK8FontBase"></span><span id="RaeptorCogs::FontBase::assign-operator__FontBaseCR"></span><span class="target" id="class_raeptor_cogs_1_1_font_base_1a4d656b34513196e3fb67d6db6889a2ee"></span><a class="reference internal" href="#_CPPv4N11RaeptorCogs8FontBaseE" title="RaeptorCogs::FontBase"><span class="n"><span class="pre">FontBase</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N11RaeptorCogs8FontBaseE" title="RaeptorCogs::FontBase"><span class="n"><span class="pre">FontBase</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">delete</span></span><a class="headerlink" href="#_CPPv4N11RaeptorCogs8FontBaseaSERK8FontBase" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs8FontBase8FontBaseERR8FontBase">
+<span id="_CPPv3N11RaeptorCogs8FontBase8FontBaseERR8FontBase"></span><span id="_CPPv2N11RaeptorCogs8FontBase8FontBaseERR8FontBase"></span><span id="RaeptorCogs::FontBase::FontBase__FontBaseRR"></span><span class="target" id="class_raeptor_cogs_1_1_font_base_1a4cb8af50e6902581fe58b98a0aef334f"></span><span class="sig-name descname"><span class="n"><span class="pre">FontBase</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N11RaeptorCogs8FontBase8FontBaseERR8FontBase" title="RaeptorCogs::FontBase::FontBase"><span class="n"><span class="pre">FontBase</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N11RaeptorCogs8FontBase8FontBaseERR8FontBase" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Defaulted move constructor and assignment operator. </p>
+<p><a class="reference internal" href="#class_raeptor_cogs_1_1_font_base"><span class="std std-ref">FontBase</span></a> instances can be moved to transfer ownership of resources. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs8FontBaseaSERR8FontBase">
+<span id="_CPPv3N11RaeptorCogs8FontBaseaSERR8FontBase"></span><span id="_CPPv2N11RaeptorCogs8FontBaseaSERR8FontBase"></span><span id="RaeptorCogs::FontBase::assign-operator__FontBaseRR"></span><span class="target" id="class_raeptor_cogs_1_1_font_base_1a6da032221be7493f537d1eb213f89477"></span><a class="reference internal" href="#_CPPv4N11RaeptorCogs8FontBaseE" title="RaeptorCogs::FontBase"><span class="n"><span class="pre">FontBase</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N11RaeptorCogs8FontBaseE" title="RaeptorCogs::FontBase"><span class="n"><span class="pre">FontBase</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N11RaeptorCogs8FontBaseaSERR8FontBase" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK11RaeptorCogs8FontBase4bindEv">
+<span id="_CPPv3NK11RaeptorCogs8FontBase4bindEv"></span><span id="_CPPv2NK11RaeptorCogs8FontBase4bindEv"></span><span id="RaeptorCogs::FontBase::bindC"></span><span class="target" id="class_raeptor_cogs_1_1_font_base_1a502e92023f060e400e3f0c6e2ed4715e"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bind</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK11RaeptorCogs8FontBase4bindEv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Bind the font for rendering. Binds the font’s texture to the current OpenGL context. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK11RaeptorCogs8FontBase5getIDEv">
+<span id="_CPPv3NK11RaeptorCogs8FontBase5getIDEv"></span><span id="_CPPv2NK11RaeptorCogs8FontBase5getIDEv"></span><span id="RaeptorCogs::FontBase::getIDC"></span><span class="target" id="class_raeptor_cogs_1_1_font_base_1a3fab994ebf6e83b0048c02dfa4e1e338"></span><a class="reference external" href="https://en.cppreference.com/w/cpp/types/integer.html"><span class="pre">uint32_t</span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getID</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK11RaeptorCogs8FontBase5getIDEv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Get the OpenGL texture ID of the font atlas. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Returns 0 if the font is not loaded. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The OpenGL texture ID. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK11RaeptorCogs8FontBase8getGlyphEK6U8Char">
+<span id="_CPPv3NK11RaeptorCogs8FontBase8getGlyphEK6U8Char"></span><span id="_CPPv2NK11RaeptorCogs8FontBase8getGlyphEK6U8Char"></span><span id="RaeptorCogs::FontBase::getGlyph__U8CharCC"></span><span class="target" id="class_raeptor_cogs_1_1_font_base_1a3f6d2cd6ad985054f6c286f633426419"></span><a class="reference internal" href="#_CPPv4N11RaeptorCogs9GlyphDataE" title="RaeptorCogs::GlyphData"><span class="n"><span class="pre">GlyphData</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">getGlyph</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="String.html#_CPPv4N11RaeptorCogs6U8CharE" title="RaeptorCogs::U8Char"><span class="n"><span class="pre">U8Char</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">character</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK11RaeptorCogs8FontBase8getGlyphEK6U8Char" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Retrieve glyph data for a specific character. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Supports Unicode characters via UTF-8 encoding. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>character</strong> – Pointer to the UTF-8 encoded character. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>GlyphData* Pointer to the <a class="reference internal" href="#class_raeptor_cogs_1_1_glyph_data"><span class="std std-ref">GlyphData</span></a> for the character, or nullptr if not found. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK11RaeptorCogs8FontBase14getGlyphUVRectEK6U8Char">
+<span id="_CPPv3NK11RaeptorCogs8FontBase14getGlyphUVRectEK6U8Char"></span><span id="_CPPv2NK11RaeptorCogs8FontBase14getGlyphUVRectEK6U8Char"></span><span id="RaeptorCogs::FontBase::getGlyphUVRect__U8CharCC"></span><span class="target" id="class_raeptor_cogs_1_1_font_base_1ad2ab87369e88baed81edff60f910710e"></span><span class="n"><span class="pre">glm</span></span><span class="p"><span class="pre">::</span></span><a class="reference external" href="https://cglm.readthedocs.io/en/latest/vec4.html"><span class="pre">vec4</span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getGlyphUVRect</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="String.html#_CPPv4N11RaeptorCogs6U8CharE" title="RaeptorCogs::U8Char"><span class="n"><span class="pre">U8Char</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">character</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK11RaeptorCogs8FontBase14getGlyphUVRectEK6U8Char" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Get the UV rectangle of a specific character’s glyph. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>character</strong> – Pointer to the UTF-8 encoded character. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>UV rectangle (u0, v0, u1, v1) of the glyph. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK11RaeptorCogs8FontBase14getGlyphOffsetEK6U8Char">
+<span id="_CPPv3NK11RaeptorCogs8FontBase14getGlyphOffsetEK6U8Char"></span><span id="_CPPv2NK11RaeptorCogs8FontBase14getGlyphOffsetEK6U8Char"></span><span id="RaeptorCogs::FontBase::getGlyphOffset__U8CharCC"></span><span class="target" id="class_raeptor_cogs_1_1_font_base_1a6865933dabad7f2c3fd1be23cc928ce1"></span><span class="n"><span class="pre">glm</span></span><span class="p"><span class="pre">::</span></span><a class="reference external" href="https://cglm.readthedocs.io/en/latest/vec2.html"><span class="pre">vec2</span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getGlyphOffset</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="String.html#_CPPv4N11RaeptorCogs6U8CharE" title="RaeptorCogs::U8Char"><span class="n"><span class="pre">U8Char</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">character</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK11RaeptorCogs8FontBase14getGlyphOffsetEK6U8Char" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Get the offset of a specific character’s glyph. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>character</strong> – Pointer to the UTF-8 encoded character. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Offset (x_offset, y_offset) of the glyph in pixels. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK11RaeptorCogs8FontBase12getGlyphSizeEK6U8Char">
+<span id="_CPPv3NK11RaeptorCogs8FontBase12getGlyphSizeEK6U8Char"></span><span id="_CPPv2NK11RaeptorCogs8FontBase12getGlyphSizeEK6U8Char"></span><span id="RaeptorCogs::FontBase::getGlyphSize__U8CharCC"></span><span class="target" id="class_raeptor_cogs_1_1_font_base_1a10e138134ec8df19fd8b04599cf1956f"></span><span class="n"><span class="pre">glm</span></span><span class="p"><span class="pre">::</span></span><a class="reference external" href="https://cglm.readthedocs.io/en/latest/vec2.html"><span class="pre">vec2</span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getGlyphSize</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="String.html#_CPPv4N11RaeptorCogs6U8CharE" title="RaeptorCogs::U8Char"><span class="n"><span class="pre">U8Char</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">character</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK11RaeptorCogs8FontBase12getGlyphSizeEK6U8Char" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Get the size of a specific character’s glyph. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>character</strong> – Pointer to the UTF-8 encoded character. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Size (width, height) of the glyph in pixels </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK11RaeptorCogs8FontBase16getGlyphXAdvanceEK6U8Char">
+<span id="_CPPv3NK11RaeptorCogs8FontBase16getGlyphXAdvanceEK6U8Char"></span><span id="_CPPv2NK11RaeptorCogs8FontBase16getGlyphXAdvanceEK6U8Char"></span><span id="RaeptorCogs::FontBase::getGlyphXAdvance__U8CharCC"></span><span class="target" id="class_raeptor_cogs_1_1_font_base_1a4c77e7881a01e19fec9b3949cbc643ba"></span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getGlyphXAdvance</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="String.html#_CPPv4N11RaeptorCogs6U8CharE" title="RaeptorCogs::U8Char"><span class="n"><span class="pre">U8Char</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">character</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK11RaeptorCogs8FontBase16getGlyphXAdvanceEK6U8Char" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Get the horizontal advance of a specific character’s glyph. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>character</strong> – Pointer to the UTF-8 encoded character. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Horizontal advance (x_advance) of the glyph in pixels. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK11RaeptorCogs8FontBase11getFontSizeEv">
+<span id="_CPPv3NK11RaeptorCogs8FontBase11getFontSizeEv"></span><span id="_CPPv2NK11RaeptorCogs8FontBase11getFontSizeEv"></span><span id="RaeptorCogs::FontBase::getFontSizeC"></span><span class="target" id="class_raeptor_cogs_1_1_font_base_1a676888d56c9cde5a3ef33a5738c4c128"></span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getFontSize</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK11RaeptorCogs8FontBase11getFontSizeEv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Get the font size in pixels. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#class_raeptor_cogs_1_1_font"><span class="std std-ref">Font</span></a> size in pixels. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK11RaeptorCogs8FontBase8isLoadedEv">
+<span id="_CPPv3NK11RaeptorCogs8FontBase8isLoadedEv"></span><span id="_CPPv2NK11RaeptorCogs8FontBase8isLoadedEv"></span><span id="RaeptorCogs::FontBase::isLoadedC"></span><span class="target" id="class_raeptor_cogs_1_1_font_base_1a0d8c370afcd977a4aa2c44fc4643cf55"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isLoaded</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK11RaeptorCogs8FontBase8isLoadedEv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Check if the font is loaded. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>true if the font is loaded, false otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-functions">Private Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs8FontBase8FontBaseEv">
+<span id="_CPPv3N11RaeptorCogs8FontBase8FontBaseEv"></span><span id="_CPPv2N11RaeptorCogs8FontBase8FontBaseEv"></span><span id="RaeptorCogs::FontBase::FontBase"></span><span class="target" id="class_raeptor_cogs_1_1_font_base_1a162884dc67e792b6c74eeae773692441"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FontBase</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N11RaeptorCogs8FontBase8FontBaseEv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Private constructor for <a class="reference internal" href="#class_raeptor_cogs_1_1_font_base"><span class="std std-ref">FontBase</span></a>. </p>
+<p>Use the handler class <a class="reference internal" href="#class_raeptor_cogs_1_1_font"><span class="std std-ref">Font</span></a> to create and manage <a class="reference internal" href="#class_raeptor_cogs_1_1_font_base"><span class="std std-ref">FontBase</span></a> instances. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs8FontBase16GenerateSDFAtlasEPKhPh6size_t6size_tf6size_t">
+<span id="_CPPv3N11RaeptorCogs8FontBase16GenerateSDFAtlasEPKhPh6size_t6size_tf6size_t"></span><span id="_CPPv2N11RaeptorCogs8FontBase16GenerateSDFAtlasEPKhPh6size_t6size_tf6size_t"></span><span id="RaeptorCogs::FontBase::GenerateSDFAtlas__unsigned-cCP.unsigned-cP.s.s.float.s"></span><span class="target" id="class_raeptor_cogs_1_1_font_base_1a7ec6f413844c9a7457ad239752424ff3"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GenerateSDFAtlas</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">ttf</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">data</span></span>, <a class="reference external" href="https://en.cppreference.com/w/cpp/types/size_t.html"><span class="pre">size_t</span></a><span class="w"> </span><span class="n sig-param"><span class="pre">atlas_w</span></span>, <a class="reference external" href="https://en.cppreference.com/w/cpp/types/size_t.html"><span class="pre">size_t</span></a><span class="w"> </span><span class="n sig-param"><span class="pre">atlas_h</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">font_px</span></span>, <a class="reference external" href="https://en.cppreference.com/w/cpp/types/size_t.html"><span class="pre">size_t</span></a><span class="w"> </span><span class="n sig-param"><span class="pre">num_chars</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N11RaeptorCogs8FontBase16GenerateSDFAtlasEPKhPh6size_t6size_tf6size_t" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Generate a Signed Distance Field (SDF) font atlas. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function populates the provided data buffer with the generated SDF atlas. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ttf</strong> – Pointer to the TTF font data in memory. </p></li>
+<li><p><strong>data</strong> – Pointer to the memory buffer where the atlas will be generated. </p></li>
+<li><p><strong>atlas_w</strong> – Width of the atlas in pixels. </p></li>
+<li><p><strong>atlas_h</strong> – Height of the atlas in pixels. </p></li>
+<li><p><strong>font_px</strong> – <a class="reference internal" href="#class_raeptor_cogs_1_1_font"><span class="std std-ref">Font</span></a> size in pixels. </p></li>
+<li><p><strong>num_chars</strong> – Number of characters to include in the atlas.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs8FontBase16GenerateBMPAtlasEPKhPh6size_t6size_tf6size_t">
+<span id="_CPPv3N11RaeptorCogs8FontBase16GenerateBMPAtlasEPKhPh6size_t6size_tf6size_t"></span><span id="_CPPv2N11RaeptorCogs8FontBase16GenerateBMPAtlasEPKhPh6size_t6size_tf6size_t"></span><span id="RaeptorCogs::FontBase::GenerateBMPAtlas__unsigned-cCP.unsigned-cP.s.s.float.s"></span><span class="target" id="class_raeptor_cogs_1_1_font_base_1acb88e5dc91f38dfbb679519efd92a252"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GenerateBMPAtlas</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">ttf</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">data</span></span>, <a class="reference external" href="https://en.cppreference.com/w/cpp/types/size_t.html"><span class="pre">size_t</span></a><span class="w"> </span><span class="n sig-param"><span class="pre">atlas_w</span></span>, <a class="reference external" href="https://en.cppreference.com/w/cpp/types/size_t.html"><span class="pre">size_t</span></a><span class="w"> </span><span class="n sig-param"><span class="pre">atlas_h</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">font_px</span></span>, <a class="reference external" href="https://en.cppreference.com/w/cpp/types/size_t.html"><span class="pre">size_t</span></a><span class="w"> </span><span class="n sig-param"><span class="pre">num_chars</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N11RaeptorCogs8FontBase16GenerateBMPAtlasEPKhPh6size_t6size_tf6size_t" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Generate a Bitmap font atlas. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function populates the provided data buffer with the generated Bitmap atlas. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ttf</strong> – Pointer to the TTF font data in memory. </p></li>
+<li><p><strong>data</strong> – Pointer to the memory buffer where the atlas will be generated. </p></li>
+<li><p><strong>atlas_w</strong> – Width of the atlas in pixels. </p></li>
+<li><p><strong>atlas_h</strong> – Height of the atlas in pixels. </p></li>
+<li><p><strong>font_px</strong> – <a class="reference internal" href="#class_raeptor_cogs_1_1_font"><span class="std std-ref">Font</span></a> size in pixels. </p></li>
+<li><p><strong>num_chars</strong> – Number of characters to include in the atlas. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs8FontBase13uploadTextureEPKh6size_t6size_t">
+<span id="_CPPv3N11RaeptorCogs8FontBase13uploadTextureEPKh6size_t6size_t"></span><span id="_CPPv2N11RaeptorCogs8FontBase13uploadTextureEPKh6size_t6size_t"></span><span id="RaeptorCogs::FontBase::uploadTexture__unsigned-cCP.s.s"></span><span class="target" id="class_raeptor_cogs_1_1_font_base_1a11f0525ba5b36854d124da40ccfbb80c"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uploadTexture</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">data</span></span>, <a class="reference external" href="https://en.cppreference.com/w/cpp/types/size_t.html"><span class="pre">size_t</span></a><span class="w"> </span><span class="n sig-param"><span class="pre">width</span></span>, <a class="reference external" href="https://en.cppreference.com/w/cpp/types/size_t.html"><span class="pre">size_t</span></a><span class="w"> </span><span class="n sig-param"><span class="pre">height</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N11RaeptorCogs8FontBase13uploadTextureEPKh6size_t6size_t" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Upload the font atlas texture to OpenGL. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function creates an OpenGL texture and uploads the provided pixel data. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> – Pointer to the font atlas pixel data. </p></li>
+<li><p><strong>width</strong> – Width of the atlas in pixels. </p></li>
+<li><p><strong>height</strong> – Height of the atlas in pixels. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-members">Private Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs8FontBase7onLoad_E">
+<span id="_CPPv3N11RaeptorCogs8FontBase7onLoad_E"></span><span id="_CPPv2N11RaeptorCogs8FontBase7onLoad_E"></span><span class="target" id="class_raeptor_cogs_1_1_font_base_1a79e99fda00b5e508521cdcef27226c48"></span><a class="reference internal" href="../../namespaces/std.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference external" href="https://en.cppreference.com/w/cpp/utility/functional/function.html"><span class="pre">function</span></a><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">void</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">onLoad_</span></span></span><a class="headerlink" href="#_CPPv4N11RaeptorCogs8FontBase7onLoad_E" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Callback function invoked when the font is loaded. </p>
+<p>Can be set by the user to perform actions once the font is ready. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs8FontBase9textureIDE">
+<span id="_CPPv3N11RaeptorCogs8FontBase9textureIDE"></span><span id="_CPPv2N11RaeptorCogs8FontBase9textureIDE"></span><span id="RaeptorCogs::FontBase::textureID__uint32_t"></span><span class="target" id="class_raeptor_cogs_1_1_font_base_1a2755ae226d1b7c82510857372aa1314b"></span><a class="reference external" href="https://en.cppreference.com/w/cpp/types/integer.html"><span class="pre">uint32_t</span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">textureID</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N11RaeptorCogs8FontBase9textureIDE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>OpenGL texture ID for the font atlas. </p>
+<p>Zero if the font is not loaded. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs8FontBase6glyphsE">
+<span id="_CPPv3N11RaeptorCogs8FontBase6glyphsE"></span><span id="_CPPv2N11RaeptorCogs8FontBase6glyphsE"></span><span id="RaeptorCogs::FontBase::glyphs__std::unordered_map:uint32_t.std::unique_ptr:GlyphData::"></span><span class="target" id="class_raeptor_cogs_1_1_font_base_1a2dfb21cd191fe6f6d7d5122db24b0961"></span><a class="reference internal" href="../../namespaces/std.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference external" href="https://en.cppreference.com/w/cpp/container/unordered_map.html"><span class="pre">unordered_map</span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference external" href="https://en.cppreference.com/w/cpp/types/integer.html"><span class="pre">uint32_t</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../../namespaces/std.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference external" href="https://en.cppreference.com/w/cpp/memory/unique_ptr.html"><span class="pre">unique_ptr</span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N11RaeptorCogs9GlyphDataE" title="RaeptorCogs::GlyphData"><span class="n"><span class="pre">GlyphData</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">glyphs</span></span></span><a class="headerlink" href="#_CPPv4N11RaeptorCogs8FontBase6glyphsE" title="Link to this definition">¶</a><br /></dt>
+<dd><p><a class="reference internal" href="../Text.html#class_raeptor_cogs_1_1_glyph"><span class="std std-ref">Glyph</span></a> map storing glyph data indexed by UTF-8 codepoints. </p>
+<p>Supports Unicode characters by using a hash map. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs8FontBase9font_sizeE">
+<span id="_CPPv3N11RaeptorCogs8FontBase9font_sizeE"></span><span id="_CPPv2N11RaeptorCogs8FontBase9font_sizeE"></span><span id="RaeptorCogs::FontBase::font_size__float"></span><span class="target" id="class_raeptor_cogs_1_1_font_base_1afa261fc2e8c5cad4ac4b5a439b200cf6"></span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">font_size</span></span></span><a class="headerlink" href="#_CPPv4N11RaeptorCogs8FontBase9font_sizeE" title="Link to this definition">¶</a><br /></dt>
+<dd><p><a class="reference internal" href="#class_raeptor_cogs_1_1_font"><span class="std std-ref">Font</span></a> size in pixels. </p>
+<p>Used for scaling glyphs appropriately. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Corresponds to <a class="reference internal" href="#struct_raeptor_cogs_1_1_font_options_1abf176b3d225817f97a6832ee912997fc"><span class="std std-ref">FontOptions::size</span></a>. </p>
+</div>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs8FontBase9font_typeE">
+<span id="_CPPv3N11RaeptorCogs8FontBase9font_typeE"></span><span id="_CPPv2N11RaeptorCogs8FontBase9font_typeE"></span><span id="RaeptorCogs::FontBase::font_type__FontType"></span><span class="target" id="class_raeptor_cogs_1_1_font_base_1a8dd2d339226df1198fcfb1ff53eb59b4"></span><a class="reference internal" href="#_CPPv4N11RaeptorCogs8FontTypeE" title="RaeptorCogs::FontType"><span class="n"><span class="pre">FontType</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">font_type</span></span></span><a class="headerlink" href="#_CPPv4N11RaeptorCogs8FontBase9font_typeE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Type of the font. </p>
+<p>Indicates whether the font is SDF or Bitmap. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Corresponds to <a class="reference internal" href="#struct_raeptor_cogs_1_1_font_options_1a7f7ef67421ee9bc45ac48ee190833f4d"><span class="std std-ref">FontOptions::type</span></a>. </p>
+</div>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-static-functions">Private Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs8FontBase6createERK8FileData11FontOptions">
+<span id="_CPPv3N11RaeptorCogs8FontBase6createERK8FileData11FontOptions"></span><span id="_CPPv2N11RaeptorCogs8FontBase6createERK8FileData11FontOptions"></span><span id="RaeptorCogs::FontBase::create__FileDataCR.FontOptions"></span><span class="target" id="class_raeptor_cogs_1_1_font_base_1a58bf5c41b7d4fe97817a484a98202d08"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="../../namespaces/std.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference external" href="https://en.cppreference.com/w/cpp/memory/shared_ptr.html"><span class="pre">shared_ptr</span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N11RaeptorCogs8FontBaseE" title="RaeptorCogs::FontBase"><span class="n"><span class="pre">FontBase</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">create</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="FileIO.html#_CPPv4N11RaeptorCogs8FileDataE" title="RaeptorCogs::FileData"><span class="n"><span class="pre">FileData</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ttf_buffer</span></span>, <a class="reference internal" href="#_CPPv4N11RaeptorCogs11FontOptionsE" title="RaeptorCogs::FontOptions"><span class="n"><span class="pre">FontOptions</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">options</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N11RaeptorCogs11FontOptionsE" title="RaeptorCogs::FontOptions"><span class="n"><span class="pre">FontOptions</span></span></a><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N11RaeptorCogs8FontBase6createERK8FileData11FontOptions" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Factory method to create a <a class="reference internal" href="#class_raeptor_cogs_1_1_font_base"><span class="std std-ref">FontBase</span></a> instance from a TTF buffer. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ttf_buffer</strong> – Buffer containing TTF font data. </p></li>
+<li><p><strong>options</strong> – <a class="reference internal" href="#class_raeptor_cogs_1_1_font"><span class="std std-ref">Font</span></a> loading options. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Shared pointer to the created <a class="reference internal" href="#class_raeptor_cogs_1_1_font_base"><span class="std std-ref">FontBase</span></a> instance. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs8FontBase6createERKNSt10filesystem4pathE11FontOptions">
+<span id="_CPPv3N11RaeptorCogs8FontBase6createERKNSt10filesystem4pathE11FontOptions"></span><span id="_CPPv2N11RaeptorCogs8FontBase6createERKNSt10filesystem4pathE11FontOptions"></span><span id="RaeptorCogs::FontBase::create__std::filesystem::pathCR.FontOptions"></span><span class="target" id="class_raeptor_cogs_1_1_font_base_1a4fb104245fb3ca261e091747b85d474a"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="../../namespaces/std.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference external" href="https://en.cppreference.com/w/cpp/memory/shared_ptr.html"><span class="pre">shared_ptr</span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N11RaeptorCogs8FontBaseE" title="RaeptorCogs::FontBase"><span class="n"><span class="pre">FontBase</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">create</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../namespaces/std.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">filesystem</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">path</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">fontPath</span></span>, <a class="reference internal" href="#_CPPv4N11RaeptorCogs11FontOptionsE" title="RaeptorCogs::FontOptions"><span class="n"><span class="pre">FontOptions</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">options</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N11RaeptorCogs11FontOptionsE" title="RaeptorCogs::FontOptions"><span class="n"><span class="pre">FontOptions</span></span></a><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N11RaeptorCogs8FontBase6createERKNSt10filesystem4pathE11FontOptions" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Factory method to create a <a class="reference internal" href="#class_raeptor_cogs_1_1_font_base"><span class="std std-ref">FontBase</span></a> instance from a TTF file path. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fontPath</strong> – Path to the TTF font file. </p></li>
+<li><p><strong>options</strong> – <a class="reference internal" href="#class_raeptor_cogs_1_1_font"><span class="std std-ref">Font</span></a> loading options. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Shared pointer to the created <a class="reference internal" href="#class_raeptor_cogs_1_1_font_base"><span class="std std-ref">FontBase</span></a> instance. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-friends">Friends</p>
+<dl>
+<dt class="sig sig-object cpp">
+<em class="property"><span class="pre">friend</span> <span class="pre">class</span></em> <span class="pre">Font</span></dt>
+</dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs9GlyphDataE">
+<span id="_CPPv3N11RaeptorCogs9GlyphDataE"></span><span id="_CPPv2N11RaeptorCogs9GlyphDataE"></span><span id="RaeptorCogs::GlyphData"></span><span class="target" id="class_raeptor_cogs_1_1_glyph_data"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GlyphData</span></span></span><a class="headerlink" href="#_CPPv4N11RaeptorCogs9GlyphDataE" title="Link to this definition">¶</a><br /></dt>
+<dd><p><a class="reference internal" href="../Text.html#class_raeptor_cogs_1_1_glyph"><span class="std std-ref">Glyph</span></a> data structure. </p>
+<p>Represents the metrics and texture coordinates of a single glyph in a font atlas.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">GlyphData</span><span class="o">&gt;</span><span class="w"> </span><span class="n">glyph</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_unique</span><span class="o">&lt;</span><span class="n">GlyphData</span><span class="o">&gt;</span><span class="p">(</span>
+<span class="w">     </span><span class="n">packed_glyphs</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">x0</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="n">atlas_w</span><span class="p">,</span>
+<span class="w">     </span><span class="n">packed_glyphs</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">y0</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="n">atlas_h</span><span class="p">,</span>
+<span class="w">     </span><span class="n">packed_glyphs</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">x1</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="n">atlas_w</span><span class="p">,</span>
+<span class="w">     </span><span class="n">packed_glyphs</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">y1</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="n">atlas_h</span><span class="p">,</span>
+<span class="w">     </span><span class="p">(</span><span class="n">packed_glyphs</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">xoff</span><span class="p">)</span><span class="o">/</span><span class="mf">2.0f</span><span class="p">,</span>
+<span class="w">     </span><span class="p">(</span><span class="n">packed_glyphs</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">yoff</span><span class="p">)</span><span class="o">/</span><span class="mf">2.0f</span><span class="p">,</span>
+<span class="w">     </span><span class="p">(</span><span class="n">packed_glyphs</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">x1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">packed_glyphs</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">x0</span><span class="p">)</span><span class="o">/</span><span class="mf">2.0f</span><span class="p">,</span>
+<span class="w">     </span><span class="p">(</span><span class="n">packed_glyphs</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">y1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">packed_glyphs</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">y0</span><span class="p">)</span><span class="o">/</span><span class="mf">2.0f</span><span class="p">,</span>
+<span class="w">     </span><span class="n">packed_glyphs</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">xadvance</span>
+<span class="w"> </span><span class="p">);</span>
+<span class="n">glm</span><span class="o">::</span><span class="n">vec4</span><span class="w"> </span><span class="n">uvRect</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">glyph</span><span class="p">.</span><span class="n">getUVRect</span><span class="p">();</span>
+</pre></div>
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs9GlyphData9GlyphDataEv">
+<span id="_CPPv3N11RaeptorCogs9GlyphData9GlyphDataEv"></span><span id="_CPPv2N11RaeptorCogs9GlyphData9GlyphDataEv"></span><span id="RaeptorCogs::GlyphData::GlyphData"></span><span class="target" id="class_raeptor_cogs_1_1_glyph_data_1a03518181a5bae495a1a5fc35b2f688fe"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GlyphData</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N11RaeptorCogs9GlyphData9GlyphDataEv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Default constructor for <a class="reference internal" href="#class_raeptor_cogs_1_1_glyph_data"><span class="std std-ref">GlyphData</span></a>. </p>
+<p>Initializes all metrics to zero. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs9GlyphData9GlyphDataEfffffffff">
+<span id="_CPPv3N11RaeptorCogs9GlyphData9GlyphDataEfffffffff"></span><span id="_CPPv2N11RaeptorCogs9GlyphData9GlyphDataEfffffffff"></span><span id="RaeptorCogs::GlyphData::GlyphData__float.float.float.float.float.float.float.float.float"></span><span class="target" id="class_raeptor_cogs_1_1_glyph_data_1a34dc9658a3b20231c9edf845314f44ab"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GlyphData</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">u0</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">v0</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">u1</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">v1</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">x_offset</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">y_offset</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">width</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">height</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">x_advance</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N11RaeptorCogs9GlyphData9GlyphDataEfffffffff" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Parameterized constructor for <a class="reference internal" href="#class_raeptor_cogs_1_1_glyph_data"><span class="std std-ref">GlyphData</span></a>. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>All size and offset parameters are in pixels. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>u0</strong> – Left U texture coordinate. </p></li>
+<li><p><strong>v0</strong> – Top V texture coordinate. </p></li>
+<li><p><strong>u1</strong> – Right U texture coordinate. </p></li>
+<li><p><strong>v1</strong> – Bottom V texture coordinate. </p></li>
+<li><p><strong>x_offset</strong> – Horizontal offset from cursor. </p></li>
+<li><p><strong>y_offset</strong> – Vertical offset from cursor. </p></li>
+<li><p><strong>width</strong> – Width of the glyph in pixels. </p></li>
+<li><p><strong>height</strong> – Height of the glyph in pixels. </p></li>
+<li><p><strong>x_advance</strong> – Horizontal advance after rendering the glyph. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK11RaeptorCogs9GlyphData9getUVRectEv">
+<span id="_CPPv3NK11RaeptorCogs9GlyphData9getUVRectEv"></span><span id="_CPPv2NK11RaeptorCogs9GlyphData9getUVRectEv"></span><span id="RaeptorCogs::GlyphData::getUVRectC"></span><span class="target" id="class_raeptor_cogs_1_1_glyph_data_1a74f25bc54ac2cd7b269659fab2d24234"></span><span class="n"><span class="pre">glm</span></span><span class="p"><span class="pre">::</span></span><a class="reference external" href="https://cglm.readthedocs.io/en/latest/vec4.html"><span class="pre">vec4</span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getUVRect</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK11RaeptorCogs9GlyphData9getUVRectEv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Get the UV rectangle of the glyph. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>UV rectangle (u0, v0, u1, v1) of the glyph. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK11RaeptorCogs9GlyphData9getOffsetEv">
+<span id="_CPPv3NK11RaeptorCogs9GlyphData9getOffsetEv"></span><span id="_CPPv2NK11RaeptorCogs9GlyphData9getOffsetEv"></span><span id="RaeptorCogs::GlyphData::getOffsetC"></span><span class="target" id="class_raeptor_cogs_1_1_glyph_data_1ab96670ee2beadf84d5c341a2e35098c1"></span><span class="n"><span class="pre">glm</span></span><span class="p"><span class="pre">::</span></span><a class="reference external" href="https://cglm.readthedocs.io/en/latest/vec2.html"><span class="pre">vec2</span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getOffset</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK11RaeptorCogs9GlyphData9getOffsetEv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Get the offset of the glyph from the cursor position. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Offset (x_offset, y_offset) of the glyph in pixels. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK11RaeptorCogs9GlyphData7getSizeEv">
+<span id="_CPPv3NK11RaeptorCogs9GlyphData7getSizeEv"></span><span id="_CPPv2NK11RaeptorCogs9GlyphData7getSizeEv"></span><span id="RaeptorCogs::GlyphData::getSizeC"></span><span class="target" id="class_raeptor_cogs_1_1_glyph_data_1a7698bc0f55e7428e3a30ae079222a8de"></span><span class="n"><span class="pre">glm</span></span><span class="p"><span class="pre">::</span></span><a class="reference external" href="https://cglm.readthedocs.io/en/latest/vec2.html"><span class="pre">vec2</span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getSize</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK11RaeptorCogs9GlyphData7getSizeEv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Get the size of the glyph in pixels. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Size (width, height) of the glyph in pixels. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK11RaeptorCogs9GlyphData11getXAdvanceEv">
+<span id="_CPPv3NK11RaeptorCogs9GlyphData11getXAdvanceEv"></span><span id="_CPPv2NK11RaeptorCogs9GlyphData11getXAdvanceEv"></span><span id="RaeptorCogs::GlyphData::getXAdvanceC"></span><span class="target" id="class_raeptor_cogs_1_1_glyph_data_1a7071548ca082a1d4ad1461f990089a94"></span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getXAdvance</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK11RaeptorCogs9GlyphData11getXAdvanceEv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Get the horizontal advance after rendering the glyph. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Horizontal advance (x_advance) of the glyph in pixels. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-functions">Private Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs9GlyphData9setUVRectEffff">
+<span id="_CPPv3N11RaeptorCogs9GlyphData9setUVRectEffff"></span><span id="_CPPv2N11RaeptorCogs9GlyphData9setUVRectEffff"></span><span id="RaeptorCogs::GlyphData::setUVRect__float.float.float.float"></span><span class="target" id="class_raeptor_cogs_1_1_glyph_data_1a748bddc113eba6d9c8dd121cf947c4f7"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setUVRect</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">u0</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">v0</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">u1</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">v1</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N11RaeptorCogs9GlyphData9setUVRectEffff" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Set the UV rectangle of the glyph. </p>
+<p><div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">glyph</span><span class="p">.</span><span class="n">setUVRect</span><span class="p">(</span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.1f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.1f</span><span class="p">);</span>
+</pre></div>
+</div>
+ </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>All parameters are normalized texture coordinates (0.0 to 1.0). </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>u0</strong> – Left U texture coordinate. </p></li>
+<li><p><strong>v0</strong> – Top V texture coordinate. </p></li>
+<li><p><strong>u1</strong> – Right U texture coordinate. </p></li>
+<li><p><strong>v1</strong> – Bottom V texture coordinate.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-members">Private Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs9GlyphData2uvE">
+<span id="_CPPv3N11RaeptorCogs9GlyphData2uvE"></span><span id="_CPPv2N11RaeptorCogs9GlyphData2uvE"></span><span id="RaeptorCogs::GlyphData::uv__glm::vec4"></span><span class="target" id="class_raeptor_cogs_1_1_glyph_data_1a6cf919a26ff2cb3c59dd585246173f29"></span><span class="n"><span class="pre">glm</span></span><span class="p"><span class="pre">::</span></span><a class="reference external" href="https://cglm.readthedocs.io/en/latest/vec4.html"><span class="pre">vec4</span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uv</span></span></span><a class="headerlink" href="#_CPPv4N11RaeptorCogs9GlyphData2uvE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>UV texture coordinates of the glyph. </p>
+<p>(u0, v0) is the top-left coordinate, (u1, v1) is the bottom-right coordinate. All coordinates are normalized (0.0 to 1.0).</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">glm</span><span class="o">::</span><span class="n">vec4</span><span class="w"> </span><span class="n">uv</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">glyph</span><span class="p">.</span><span class="n">getUVRect</span><span class="p">();</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">u0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">uv</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">v0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">uv</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">u1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">uv</span><span class="p">.</span><span class="n">z</span><span class="p">;</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">v1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">uv</span><span class="p">.</span><span class="n">w</span><span class="p">;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs9GlyphData6offsetE">
+<span id="_CPPv3N11RaeptorCogs9GlyphData6offsetE"></span><span id="_CPPv2N11RaeptorCogs9GlyphData6offsetE"></span><span id="RaeptorCogs::GlyphData::offset__glm::vec2"></span><span class="target" id="class_raeptor_cogs_1_1_glyph_data_1aec57303c764a52d71d2357bf4eb132df"></span><span class="n"><span class="pre">glm</span></span><span class="p"><span class="pre">::</span></span><a class="reference external" href="https://cglm.readthedocs.io/en/latest/vec2.html"><span class="pre">vec2</span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">offset</span></span></span><a class="headerlink" href="#_CPPv4N11RaeptorCogs9GlyphData6offsetE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Offset of the glyph from the cursor position. </p>
+<p>Horizontal and vertical offset from cursor position. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs9GlyphData4sizeE">
+<span id="_CPPv3N11RaeptorCogs9GlyphData4sizeE"></span><span id="_CPPv2N11RaeptorCogs9GlyphData4sizeE"></span><span id="RaeptorCogs::GlyphData::size__glm::vec2"></span><span class="target" id="class_raeptor_cogs_1_1_glyph_data_1a716385d262a1aea5a19379f584d90e1a"></span><span class="n"><span class="pre">glm</span></span><span class="p"><span class="pre">::</span></span><a class="reference external" href="https://cglm.readthedocs.io/en/latest/vec2.html"><span class="pre">vec2</span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">size</span></span></span><a class="headerlink" href="#_CPPv4N11RaeptorCogs9GlyphData4sizeE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Size of the glyph in pixels. </p>
+<p>Width and height of the glyph in pixels. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs9GlyphData9x_advanceE">
+<span id="_CPPv3N11RaeptorCogs9GlyphData9x_advanceE"></span><span id="_CPPv2N11RaeptorCogs9GlyphData9x_advanceE"></span><span id="RaeptorCogs::GlyphData::x_advance__float"></span><span class="target" id="class_raeptor_cogs_1_1_glyph_data_1adbbcd83ee2199c9e2a52b37db453ff7d"></span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">x_advance</span></span></span><a class="headerlink" href="#_CPPv4N11RaeptorCogs9GlyphData9x_advanceE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Horizontal advance after rendering the glyph. </p>
+<p>Represents how much to move the cursor for the next glyph. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-friends">Friends</p>
+<dl>
+<dt class="sig sig-object cpp">
+<em class="property"><span class="pre">friend</span> <span class="pre">class</span></em> <span class="pre">FontBase</span></dt>
+</dl>
+
+</div>
+</dd></dl>
+
+</section>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper colwidths-given docutils container" id="id4">
+<table class="docutils align-default" id="id4">
+<caption><span class="caption-text">Functions</span><a class="headerlink" href="#id4" title="Link to this table">¶</a></caption>
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Function</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">std::operator&lt;&lt;(std::ostream</span> <span class="pre">&amp;os,</span> <span class="pre">const</span> <span class="pre">RaeptorCogs::Font</span> <span class="pre">&amp;font)</span></code></p></td>
+<td><p>Stream output operator for Font.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">std::operator&lt;&lt;(std::ostream</span> <span class="pre">&amp;os,</span> <span class="pre">const</span> <span class="pre">RaeptorCogs::FontBase</span> <span class="pre">&amp;font)</span></code></p></td>
+<td><p>Stream output operator for FontBase.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">std::operator&lt;&lt;(std::ostream</span> <span class="pre">&amp;os,</span> <span class="pre">const</span> <span class="pre">RaeptorCogs::FontOptions</span> <span class="pre">&amp;options)</span></code></p></td>
+<td><p>Stream output operator for FontOptions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">std::operator&lt;&lt;(std::ostream</span> <span class="pre">&amp;os,</span> <span class="pre">const</span> <span class="pre">RaeptorCogs::FontType</span> <span class="pre">&amp;type)</span></code></p></td>
+<td><p>Stream output operator for FontType.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">std::operator&lt;&lt;(std::ostream</span> <span class="pre">&amp;os,</span> <span class="pre">const</span> <span class="pre">RaeptorCogs::GlyphData</span> <span class="pre">&amp;glyph)</span></code></p></td>
+<td><p>Stream output operator for GlyphData.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NStlsERNSt7ostreamERKN11RaeptorCogs4FontE">
+<span id="_CPPv3NStlsERNSt7ostreamERKN11RaeptorCogs4FontE"></span><span id="_CPPv2NStlsERNSt7ostreamERKN11RaeptorCogs4FontE"></span><span id="std::lshift-operator__osR.RaeptorCogs::FontCR"></span><span class="target" id="namespacestd_1a826e09c4f16547b7dbbd49e593d97eea"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="../../namespaces/std.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference external" href="https://en.cppreference.com/w/cpp/io/basic_ostream.html"><span class="pre">ostream</span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-prename descclassname"><a class="reference internal" href="../../namespaces/std.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">&lt;&lt;</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../../namespaces/std.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference external" href="https://en.cppreference.com/w/cpp/io/basic_ostream.html"><span class="pre">ostream</span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">os</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../namespaces/RaeptorCogs.html#_CPPv411RaeptorCogs" title="RaeptorCogs"><span class="n"><span class="pre">RaeptorCogs</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N11RaeptorCogs4FontE" title="RaeptorCogs::Font"><span class="n"><span class="pre">Font</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">font</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4NStlsERNSt7ostreamERKN11RaeptorCogs4FontE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Stream output operator for Font. </p>
+<p>Outputs the Font in a human-readable format. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NStlsERNSt7ostreamERKN11RaeptorCogs8FontBaseE">
+<span id="_CPPv3NStlsERNSt7ostreamERKN11RaeptorCogs8FontBaseE"></span><span id="_CPPv2NStlsERNSt7ostreamERKN11RaeptorCogs8FontBaseE"></span><span id="std::lshift-operator__osR.RaeptorCogs::FontBaseCR"></span><span class="target" id="namespacestd_1a62b82a887990e585d6537d45dd7b479e"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="../../namespaces/std.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference external" href="https://en.cppreference.com/w/cpp/io/basic_ostream.html"><span class="pre">ostream</span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-prename descclassname"><a class="reference internal" href="../../namespaces/std.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">&lt;&lt;</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../../namespaces/std.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference external" href="https://en.cppreference.com/w/cpp/io/basic_ostream.html"><span class="pre">ostream</span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">os</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../namespaces/RaeptorCogs.html#_CPPv411RaeptorCogs" title="RaeptorCogs"><span class="n"><span class="pre">RaeptorCogs</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N11RaeptorCogs8FontBaseE" title="RaeptorCogs::FontBase"><span class="n"><span class="pre">FontBase</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">font</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4NStlsERNSt7ostreamERKN11RaeptorCogs8FontBaseE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Stream output operator for FontBase. </p>
+<p>Outputs the FontBase in a human-readable format. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NStlsERNSt7ostreamERKN11RaeptorCogs11FontOptionsE">
+<span id="_CPPv3NStlsERNSt7ostreamERKN11RaeptorCogs11FontOptionsE"></span><span id="_CPPv2NStlsERNSt7ostreamERKN11RaeptorCogs11FontOptionsE"></span><span id="std::lshift-operator__osR.RaeptorCogs::FontOptionsCR"></span><span class="target" id="namespacestd_1a8a77a535418ab90645970ce67da31ed4"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="../../namespaces/std.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference external" href="https://en.cppreference.com/w/cpp/io/basic_ostream.html"><span class="pre">ostream</span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-prename descclassname"><a class="reference internal" href="../../namespaces/std.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">&lt;&lt;</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../../namespaces/std.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference external" href="https://en.cppreference.com/w/cpp/io/basic_ostream.html"><span class="pre">ostream</span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">os</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../namespaces/RaeptorCogs.html#_CPPv411RaeptorCogs" title="RaeptorCogs"><span class="n"><span class="pre">RaeptorCogs</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N11RaeptorCogs11FontOptionsE" title="RaeptorCogs::FontOptions"><span class="n"><span class="pre">FontOptions</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">options</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4NStlsERNSt7ostreamERKN11RaeptorCogs11FontOptionsE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Stream output operator for FontOptions. </p>
+<p>Outputs the FontOptions in a human-readable format. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NStlsERNSt7ostreamERKN11RaeptorCogs8FontTypeE">
+<span id="_CPPv3NStlsERNSt7ostreamERKN11RaeptorCogs8FontTypeE"></span><span id="_CPPv2NStlsERNSt7ostreamERKN11RaeptorCogs8FontTypeE"></span><span id="std::lshift-operator__osR.RaeptorCogs::FontTypeCR"></span><span class="target" id="namespacestd_1a0f31ffdca241f9f15e18e5e94c8eb709"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="../../namespaces/std.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference external" href="https://en.cppreference.com/w/cpp/io/basic_ostream.html"><span class="pre">ostream</span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-prename descclassname"><a class="reference internal" href="../../namespaces/std.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">&lt;&lt;</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../../namespaces/std.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference external" href="https://en.cppreference.com/w/cpp/io/basic_ostream.html"><span class="pre">ostream</span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">os</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../namespaces/RaeptorCogs.html#_CPPv411RaeptorCogs" title="RaeptorCogs"><span class="n"><span class="pre">RaeptorCogs</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N11RaeptorCogs8FontTypeE" title="RaeptorCogs::FontType"><span class="n"><span class="pre">FontType</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">type</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4NStlsERNSt7ostreamERKN11RaeptorCogs8FontTypeE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Stream output operator for FontType. </p>
+<p>Outputs the FontType in a human-readable format. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NStlsERNSt7ostreamERKN11RaeptorCogs9GlyphDataE">
+<span id="_CPPv3NStlsERNSt7ostreamERKN11RaeptorCogs9GlyphDataE"></span><span id="_CPPv2NStlsERNSt7ostreamERKN11RaeptorCogs9GlyphDataE"></span><span id="std::lshift-operator__osR.RaeptorCogs::GlyphDataCR"></span><span class="target" id="namespacestd_1ac0674dd4cb2f0e9d74991d6896e0ae60"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="../../namespaces/std.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference external" href="https://en.cppreference.com/w/cpp/io/basic_ostream.html"><span class="pre">ostream</span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-prename descclassname"><a class="reference internal" href="../../namespaces/std.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">&lt;&lt;</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../../namespaces/std.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference external" href="https://en.cppreference.com/w/cpp/io/basic_ostream.html"><span class="pre">ostream</span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">os</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../namespaces/RaeptorCogs.html#_CPPv411RaeptorCogs" title="RaeptorCogs"><span class="n"><span class="pre">RaeptorCogs</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N11RaeptorCogs9GlyphDataE" title="RaeptorCogs::GlyphData"><span class="n"><span class="pre">GlyphData</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">glyph</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4NStlsERNSt7ostreamERKN11RaeptorCogs9GlyphDataE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Stream output operator for GlyphData. </p>
+<p>Outputs the GlyphData in a human-readable format. </p>
+</dd></dl>
+
+</section>
+<section id="variables">
+<h2>Variables<a class="headerlink" href="#variables" title="Link to this heading">¶</a></h2>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs12FONT_PADDINGE">
+<span id="_CPPv3N11RaeptorCogs12FONT_PADDINGE"></span><span id="_CPPv2N11RaeptorCogs12FONT_PADDINGE"></span><span id="RaeptorCogs::FONT_PADDING__i"></span><span class="target" id="namespace_raeptor_cogs_1af2d7bbb131848ac9b88150c14fd64439"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../../namespaces/RaeptorCogs.html#_CPPv411RaeptorCogs" title="RaeptorCogs"><span class="n"><span class="pre">RaeptorCogs</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">FONT_PADDING</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#_CPPv4N11RaeptorCogs12FONT_PADDINGE" title="Link to this definition">¶</a><br /></dt>
+<dd><p><a class="reference internal" href="#class_raeptor_cogs_1_1_font"><span class="std std-ref">Font</span></a> padding constant. </p>
+<p>Represents the padding added around each glyph in the font atlas to prevent texture bleeding. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs16NORMAL_FONT_SIZEE">
+<span id="_CPPv3N11RaeptorCogs16NORMAL_FONT_SIZEE"></span><span id="_CPPv2N11RaeptorCogs16NORMAL_FONT_SIZEE"></span><span id="RaeptorCogs::NORMAL_FONT_SIZE__i"></span><span class="target" id="namespace_raeptor_cogs_1af4892691138ea49004e6c6839b6f0bc3"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../../namespaces/RaeptorCogs.html#_CPPv411RaeptorCogs" title="RaeptorCogs"><span class="n"><span class="pre">RaeptorCogs</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">NORMAL_FONT_SIZE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">72</span></span><a class="headerlink" href="#_CPPv4N11RaeptorCogs16NORMAL_FONT_SIZEE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Normal font size constant. </p>
+<p>Represents the default font size used for scaling glyphs. </p>
+</dd></dl>
+
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="Images.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Images</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="FileIO.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">FileIO</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2025 Estorc — RaeptorCogs
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Font</a><ul>
+<li><a class="reference internal" href="#_font_8hpp_1IO_Font_Overview">Overview</a></li>
+<li><a class="reference internal" href="#_font_8hpp_1IO_Font_Header">Header</a></li>
+<li><a class="reference internal" href="#_font_8hpp_1IO_Font_Metadata">Metadata</a></li>
+<li><a class="reference internal" href="#enums">Enums</a><ul>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs8FontTypeE"><code class="docutils literal notranslate"><span class="pre">FontType</span></code></a><ul>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs8FontType6BITMAPE"><code class="docutils literal notranslate"><span class="pre">BITMAP</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs8FontType3SDFE"><code class="docutils literal notranslate"><span class="pre">SDF</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#structs">Structs</a><ul>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs4Font11OnLoadProxyE"><code class="docutils literal notranslate"><span class="pre">RaeptorCogs::Font::OnLoadProxy</span></code></a><ul>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs4Font11OnLoadProxyaSENSt8functionIFvvEEE"><code class="docutils literal notranslate"><span class="pre">operator=()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs4Font11OnLoadProxy3ptrE"><code class="docutils literal notranslate"><span class="pre">ptr</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs11FontOptionsE"><code class="docutils literal notranslate"><span class="pre">RaeptorCogs::FontOptions</span></code></a><ul>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs11FontOptions4typeE"><code class="docutils literal notranslate"><span class="pre">type</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs11FontOptions4sizeE"><code class="docutils literal notranslate"><span class="pre">size</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs11FontOptions8priorityE"><code class="docutils literal notranslate"><span class="pre">priority</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#classes">Classes</a><ul>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs4FontE"><code class="docutils literal notranslate"><span class="pre">RaeptorCogs::Font</span></code></a><ul>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs4Font4FontEv"><code class="docutils literal notranslate"><span class="pre">Font()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs4Font4FontE9nullptr_t"><code class="docutils literal notranslate"><span class="pre">Font()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs4Font4FontENSt10shared_ptrI8FontBaseEE"><code class="docutils literal notranslate"><span class="pre">Font()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs4Font4FontERK8FileData11FontOptions"><code class="docutils literal notranslate"><span class="pre">Font()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs4Font4FontENSt10filesystem4pathE11FontOptions"><code class="docutils literal notranslate"><span class="pre">Font()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4NK11RaeptorCogs4Font3getEv"><code class="docutils literal notranslate"><span class="pre">get()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4NK11RaeptorCogs4FontmlEv"><code class="docutils literal notranslate"><span class="pre">operator*()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4NK11RaeptorCogs4FontptEv"><code class="docutils literal notranslate"><span class="pre">operator-&gt;()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs4Font3getEv"><code class="docutils literal notranslate"><span class="pre">get()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs4FontmlEv"><code class="docutils literal notranslate"><span class="pre">operator*()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs4FontptEv"><code class="docutils literal notranslate"><span class="pre">operator-&gt;()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4NK11RaeptorCogs4FontcvbEv"><code class="docutils literal notranslate"><span class="pre">operator</span> <span class="pre">bool()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs4Font6onLoadE"><code class="docutils literal notranslate"><span class="pre">onLoad</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs4Font3ptrE"><code class="docutils literal notranslate"><span class="pre">ptr</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs8FontBaseE"><code class="docutils literal notranslate"><span class="pre">RaeptorCogs::FontBase</span></code></a><ul>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs8FontBaseD0Ev"><code class="docutils literal notranslate"><span class="pre">~FontBase()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs8FontBase8FontBaseERK8FontBase"><code class="docutils literal notranslate"><span class="pre">FontBase()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs8FontBaseaSERK8FontBase"><code class="docutils literal notranslate"><span class="pre">operator=()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs8FontBase8FontBaseERR8FontBase"><code class="docutils literal notranslate"><span class="pre">FontBase()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs8FontBaseaSERR8FontBase"><code class="docutils literal notranslate"><span class="pre">operator=()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4NK11RaeptorCogs8FontBase4bindEv"><code class="docutils literal notranslate"><span class="pre">bind()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4NK11RaeptorCogs8FontBase5getIDEv"><code class="docutils literal notranslate"><span class="pre">getID()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4NK11RaeptorCogs8FontBase8getGlyphEK6U8Char"><code class="docutils literal notranslate"><span class="pre">getGlyph()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4NK11RaeptorCogs8FontBase14getGlyphUVRectEK6U8Char"><code class="docutils literal notranslate"><span class="pre">getGlyphUVRect()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4NK11RaeptorCogs8FontBase14getGlyphOffsetEK6U8Char"><code class="docutils literal notranslate"><span class="pre">getGlyphOffset()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4NK11RaeptorCogs8FontBase12getGlyphSizeEK6U8Char"><code class="docutils literal notranslate"><span class="pre">getGlyphSize()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4NK11RaeptorCogs8FontBase16getGlyphXAdvanceEK6U8Char"><code class="docutils literal notranslate"><span class="pre">getGlyphXAdvance()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4NK11RaeptorCogs8FontBase11getFontSizeEv"><code class="docutils literal notranslate"><span class="pre">getFontSize()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4NK11RaeptorCogs8FontBase8isLoadedEv"><code class="docutils literal notranslate"><span class="pre">isLoaded()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs8FontBase8FontBaseEv"><code class="docutils literal notranslate"><span class="pre">FontBase()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs8FontBase16GenerateSDFAtlasEPKhPh6size_t6size_tf6size_t"><code class="docutils literal notranslate"><span class="pre">GenerateSDFAtlas()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs8FontBase16GenerateBMPAtlasEPKhPh6size_t6size_tf6size_t"><code class="docutils literal notranslate"><span class="pre">GenerateBMPAtlas()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs8FontBase13uploadTextureEPKh6size_t6size_t"><code class="docutils literal notranslate"><span class="pre">uploadTexture()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs8FontBase7onLoad_E"><code class="docutils literal notranslate"><span class="pre">onLoad_</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs8FontBase9textureIDE"><code class="docutils literal notranslate"><span class="pre">textureID</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs8FontBase6glyphsE"><code class="docutils literal notranslate"><span class="pre">glyphs</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs8FontBase9font_sizeE"><code class="docutils literal notranslate"><span class="pre">font_size</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs8FontBase9font_typeE"><code class="docutils literal notranslate"><span class="pre">font_type</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs8FontBase6createERK8FileData11FontOptions"><code class="docutils literal notranslate"><span class="pre">create()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs8FontBase6createERKNSt10filesystem4pathE11FontOptions"><code class="docutils literal notranslate"><span class="pre">create()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs9GlyphDataE"><code class="docutils literal notranslate"><span class="pre">RaeptorCogs::GlyphData</span></code></a><ul>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs9GlyphData9GlyphDataEv"><code class="docutils literal notranslate"><span class="pre">GlyphData()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs9GlyphData9GlyphDataEfffffffff"><code class="docutils literal notranslate"><span class="pre">GlyphData()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4NK11RaeptorCogs9GlyphData9getUVRectEv"><code class="docutils literal notranslate"><span class="pre">getUVRect()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4NK11RaeptorCogs9GlyphData9getOffsetEv"><code class="docutils literal notranslate"><span class="pre">getOffset()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4NK11RaeptorCogs9GlyphData7getSizeEv"><code class="docutils literal notranslate"><span class="pre">getSize()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4NK11RaeptorCogs9GlyphData11getXAdvanceEv"><code class="docutils literal notranslate"><span class="pre">getXAdvance()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs9GlyphData9setUVRectEffff"><code class="docutils literal notranslate"><span class="pre">setUVRect()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs9GlyphData2uvE"><code class="docutils literal notranslate"><span class="pre">uv</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs9GlyphData6offsetE"><code class="docutils literal notranslate"><span class="pre">offset</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs9GlyphData4sizeE"><code class="docutils literal notranslate"><span class="pre">size</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs9GlyphData9x_advanceE"><code class="docutils literal notranslate"><span class="pre">x_advance</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#functions">Functions</a><ul>
+<li><a class="reference internal" href="#_CPPv4NStlsERNSt7ostreamERKN11RaeptorCogs4FontE"><code class="docutils literal notranslate"><span class="pre">operator&lt;&lt;()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4NStlsERNSt7ostreamERKN11RaeptorCogs8FontBaseE"><code class="docutils literal notranslate"><span class="pre">operator&lt;&lt;()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4NStlsERNSt7ostreamERKN11RaeptorCogs11FontOptionsE"><code class="docutils literal notranslate"><span class="pre">operator&lt;&lt;()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4NStlsERNSt7ostreamERKN11RaeptorCogs8FontTypeE"><code class="docutils literal notranslate"><span class="pre">operator&lt;&lt;()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4NStlsERNSt7ostreamERKN11RaeptorCogs9GlyphDataE"><code class="docutils literal notranslate"><span class="pre">operator&lt;&lt;()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#variables">Variables</a><ul>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs12FONT_PADDINGE"><code class="docutils literal notranslate"><span class="pre">FONT_PADDING</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs16NORMAL_FONT_SIZEE"><code class="docutils literal notranslate"><span class="pre">NORMAL_FONT_SIZE</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=df1a032d"></script>
+    </body>
+</html>

@@ -1,0 +1,86 @@
+InstanceData
+============
+
+.. doxygenfile:: RaeptorCogs/GAPI/Common/Core/InstanceData.hpp
+   :project: RaeptorCogs
+   :no-link:
+   :sections: briefdescription detaileddescription
+
+Types
+-----
+
+.. list-table:: Type Definitions
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Type
+     - Description
+   * - ``RaeptorCogs::GAPI::Common::DynamicInstanceData``
+     - No description.
+   * - ``RaeptorCogs::GAPI::Common::DynamicInstanceDataBuffer``
+     - No description.
+   * - ``RaeptorCogs::GAPI::Common::StaticInstanceDataBuffer``
+     - No description.
+.. doxygentypedef:: RaeptorCogs::GAPI::Common::DynamicInstanceData
+   :project: RaeptorCogs
+
+.. doxygentypedef:: RaeptorCogs::GAPI::Common::DynamicInstanceDataBuffer
+   :project: RaeptorCogs
+
+.. doxygentypedef:: RaeptorCogs::GAPI::Common::StaticInstanceDataBuffer
+   :project: RaeptorCogs
+
+Structs
+-------
+
+.. list-table:: Structures
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Struct
+     - Description
+   * - ``RaeptorCogs::GAPI::Common::InstanceData``
+     - No description.
+   * - ``RaeptorCogs::GAPI::Common::StaticInstanceData``
+     - No description.
+.. doxygenstruct:: RaeptorCogs::GAPI::Common::InstanceData
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+
+.. doxygenstruct:: RaeptorCogs::GAPI::Common::StaticInstanceData
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+
+Classes
+-------
+
+.. list-table:: Classes
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Class
+     - Description
+   * - ``RaeptorCogs::GAPI::Common::InstanceAllocator``
+     - No description.
+   * - ``RaeptorCogs::GAPI::Common::InstanceUploader``
+     - No description.
+.. doxygenclass:: RaeptorCogs::GAPI::Common::InstanceAllocator
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+
+.. doxygenclass:: RaeptorCogs::GAPI::Common::InstanceUploader
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+

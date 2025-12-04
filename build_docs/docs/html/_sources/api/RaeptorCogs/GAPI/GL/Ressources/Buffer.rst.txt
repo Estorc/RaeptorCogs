@@ -1,0 +1,130 @@
+Buffer
+======
+
+.. doxygenfile:: RaeptorCogs/GAPI/GL/Ressources/Buffer.hpp
+   :project: RaeptorCogs
+   :no-link:
+   :sections: briefdescription detaileddescription
+
+Types
+-----
+
+.. list-table:: Type Definitions
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Type
+     - Description
+   * - ``RaeptorCogs::GAPI::GL::EBO``
+     - No description.
+   * - ``RaeptorCogs::GAPI::GL::FBO``
+     - No description.
+   * - ``RaeptorCogs::GAPI::GL::RBO``
+     - No description.
+   * - ``RaeptorCogs::GAPI::GL::SSBO``
+     - No description.
+   * - ``RaeptorCogs::GAPI::GL::VBO``
+     - No description.
+.. doxygentypedef:: RaeptorCogs::GAPI::GL::EBO
+   :project: RaeptorCogs
+
+.. doxygentypedef:: RaeptorCogs::GAPI::GL::FBO
+   :project: RaeptorCogs
+
+.. doxygentypedef:: RaeptorCogs::GAPI::GL::RBO
+   :project: RaeptorCogs
+
+.. doxygentypedef:: RaeptorCogs::GAPI::GL::SSBO
+   :project: RaeptorCogs
+
+.. doxygentypedef:: RaeptorCogs::GAPI::GL::VBO
+   :project: RaeptorCogs
+
+Classes
+-------
+
+.. list-table:: Classes
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Class
+     - Description
+   * - ``RaeptorCogs::GAPI::GL::Elementbuffer``
+     - No description.
+   * - ``RaeptorCogs::GAPI::GL::Framebuffer``
+     - No description.
+   * - ``RaeptorCogs::GAPI::GL::Renderbuffer``
+     - No description.
+   * - ``RaeptorCogs::GAPI::GL::ShaderStorageBuffer``
+     - No description.
+   * - ``RaeptorCogs::GAPI::GL::Vertexbuffer``
+     - No description.
+.. doxygenclass:: RaeptorCogs::GAPI::GL::Elementbuffer
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+
+.. doxygenclass:: RaeptorCogs::GAPI::GL::Framebuffer
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+
+.. doxygenclass:: RaeptorCogs::GAPI::GL::Renderbuffer
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+
+.. doxygenclass:: RaeptorCogs::GAPI::GL::ShaderStorageBuffer
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+
+.. doxygenclass:: RaeptorCogs::GAPI::GL::Vertexbuffer
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+
+Functions
+---------
+
+.. list-table:: Functions
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Function
+     - Description
+   * - ``RaeptorCogs::GAPI::GL::REGISTER(Common::Elementbuffer, Elementbuffer)``
+     - Register Elementbuffer with the FactoryRegistry.
+   * - ``RaeptorCogs::GAPI::GL::REGISTER(Common::Framebuffer, Framebuffer)``
+     - Register Framebuffer with the FactoryRegistry.
+   * - ``RaeptorCogs::GAPI::GL::REGISTER(Common::Renderbuffer, Renderbuffer)``
+     - Register Renderbuffer with the FactoryRegistry.
+   * - ``RaeptorCogs::GAPI::GL::REGISTER(Common::ShaderStorageBuffer, ShaderStorageBuffer)``
+     - Register ShaderStorageBuffer with the FactoryRegistry.
+   * - ``RaeptorCogs::GAPI::GL::REGISTER(Common::Vertexbuffer, Vertexbuffer)``
+     - Register Vertexbuffer with the FactoryRegistry.
+.. doxygenfunction:: RaeptorCogs::GAPI::GL::REGISTER(Common::Elementbuffer, Elementbuffer)
+   :project: RaeptorCogs
+
+.. doxygenfunction:: RaeptorCogs::GAPI::GL::REGISTER(Common::Framebuffer, Framebuffer)
+   :project: RaeptorCogs
+
+.. doxygenfunction:: RaeptorCogs::GAPI::GL::REGISTER(Common::Renderbuffer, Renderbuffer)
+   :project: RaeptorCogs
+
+.. doxygenfunction:: RaeptorCogs::GAPI::GL::REGISTER(Common::ShaderStorageBuffer, ShaderStorageBuffer)
+   :project: RaeptorCogs
+
+.. doxygenfunction:: RaeptorCogs::GAPI::GL::REGISTER(Common::Vertexbuffer, Vertexbuffer)
+   :project: RaeptorCogs
+

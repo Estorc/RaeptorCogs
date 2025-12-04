@@ -1,0 +1,735 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../../../../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../../../../genindex.html"><link rel="search" title="Search" href="../../../../../search.html"><link rel="next" title="TextureData" href="TextureData.html"><link rel="prev" title="Object" href="Object.html">
+        <link rel="prefetch" href="../../../../../_static/raeptor-cogs-logo.png" as="image">
+
+    <link rel="shortcut icon" href="../../../../../_static/favicon.ico"><!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+        <title>Shader - RaeptorCogs documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/custom.css?v=62d81270" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../../../index.html"><div class="brand">RaeptorCogs  documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../../index.html">
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../../../../../_static/raeptor-cogs-logo.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">RaeptorCogs  documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../about/introduction.html">Introduction</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../../getting-started/introduction.html">Introduction</a><input aria-label="Toggle navigation of Introduction" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../getting-started/installation.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../getting-started/first-application.html">First application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../getting-started/and-now-what.html">And now what?</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../tutorials/introduction.html">Introduction</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../../../../files.html">Files Reference</a><input aria-label="Toggle navigation of Files Reference" checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../External/index.html">External</a><input aria-label="Toggle navigation of External" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../External/ImGui/index.html">ImGui</a><input aria-label="Toggle navigation of ImGui" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../External/ImGui/ImGui.html">ImGui</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../External/glad/index.html">glad</a><input aria-label="Toggle navigation of glad" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../External/glad/glad.html">glad</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../External/miniz/index.html">miniz</a><input aria-label="Toggle navigation of miniz" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../External/miniz/miniz.html">miniz</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../External/stb/index.html">stb</a><input aria-label="Toggle navigation of stb" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../External/stb/stb.html">stb</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 current has-children"><a class="reference internal" href="../../index.html">GAPI</a><input aria-label="Toggle navigation of GAPI" checked="" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../Common/index.html">Common</a><input aria-label="Toggle navigation of Common" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../Common/Core/index.html">Core</a><input aria-label="Toggle navigation of Core" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../Common/Core/Internal/index.html">Internal</a><input aria-label="Toggle navigation of Internal" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../Common/Core/Internal/FrameData.html">FrameData</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../Common/Core/Internal/GraphicCore.html">GraphicCore</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../Common/Core/Internal/ImGuiModule.html">ImGuiModule</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../Common/Core/Internal/RenderPipeline.html">RenderPipeline</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../Common/Core/Internal/WindowContext.html">WindowContext</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../../Common/Core/GraphicHandler.html">GraphicHandler</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Common/Core/InstanceData.html">InstanceData</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Common/Core/RenderList.html">RenderList</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../Common/Ressources/index.html">Ressources</a><input aria-label="Toggle navigation of Ressources" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../Common/Ressources/Buffer.html">Buffer</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Common/Ressources/Object.html">Object</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Common/Ressources/Shader.html">Shader</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Common/Ressources/TextureData.html">TextureData</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Common/Ressources/VertexArray.html">VertexArray</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../Common/RendererBackend.html">RendererBackend</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../GL/index.html">GL</a><input aria-label="Toggle navigation of GL" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../GL/Core/index.html">Core</a><input aria-label="Toggle navigation of Core" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../../GL/Core/Internal/index.html">Internal</a><input aria-label="Toggle navigation of Internal" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../GL/Core/Internal/GraphicCore.html">GraphicCore</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../GL/Core/Internal/ImGuiModule.html">ImGuiModule</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../GL/Core/Internal/RenderPipeline.html">RenderPipeline</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../GL/Core/Internal/WindowContext.html">WindowContext</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../GL/Ressources/index.html">Ressources</a><input aria-label="Toggle navigation of Ressources" class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../GL/Ressources/Buffer.html">Buffer</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../GL/Ressources/Object.html">Object</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../GL/Ressources/Shader.html">Shader</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../GL/Ressources/TextureData.html">TextureData</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../GL/Ressources/VertexArray.html">VertexArray</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../GL/Constants.html">Constants</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../GL/RendererBackend.html">RendererBackend</a></li>
+</ul>
+</li>
+<li class="toctree-l3 current has-children"><a class="reference internal" href="../index.html">Vulkan</a><input aria-label="Toggle navigation of Vulkan" checked="" class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l4 has-children"><a class="reference internal" href="../Core/index.html">Core</a><input aria-label="Toggle navigation of Core" class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5 has-children"><a class="reference internal" href="../Core/Internal/index.html">Internal</a><input aria-label="Toggle navigation of Internal" class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="../Core/Internal/GraphicCore.html">GraphicCore</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../Core/Internal/ImGuiModule.html">ImGuiModule</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../Core/Internal/RenderPipeline.html">RenderPipeline</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../Core/Internal/WindowContext.html">WindowContext</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../Core/Memory.html">Memory</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Core/Vulkan.html">Vulkan</a></li>
+</ul>
+</li>
+<li class="toctree-l4 current has-children"><a class="reference internal" href="index.html">Ressources</a><input aria-label="Toggle navigation of Ressources" checked="" class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" role="switch" type="checkbox"/><label for="toctree-checkbox-20"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="Buffer.html">Buffer</a></li>
+<li class="toctree-l5"><a class="reference internal" href="Object.html">Object</a></li>
+<li class="toctree-l5 current current-page"><a class="current reference internal" href="#">Shader</a></li>
+<li class="toctree-l5"><a class="reference internal" href="TextureData.html">TextureData</a></li>
+<li class="toctree-l5"><a class="reference internal" href="VertexArray.html">VertexArray</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../RendererBackend.html">RendererBackend</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../IO/index.html">IO</a><input aria-label="Toggle navigation of IO" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../IO/FileIO.html">FileIO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../IO/Font.html">Font</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../IO/Images.html">Images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../IO/Input.html">Input</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../IO/Path.html">Path</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../IO/String.html">String</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../IO/Texture.html">Texture</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../BitArray.html">BitArray</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../BitOp.html">BitOp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../Camera.html">Camera</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../Component.html">Component</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../Flags.html">Flags</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../Graphic.html">Graphic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../Measure.html">Measure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../Memory.html">Memory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../Node.html">Node</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../Platform.html">Platform</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../RaeptorCogs.html">RaeptorCogs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../Random.html">Random</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../Region.html">Region</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../Renderer.html">Renderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../Serializable.html">Serializable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../Shape.html">Shape</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../Singleton.html">Singleton</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../Sprite.html">Sprite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../Text.html">Text</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../Time.html">Time</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../Vertex.html">Vertex</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../Window.html">Window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../Worker.html">Worker</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../namespaces.html">Namespaces Reference</a><input aria-label="Toggle navigation of Namespaces Reference" class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" role="switch" type="checkbox"/><label for="toctree-checkbox-22"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../namespaces/RaeptorCogs.html">Namespace RaeptorCogs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../namespaces/RaeptorCogs_GAPI.html">Namespace RaeptorCogs::GAPI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../namespaces/RaeptorCogs_GAPI_Common.html">Namespace RaeptorCogs::GAPI::Common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../namespaces/RaeptorCogs_GAPI_GL.html">Namespace RaeptorCogs::GAPI::GL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../namespaces/RaeptorCogs_GAPI_Vulkan.html">Namespace RaeptorCogs::GAPI::Vulkan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../namespaces/RaeptorCogs_Singletons.html">Namespace RaeptorCogs::Singletons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../namespaces/std.html">Namespace std</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../../../../../_sources/api/RaeptorCogs/GAPI/Vulkan/Ressources/Shader.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="shader">
+<h1>Shader<a class="headerlink" href="#shader" title="Link to this heading">¶</a></h1>
+<p>Shader interface. </p>
+<section id="_vulkan_2_ressources_2_shader_8hpp_1GAPI_Common_Vulkan_Shader_Overview">
+<h2>Overview<a class="headerlink" href="#_vulkan_2_ressources_2_shader_8hpp_1GAPI_Common_Vulkan_Shader_Overview" title="Link to this heading">¶</a></h2>
+<p>Typical use cases:<ul class="simple">
+<li><p>Defining Vulkan-specific shader implementations </p></li>
+</ul>
+</p>
+</section>
+<section id="_vulkan_2_ressources_2_shader_8hpp_1GAPI_Common_Vulkan_Shader_Header">
+<h2>Header<a class="headerlink" href="#_vulkan_2_ressources_2_shader_8hpp_1GAPI_Common_Vulkan_Shader_Header" title="Link to this heading">¶</a></h2>
+<p>&lt;RaeptorCogs/GAPI/Vulkan/Ressources/Shader.hpp&gt;</p>
+</section>
+<section id="_vulkan_2_ressources_2_shader_8hpp_1GAPI_Common_Vulkan_Shader_Metadata">
+<h2>Metadata<a class="headerlink" href="#_vulkan_2_ressources_2_shader_8hpp_1GAPI_Common_Vulkan_Shader_Metadata" title="Link to this heading">¶</a></h2>
+<p><dl class="simple">
+<dt><strong>Author</strong></dt><dd><p>Estorc </p>
+</dd>
+<dt><strong>Version</strong></dt><dd><p>v1.0 </p>
+</dd>
+<dt><strong>Copyright</strong></dt><dd><p>Copyright (c) 2025 Estorc MIT License. </p>
+</dd>
+</dl>
+</p>
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper colwidths-given docutils container" id="id1">
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-text">Classes</span><a class="headerlink" href="#id1" title="Link to this table">¶</a></caption>
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Class</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">RaeptorCogs::GAPI::Vulkan::Shader</span></code></p></td>
+<td><p>No description.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs4GAPI6Vulkan6ShaderE">
+<span id="_CPPv3N11RaeptorCogs4GAPI6Vulkan6ShaderE"></span><span id="_CPPv2N11RaeptorCogs4GAPI6Vulkan6ShaderE"></span><span id="RaeptorCogs::GAPI::Vulkan::Shader"></span><span class="target" id="class_raeptor_cogs_1_1_g_a_p_i_1_1_vulkan_1_1_shader"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Shader</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../../../../namespaces/RaeptorCogs.html#_CPPv411RaeptorCogs" title="RaeptorCogs"><span class="n"><span class="pre">RaeptorCogs</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../../../../namespaces/RaeptorCogs_GAPI.html#_CPPv4N11RaeptorCogs4GAPIE" title="RaeptorCogs::GAPI"><span class="n"><span class="pre">GAPI</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../../../../namespaces/RaeptorCogs_GAPI_Common.html#_CPPv4N11RaeptorCogs4GAPI6CommonE" title="RaeptorCogs::GAPI::Common"><span class="n"><span class="pre">Common</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../../Common/Ressources/Shader.html#_CPPv4N11RaeptorCogs4GAPI6Common6ShaderE" title="RaeptorCogs::GAPI::Common::Shader"><span class="n"><span class="pre">Shader</span></span></a><a class="headerlink" href="#_CPPv4N11RaeptorCogs4GAPI6Vulkan6ShaderE" title="Link to this definition">¶</a><br /></dt>
+<dd><p><div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="../../Common/Ressources/Shader.html#class_raeptor_cogs_1_1_g_a_p_i_1_1_common_1_1_shader"><span class="std std-ref">RaeptorCogs::GAPI::Common::Shader</span></a></p>
+</div>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs4GAPI6Vulkan6Shader6ShaderEv">
+<span id="_CPPv3N11RaeptorCogs4GAPI6Vulkan6Shader6ShaderEv"></span><span id="_CPPv2N11RaeptorCogs4GAPI6Vulkan6Shader6ShaderEv"></span><span id="RaeptorCogs::GAPI::Vulkan::Shader::Shader"></span><span class="target" id="class_raeptor_cogs_1_1_g_a_p_i_1_1_vulkan_1_1_shader_1aaa511a6e913097c09016170c6f0e1e61"></span><span class="sig-name descname"><span class="n"><span class="pre">Shader</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N11RaeptorCogs4GAPI6Vulkan6Shader6ShaderEv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Default constructor. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs4GAPI6Vulkan6ShaderD0Ev">
+<span id="_CPPv3N11RaeptorCogs4GAPI6Vulkan6ShaderD0Ev"></span><span id="_CPPv2N11RaeptorCogs4GAPI6Vulkan6ShaderD0Ev"></span><span id="RaeptorCogs::GAPI::Vulkan::Shader::~Shader"></span><span class="target" id="class_raeptor_cogs_1_1_g_a_p_i_1_1_vulkan_1_1_shader_1a97485bc5201f49d3c8bebab04bc1a51f"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~Shader</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N11RaeptorCogs4GAPI6Vulkan6ShaderD0Ev" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Virtual destructor. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs4GAPI6Vulkan6Shader5buildEPKcPKc">
+<span id="_CPPv3N11RaeptorCogs4GAPI6Vulkan6Shader5buildEPKcPKc"></span><span id="_CPPv2N11RaeptorCogs4GAPI6Vulkan6Shader5buildEPKcPKc"></span><span id="RaeptorCogs::GAPI::Vulkan::Shader::build__cCP.cCP"></span><span class="target" id="class_raeptor_cogs_1_1_g_a_p_i_1_1_vulkan_1_1_shader_1a1ee8be36289ed56b0fedd7e34a739780"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">build</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">vertexSource</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">fragmentSource</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N11RaeptorCogs4GAPI6Vulkan6Shader5buildEPKcPKc" title="Link to this definition">¶</a><br /></dt>
+<dd><p><div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="../../Common/Ressources/Shader.html#class_raeptor_cogs_1_1_g_a_p_i_1_1_common_1_1_shader_1af767922d937091b19fa5076ee11815a7"><span class="std std-ref">RaeptorCogs::GAPI::Common::Shader::build()</span></a></p>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs4GAPI6Vulkan6Shader10initializeEv">
+<span id="_CPPv3N11RaeptorCogs4GAPI6Vulkan6Shader10initializeEv"></span><span id="_CPPv2N11RaeptorCogs4GAPI6Vulkan6Shader10initializeEv"></span><span id="RaeptorCogs::GAPI::Vulkan::Shader::initialize"></span><span class="target" id="class_raeptor_cogs_1_1_g_a_p_i_1_1_vulkan_1_1_shader_1a5339de80bb317c5d415d9246aacc4e37"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">initialize</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N11RaeptorCogs4GAPI6Vulkan6Shader10initializeEv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Initialize the shader. </p>
+<p>Initializes the <a class="reference internal" href="../../../../namespaces/RaeptorCogs_GAPI_Vulkan.html#namespace_raeptor_cogs_1_1_g_a_p_i_1_1_vulkan"><span class="std std-ref">Vulkan</span></a> shader modules. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs4GAPI6Vulkan6Shader4bindEv">
+<span id="_CPPv3N11RaeptorCogs4GAPI6Vulkan6Shader4bindEv"></span><span id="_CPPv2N11RaeptorCogs4GAPI6Vulkan6Shader4bindEv"></span><span id="RaeptorCogs::GAPI::Vulkan::Shader::bind"></span><span class="target" id="class_raeptor_cogs_1_1_g_a_p_i_1_1_vulkan_1_1_shader_1a2cb6cbef7f0c5ca8963a56a90ed1aa93"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bind</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N11RaeptorCogs4GAPI6Vulkan6Shader4bindEv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Bind the shader for use. </p>
+<p>Binds the <a class="reference internal" href="../../../../namespaces/RaeptorCogs_GAPI_Vulkan.html#namespace_raeptor_cogs_1_1_g_a_p_i_1_1_vulkan"><span class="std std-ref">Vulkan</span></a> shader program. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK11RaeptorCogs4GAPI6Vulkan6Shader6unbindEv">
+<span id="_CPPv3NK11RaeptorCogs4GAPI6Vulkan6Shader6unbindEv"></span><span id="_CPPv2NK11RaeptorCogs4GAPI6Vulkan6Shader6unbindEv"></span><span id="RaeptorCogs::GAPI::Vulkan::Shader::unbindC"></span><span class="target" id="class_raeptor_cogs_1_1_g_a_p_i_1_1_vulkan_1_1_shader_1afa943cd084f84ee11295d63e81772768"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">unbind</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK11RaeptorCogs4GAPI6Vulkan6Shader6unbindEv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Unbind the shader. </p>
+<p>Unbinds the <a class="reference internal" href="../../../../namespaces/RaeptorCogs_GAPI_Vulkan.html#namespace_raeptor_cogs_1_1_g_a_p_i_1_1_vulkan"><span class="std std-ref">Vulkan</span></a> shader program. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK11RaeptorCogs4GAPI6Vulkan6Shader7setBoolERKNSt6stringEb">
+<span id="_CPPv3NK11RaeptorCogs4GAPI6Vulkan6Shader7setBoolERKNSt6stringEb"></span><span id="_CPPv2NK11RaeptorCogs4GAPI6Vulkan6Shader7setBoolERKNSt6stringEb"></span><span id="RaeptorCogs::GAPI::Vulkan::Shader::setBool__ssCR.bC"></span><span class="target" id="class_raeptor_cogs_1_1_g_a_p_i_1_1_vulkan_1_1_shader_1af212f65643aa9a6825c36194612d32b6"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setBool</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../../../namespaces/std.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference external" href="https://en.cppreference.com/w/cpp/string/basic_string.html"><span class="pre">string</span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">name</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK11RaeptorCogs4GAPI6Vulkan6Shader7setBoolERKNSt6stringEb" title="Link to this definition">¶</a><br /></dt>
+<dd><p><div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="../../Common/Ressources/Shader.html#class_raeptor_cogs_1_1_g_a_p_i_1_1_common_1_1_shader_1a806d128eabfb0f2cc47555af7fa4142c"><span class="std std-ref">RaeptorCogs::GAPI::Common::Shader::setBool()</span></a></p>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK11RaeptorCogs4GAPI6Vulkan6Shader6setIntERKNSt6stringEi">
+<span id="_CPPv3NK11RaeptorCogs4GAPI6Vulkan6Shader6setIntERKNSt6stringEi"></span><span id="_CPPv2NK11RaeptorCogs4GAPI6Vulkan6Shader6setIntERKNSt6stringEi"></span><span id="RaeptorCogs::GAPI::Vulkan::Shader::setInt__ssCR.iC"></span><span class="target" id="class_raeptor_cogs_1_1_g_a_p_i_1_1_vulkan_1_1_shader_1acafed7927ff7373bc48964cdede1d225"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setInt</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../../../namespaces/std.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference external" href="https://en.cppreference.com/w/cpp/string/basic_string.html"><span class="pre">string</span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">name</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK11RaeptorCogs4GAPI6Vulkan6Shader6setIntERKNSt6stringEi" title="Link to this definition">¶</a><br /></dt>
+<dd><p><div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="../../Common/Ressources/Shader.html#class_raeptor_cogs_1_1_g_a_p_i_1_1_common_1_1_shader_1aa2bc4383ac2308abcdc6aadfa7e732c2"><span class="std std-ref">RaeptorCogs::GAPI::Common::Shader::setInt()</span></a></p>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK11RaeptorCogs4GAPI6Vulkan6Shader7setUIntERKNSt6stringEj">
+<span id="_CPPv3NK11RaeptorCogs4GAPI6Vulkan6Shader7setUIntERKNSt6stringEj"></span><span id="_CPPv2NK11RaeptorCogs4GAPI6Vulkan6Shader7setUIntERKNSt6stringEj"></span><span id="RaeptorCogs::GAPI::Vulkan::Shader::setUInt__ssCR.unsigned-iC"></span><span class="target" id="class_raeptor_cogs_1_1_g_a_p_i_1_1_vulkan_1_1_shader_1a3139afca81d8311c84e1541f253d0db9"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setUInt</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../../../namespaces/std.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference external" href="https://en.cppreference.com/w/cpp/string/basic_string.html"><span class="pre">string</span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">name</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK11RaeptorCogs4GAPI6Vulkan6Shader7setUIntERKNSt6stringEj" title="Link to this definition">¶</a><br /></dt>
+<dd><p><div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="../../Common/Ressources/Shader.html#class_raeptor_cogs_1_1_g_a_p_i_1_1_common_1_1_shader_1a34db8fd7464dd28044eb8905ff55794a"><span class="std std-ref">RaeptorCogs::GAPI::Common::Shader::setUInt()</span></a></p>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK11RaeptorCogs4GAPI6Vulkan6Shader8setFloatERKNSt6stringEf">
+<span id="_CPPv3NK11RaeptorCogs4GAPI6Vulkan6Shader8setFloatERKNSt6stringEf"></span><span id="_CPPv2NK11RaeptorCogs4GAPI6Vulkan6Shader8setFloatERKNSt6stringEf"></span><span id="RaeptorCogs::GAPI::Vulkan::Shader::setFloat__ssCR.floatC"></span><span class="target" id="class_raeptor_cogs_1_1_g_a_p_i_1_1_vulkan_1_1_shader_1a50a085ccd2674586425a605588fbf42e"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setFloat</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../../../namespaces/std.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference external" href="https://en.cppreference.com/w/cpp/string/basic_string.html"><span class="pre">string</span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">name</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK11RaeptorCogs4GAPI6Vulkan6Shader8setFloatERKNSt6stringEf" title="Link to this definition">¶</a><br /></dt>
+<dd><p><div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="../../Common/Ressources/Shader.html#class_raeptor_cogs_1_1_g_a_p_i_1_1_common_1_1_shader_1af813f054582ac452729ebac5682505d5"><span class="std std-ref">RaeptorCogs::GAPI::Common::Shader::setFloat()</span></a></p>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK11RaeptorCogs4GAPI6Vulkan6Shader7setVec2ERKNSt6stringERKN3glm4vec2E">
+<span id="_CPPv3NK11RaeptorCogs4GAPI6Vulkan6Shader7setVec2ERKNSt6stringERKN3glm4vec2E"></span><span id="_CPPv2NK11RaeptorCogs4GAPI6Vulkan6Shader7setVec2ERKNSt6stringERKN3glm4vec2E"></span><span id="RaeptorCogs::GAPI::Vulkan::Shader::setVec2__ssCR.glm::vec2CRC"></span><span class="target" id="class_raeptor_cogs_1_1_g_a_p_i_1_1_vulkan_1_1_shader_1a4e2d987f069359cb355d0683842ac6b8"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setVec2</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../../../namespaces/std.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference external" href="https://en.cppreference.com/w/cpp/string/basic_string.html"><span class="pre">string</span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">name</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">glm</span></span><span class="p"><span class="pre">::</span></span><a class="reference external" href="https://cglm.readthedocs.io/en/latest/vec2.html"><span class="pre">vec2</span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK11RaeptorCogs4GAPI6Vulkan6Shader7setVec2ERKNSt6stringERKN3glm4vec2E" title="Link to this definition">¶</a><br /></dt>
+<dd><p><div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="../../Common/Ressources/Shader.html#class_raeptor_cogs_1_1_g_a_p_i_1_1_common_1_1_shader_1a833b3f7824a3464ba2f9ffbfbbb2cdb7"><span class="std std-ref">RaeptorCogs::GAPI::Common::Shader::setVec2()</span></a></p>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK11RaeptorCogs4GAPI6Vulkan6Shader7setVec3ERKNSt6stringERKN3glm4vec3E">
+<span id="_CPPv3NK11RaeptorCogs4GAPI6Vulkan6Shader7setVec3ERKNSt6stringERKN3glm4vec3E"></span><span id="_CPPv2NK11RaeptorCogs4GAPI6Vulkan6Shader7setVec3ERKNSt6stringERKN3glm4vec3E"></span><span id="RaeptorCogs::GAPI::Vulkan::Shader::setVec3__ssCR.glm::vec3CRC"></span><span class="target" id="class_raeptor_cogs_1_1_g_a_p_i_1_1_vulkan_1_1_shader_1a2d208ea0b4be18578c8dca4b58883ed6"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setVec3</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../../../namespaces/std.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference external" href="https://en.cppreference.com/w/cpp/string/basic_string.html"><span class="pre">string</span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">name</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">glm</span></span><span class="p"><span class="pre">::</span></span><a class="reference external" href="https://cglm.readthedocs.io/en/latest/vec3.html"><span class="pre">vec3</span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK11RaeptorCogs4GAPI6Vulkan6Shader7setVec3ERKNSt6stringERKN3glm4vec3E" title="Link to this definition">¶</a><br /></dt>
+<dd><p><div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="../../Common/Ressources/Shader.html#class_raeptor_cogs_1_1_g_a_p_i_1_1_common_1_1_shader_1aab85ac6616c5d9ac0fd85cdaef5b7184"><span class="std std-ref">RaeptorCogs::GAPI::Common::Shader::setVec3()</span></a></p>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK11RaeptorCogs4GAPI6Vulkan6Shader7setVec4ERKNSt6stringERKN3glm4vec4E">
+<span id="_CPPv3NK11RaeptorCogs4GAPI6Vulkan6Shader7setVec4ERKNSt6stringERKN3glm4vec4E"></span><span id="_CPPv2NK11RaeptorCogs4GAPI6Vulkan6Shader7setVec4ERKNSt6stringERKN3glm4vec4E"></span><span id="RaeptorCogs::GAPI::Vulkan::Shader::setVec4__ssCR.glm::vec4CRC"></span><span class="target" id="class_raeptor_cogs_1_1_g_a_p_i_1_1_vulkan_1_1_shader_1a4ea01bc9709f6f165b3a0dae1e1e840c"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setVec4</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../../../namespaces/std.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference external" href="https://en.cppreference.com/w/cpp/string/basic_string.html"><span class="pre">string</span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">name</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">glm</span></span><span class="p"><span class="pre">::</span></span><a class="reference external" href="https://cglm.readthedocs.io/en/latest/vec4.html"><span class="pre">vec4</span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK11RaeptorCogs4GAPI6Vulkan6Shader7setVec4ERKNSt6stringERKN3glm4vec4E" title="Link to this definition">¶</a><br /></dt>
+<dd><p><div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="../../Common/Ressources/Shader.html#class_raeptor_cogs_1_1_g_a_p_i_1_1_common_1_1_shader_1a1dac5a4b3fdf525066720e0bb97fa7bf"><span class="std std-ref">RaeptorCogs::GAPI::Common::Shader::setVec4()</span></a></p>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK11RaeptorCogs4GAPI6Vulkan6Shader7setMat2ERKNSt6stringERKN3glm4mat2E">
+<span id="_CPPv3NK11RaeptorCogs4GAPI6Vulkan6Shader7setMat2ERKNSt6stringERKN3glm4mat2E"></span><span id="_CPPv2NK11RaeptorCogs4GAPI6Vulkan6Shader7setMat2ERKNSt6stringERKN3glm4mat2E"></span><span id="RaeptorCogs::GAPI::Vulkan::Shader::setMat2__ssCR.glm::mat2CRC"></span><span class="target" id="class_raeptor_cogs_1_1_g_a_p_i_1_1_vulkan_1_1_shader_1a625ce9b7d09489e6706bd59aae7adc73"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setMat2</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../../../namespaces/std.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference external" href="https://en.cppreference.com/w/cpp/string/basic_string.html"><span class="pre">string</span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">name</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">glm</span></span><span class="p"><span class="pre">::</span></span><a class="reference external" href="https://cglm.readthedocs.io/en/latest/mat2.html"><span class="pre">mat2</span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">mat</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK11RaeptorCogs4GAPI6Vulkan6Shader7setMat2ERKNSt6stringERKN3glm4mat2E" title="Link to this definition">¶</a><br /></dt>
+<dd><p><div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="../../Common/Ressources/Shader.html#class_raeptor_cogs_1_1_g_a_p_i_1_1_common_1_1_shader_1ac6be5727653ba493db43d1a4d55a7af9"><span class="std std-ref">RaeptorCogs::GAPI::Common::Shader::setMat2()</span></a></p>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK11RaeptorCogs4GAPI6Vulkan6Shader7setMat3ERKNSt6stringERKN3glm4mat3E">
+<span id="_CPPv3NK11RaeptorCogs4GAPI6Vulkan6Shader7setMat3ERKNSt6stringERKN3glm4mat3E"></span><span id="_CPPv2NK11RaeptorCogs4GAPI6Vulkan6Shader7setMat3ERKNSt6stringERKN3glm4mat3E"></span><span id="RaeptorCogs::GAPI::Vulkan::Shader::setMat3__ssCR.glm::mat3CRC"></span><span class="target" id="class_raeptor_cogs_1_1_g_a_p_i_1_1_vulkan_1_1_shader_1a473fc6b114d56775080bfd0cf2e98f05"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setMat3</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../../../namespaces/std.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference external" href="https://en.cppreference.com/w/cpp/string/basic_string.html"><span class="pre">string</span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">name</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">glm</span></span><span class="p"><span class="pre">::</span></span><a class="reference external" href="https://cglm.readthedocs.io/en/latest/mat3.html"><span class="pre">mat3</span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">mat</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK11RaeptorCogs4GAPI6Vulkan6Shader7setMat3ERKNSt6stringERKN3glm4mat3E" title="Link to this definition">¶</a><br /></dt>
+<dd><p><div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="../../Common/Ressources/Shader.html#class_raeptor_cogs_1_1_g_a_p_i_1_1_common_1_1_shader_1ae4a0d3c50e8a9be9fc6c575a2ebb7658"><span class="std std-ref">RaeptorCogs::GAPI::Common::Shader::setMat3()</span></a></p>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK11RaeptorCogs4GAPI6Vulkan6Shader7setMat4ERKNSt6stringERKN3glm4mat4E">
+<span id="_CPPv3NK11RaeptorCogs4GAPI6Vulkan6Shader7setMat4ERKNSt6stringERKN3glm4mat4E"></span><span id="_CPPv2NK11RaeptorCogs4GAPI6Vulkan6Shader7setMat4ERKNSt6stringERKN3glm4mat4E"></span><span id="RaeptorCogs::GAPI::Vulkan::Shader::setMat4__ssCR.glm::mat4CRC"></span><span class="target" id="class_raeptor_cogs_1_1_g_a_p_i_1_1_vulkan_1_1_shader_1a598f399e8463087f46f2df18a5cc5604"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setMat4</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../../../namespaces/std.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference external" href="https://en.cppreference.com/w/cpp/string/basic_string.html"><span class="pre">string</span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">name</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">glm</span></span><span class="p"><span class="pre">::</span></span><a class="reference external" href="https://cglm.readthedocs.io/en/latest/mat4.html"><span class="pre">mat4</span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">mat</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK11RaeptorCogs4GAPI6Vulkan6Shader7setMat4ERKNSt6stringERKN3glm4mat4E" title="Link to this definition">¶</a><br /></dt>
+<dd><p><div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="../../Common/Ressources/Shader.html#class_raeptor_cogs_1_1_g_a_p_i_1_1_common_1_1_shader_1ae1c68dece93c7de5978d659a46ff0866"><span class="std std-ref">RaeptorCogs::GAPI::Common::Shader::setMat4()</span></a></p>
+</div>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper colwidths-given docutils container" id="id2">
+<table class="docutils align-default" id="id2">
+<caption><span class="caption-text">Functions</span><a class="headerlink" href="#id2" title="Link to this table">¶</a></caption>
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Function</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">RaeptorCogs::GAPI::Vulkan::REGISTER(Common::Shader,</span> <span class="pre">Shader)</span></code></p></td>
+<td><p>Register Shader with the FactoryRegistry.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11RaeptorCogs4GAPI6Vulkan8REGISTEREN6Common6ShaderE6Shader">
+<span id="_CPPv3N11RaeptorCogs4GAPI6Vulkan8REGISTEREN6Common6ShaderE6Shader"></span><span id="_CPPv2N11RaeptorCogs4GAPI6Vulkan8REGISTEREN6Common6ShaderE6Shader"></span><span id="RaeptorCogs::GAPI::Vulkan::REGISTER__Common::Shader.Shader"></span><span class="target" id="namespace_raeptor_cogs_1_1_g_a_p_i_1_1_vulkan_1a1fe7144e993e1f829e3a94c94ac173e4"></span><span class="sig-prename descclassname"><a class="reference internal" href="../../../../namespaces/RaeptorCogs.html#_CPPv411RaeptorCogs" title="RaeptorCogs"><span class="n"><span class="pre">RaeptorCogs</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../../../../namespaces/RaeptorCogs_GAPI.html#_CPPv4N11RaeptorCogs4GAPIE" title="RaeptorCogs::GAPI"><span class="n"><span class="pre">GAPI</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../../../../namespaces/RaeptorCogs_GAPI_Vulkan.html#_CPPv4N11RaeptorCogs4GAPI6VulkanE" title="RaeptorCogs::GAPI::Vulkan"><span class="n"><span class="pre">Vulkan</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">REGISTER</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../../../../namespaces/RaeptorCogs_GAPI_Common.html#_CPPv4N11RaeptorCogs4GAPI6CommonE" title="RaeptorCogs::GAPI::Common"><span class="n"><span class="pre">Common</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../../Common/Ressources/Shader.html#_CPPv4N11RaeptorCogs4GAPI6Common6ShaderE" title="RaeptorCogs::GAPI::Common::Shader"><span class="n"><span class="pre">Shader</span></span></a>, <a class="reference internal" href="#_CPPv4N11RaeptorCogs4GAPI6Vulkan6ShaderE" title="RaeptorCogs::GAPI::Vulkan::Shader"><span class="n"><span class="pre">Shader</span></span></a><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N11RaeptorCogs4GAPI6Vulkan8REGISTEREN6Common6ShaderE6Shader" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Register <a class="reference internal" href="#class_raeptor_cogs_1_1_g_a_p_i_1_1_vulkan_1_1_shader"><span class="std std-ref">Shader</span></a> with the FactoryRegistry. </p>
+</dd></dl>
+
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="TextureData.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">TextureData</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="Object.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Object</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2025 Estorc — RaeptorCogs
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Shader</a><ul>
+<li><a class="reference internal" href="#_vulkan_2_ressources_2_shader_8hpp_1GAPI_Common_Vulkan_Shader_Overview">Overview</a></li>
+<li><a class="reference internal" href="#_vulkan_2_ressources_2_shader_8hpp_1GAPI_Common_Vulkan_Shader_Header">Header</a></li>
+<li><a class="reference internal" href="#_vulkan_2_ressources_2_shader_8hpp_1GAPI_Common_Vulkan_Shader_Metadata">Metadata</a></li>
+<li><a class="reference internal" href="#classes">Classes</a><ul>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs4GAPI6Vulkan6ShaderE"><code class="docutils literal notranslate"><span class="pre">RaeptorCogs::GAPI::Vulkan::Shader</span></code></a><ul>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs4GAPI6Vulkan6Shader6ShaderEv"><code class="docutils literal notranslate"><span class="pre">Shader()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs4GAPI6Vulkan6ShaderD0Ev"><code class="docutils literal notranslate"><span class="pre">~Shader()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs4GAPI6Vulkan6Shader5buildEPKcPKc"><code class="docutils literal notranslate"><span class="pre">build()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs4GAPI6Vulkan6Shader10initializeEv"><code class="docutils literal notranslate"><span class="pre">initialize()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs4GAPI6Vulkan6Shader4bindEv"><code class="docutils literal notranslate"><span class="pre">bind()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4NK11RaeptorCogs4GAPI6Vulkan6Shader6unbindEv"><code class="docutils literal notranslate"><span class="pre">unbind()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4NK11RaeptorCogs4GAPI6Vulkan6Shader7setBoolERKNSt6stringEb"><code class="docutils literal notranslate"><span class="pre">setBool()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4NK11RaeptorCogs4GAPI6Vulkan6Shader6setIntERKNSt6stringEi"><code class="docutils literal notranslate"><span class="pre">setInt()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4NK11RaeptorCogs4GAPI6Vulkan6Shader7setUIntERKNSt6stringEj"><code class="docutils literal notranslate"><span class="pre">setUInt()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4NK11RaeptorCogs4GAPI6Vulkan6Shader8setFloatERKNSt6stringEf"><code class="docutils literal notranslate"><span class="pre">setFloat()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4NK11RaeptorCogs4GAPI6Vulkan6Shader7setVec2ERKNSt6stringERKN3glm4vec2E"><code class="docutils literal notranslate"><span class="pre">setVec2()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4NK11RaeptorCogs4GAPI6Vulkan6Shader7setVec3ERKNSt6stringERKN3glm4vec3E"><code class="docutils literal notranslate"><span class="pre">setVec3()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4NK11RaeptorCogs4GAPI6Vulkan6Shader7setVec4ERKNSt6stringERKN3glm4vec4E"><code class="docutils literal notranslate"><span class="pre">setVec4()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4NK11RaeptorCogs4GAPI6Vulkan6Shader7setMat2ERKNSt6stringERKN3glm4mat2E"><code class="docutils literal notranslate"><span class="pre">setMat2()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4NK11RaeptorCogs4GAPI6Vulkan6Shader7setMat3ERKNSt6stringERKN3glm4mat3E"><code class="docutils literal notranslate"><span class="pre">setMat3()</span></code></a></li>
+<li><a class="reference internal" href="#_CPPv4NK11RaeptorCogs4GAPI6Vulkan6Shader7setMat4ERKNSt6stringERKN3glm4mat4E"><code class="docutils literal notranslate"><span class="pre">setMat4()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#functions">Functions</a><ul>
+<li><a class="reference internal" href="#_CPPv4N11RaeptorCogs4GAPI6Vulkan8REGISTEREN6Common6ShaderE6Shader"><code class="docutils literal notranslate"><span class="pre">REGISTER()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../../../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../../../_static/copybutton.js?v=df1a032d"></script>
+    </body>
+</html>

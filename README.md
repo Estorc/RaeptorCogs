@@ -1,43 +1,54 @@
-<p align="center">
-    <img src="raeptor-cogs-logo.png" style="width: 60%" /><br/><br/>Simple cross-platform graphic library for C++ using OpenGL.<br/><br/>
-</p>
-
 # RaeptorCogs
 
-**RaeptorCogs** is a cross-platform C++ graphics library using OpenGL and WebGL.  
-It is designed to provide a smooth workflow for both beginners and advanced developers building games or interactive applications.  
-The long-term goal is to evolve from a rendering library into a lightweight framework or engine, with embedded tools for shaders and asset management.
+<!-- markdownlint-disable MD033 -->
+<p align="center">
+    <img src="raeptor-cogs-logo.png" alt="RaeptorCogs logo" style="width: 60%" />
+    <br><br>
+    Simple cross-platform graphic framework for C++ using OpenGL.
+    <br><br>
+</p>
+<!-- markdownlint-disable MD033 -->
 
-Currently, RaeptorCogs supports batched 2D rendering of sprites and text on Windows and Web (via Emscripten). Linux support is under development.  
-The build system is based on CMake and automatically detects whether to build for the Web or desktop.
+## The cross-platform C++ graphics framework of “freedom”
 
----
+**RaeptorCogs is a cross-platform C++ graphics framework using OpenGL and planned for supporting both WebGL and Vulkan**.
+The philosophy behind RaeptorCogs is to provide a beginner-friendly API while allowing advanced users to customize and extend the framework as needed. Because I always found graphics programming and game development to be quite complex and too far from my design preferences, I wanted to create a framework that simplifies common tasks while still being powerful enough for more experienced developers. RaeptorCogs is about giving developers the tools they need without overwhelming them with unnecessary complexity and preserving a huge degree of flexibility.
+
+In simple terms, RaeptorCogs is **flexibility, simplicity, modularity, and cross-platform support all in one** package made by game and graphics developers for game and graphics developers.
 
 ## Features
 
-- Cross-platform rendering: Windows and Web (Linux in progress)
-- Batched sprite rendering
-- Batched text rendering
-- Beginner-friendly API with flexibility for advanced use
-- CMake build system with automatic platform detection
+- Rendering Pipeline - Batched 2D sprite/text/shape rendering with OpenGL
+- Node Hierarchy - Graphics relationships and transformations
+- Resource Management - Cached loading of images, fonts, shaders
+- Input System - Keyboard and mouse handling
+- Asset Loading - Images, fonts, files
+- Serialization - Object persistence
+- Utilities - Time, random, threading, bit operations
+- Window Management - Multi-window support with events
+- Cross-Platform - Windows (stable), Web/Emscripten (experimental), Linux (planned)
 
-Planned:
-- Linux support
-- Embedded shader editing tools
-- Scene and asset management utilities
-- Physics integration as an optional module
+## Roadmap
 
----
+- Vulkan rendering backend
+- Enhanced WebGL support
+- RTBE development
+- Advanced Linux platform support
+- Built-in shader editor
+- Optional audio module
+- Optional physics module
 
 ## Building
 
 ### Requirements
+
 - C++17 or newer
 - CMake 3.16 or newer
 - OpenGL-capable environment (desktop)
 - Emscripten (for Web builds)
 
 ### Desktop build
+
 ```bash
 git clone https://github.com/Estorc/RaeptorCogs.git
 cd RaeptorCogs
@@ -47,6 +58,7 @@ cmake --build .
 ```
 
 ### Web build (Emscripten)
+
 ```bash
 git clone https://github.com/yourusername/RaeptorCogs.git
 cd RaeptorCogs
@@ -54,49 +66,17 @@ mkdir build_web && cd build_web
 emcmake cmake ..
 cmake --build .
 ```
+
 CMake configuration will automatically build for Web if emscripten CMake is used.
 
----
+## Documentation and demos
 
-### Example of a sprite drawn at the center of a window
-```cpp
-#include <RaeptorCogs/RaeptorCogs.hpp>
-#include <RaeptorCogs/Sprite.hpp>
+The official documentation for RaeptorCogs is hosted on Github Pages and can be found on the [GitHub Pages site](https://estorc.github.io/RaeptorCogs/). It is made with Sphinx and Doxygen and provides detailed information on the framework's architecture, classes, and functions with some tutorials. The documentation is in construction and will be expanded over time, help and contributions are welcome!
 
-constexpr int WINDOW_WIDTH = 1280;
-constexpr int WINDOW_HEIGHT = 720;
+You can also find some demo applications in the [examples folder](https://github.com/Estorc/RaeptorCogs/blob/main/examples) of the repository, showcasing various features of RaeptorCogs.
+Examples will be expanded over time.
 
-RaeptorCogs::Window *main_window = nullptr;
-RaeptorCogs::Sprite sprite;
-
-void update() {
-    RaeptorCogs::Renderer().render(main_window);
-}
-
-int main() {
-    RaeptorCogs::Initialize();
-    main_window = RaeptorCogs::Renderer().initialize(WINDOW_WIDTH, WINDOW_HEIGHT, "RaeptorCogs Demo");
-    RaeptorCogs::Texture texture = RaeptorCogs::Texture("assets/textures/texture.png");
-    sprite = RaeptorCogs::Sprite(texture).addToRenderer(RaeptorCogs::Renderer());
-    sprite.setPosition(WINDOW_WIDTH/2, WINDOW_HEIGHT/2);
-    RaeptorCogs::StartLoop(update, main_window);
-    RaeptorCogs::Destroy();
-
-    return 0;
-}
-```
-
----
-
-### Roadmap
-- Linux platform support
-- Built-in shader editor
-- Scene management
-- Optional physics module
-
----
-
-### License
+## License
 
 RaeptorCogs is licensed under the MIT License.
 See the [**LICENSE**](https://github.com/Estorc/RaeptorCogs/blob/main/LICENSE.txt) file for details.

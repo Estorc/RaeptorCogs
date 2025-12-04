@@ -1,0 +1,22 @@
+Object
+======
+
+.. doxygenfile:: RaeptorCogs/GAPI/Vulkan/Ressources/Object.hpp
+   :project: RaeptorCogs
+   :no-link:
+   :sections: briefdescription detaileddescription
+
+Functions
+---------
+
+.. list-table:: Functions
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Function
+     - Description
+   * - ``RaeptorCogs::GAPI::Vulkan::FACTORY_REGISTRY_DECLARATION()``
+     - Declaration of factory registry for Vulkan objects.
+.. doxygenfunction:: RaeptorCogs::GAPI::Vulkan::FACTORY_REGISTRY_DECLARATION()
+   :project: RaeptorCogs
+

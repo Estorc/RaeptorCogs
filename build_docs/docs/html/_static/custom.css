@@ -1,0 +1,321 @@
+@import url('https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&display=swap');
+
+/* Optional: slightly tighter spacing like Just-the-Docs */
+body {
+    --font-stack: system-ui, -apple-system, BlinkMacSystemFont,
+                  "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
+                  "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif !important;
+
+    --font-stack--monospace: "Roboto Mono", ui-monospace, SFMono-Regular,
+                              Menlo, Consolas, "Liberation Mono", monospace !important;
+
+    --font-stack--headings: system-ui, -apple-system, BlinkMacSystemFont,
+                          "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
+                          "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif !important;
+    letter-spacing: 0;
+}
+
+h1 {
+    font-weight: 400;
+}
+
+h2, h3, h4, h5, h6 {
+    font-weight: 300;
+}
+
+.sidebar-brand-text {
+    display: none;
+}
+
+
+
+/* ===== VS CODE DARK+ COLORS FOR BREATHE SIGNATURES ===== */
+
+body {
+    /* ========================== VS CODE MODERN DARK ========================== */
+    --dark-base-text-col:   #D4D4D4;
+    --dark-namespace-col:   #4EC9B0;
+    --dark-proc-col:        #C586C0;       /* #include */
+    --dark-header-col:      #CE9178;       /* <stdio.h> */
+    --dark-method-col:      #DCDCAA;       /* myFunction() */
+    --dark-class-col:       #4EC9B0;
+    --dark-number-col:      #B5CEA8;
+    --dark-string-col:      #CE9178;
+    --dark-type-col:        #569cd6;       /* types, e.g. int, MyStruct */
+    --dark-keyword-col:     #c586c0;       /* keywords, e.g. if, for, return */
+
+    /* ========================== VS CODE MODERN LIGHT ========================== */
+    --light-base-text-col:  #000000;
+    --light-namespace-col:  #267f99;
+    --light-proc-col:       #AF00DB;       /* #include */
+    --light-header-col:     #A31515;       /* <stdio.h> */
+    --light-method-col:     #795E26;       /* myFunction() */
+    --light-class-col:      #267f99;
+    --light-number-col:     #098658;
+    --light-string-col:     #A31515;
+    --light-type-col:       #2B91AF;       /* types, e.g. int, MyStruct */
+    --light-keyword-col:    #0000D3;       /* keywords, e.g. if, for, return */
+}
+
+
+/* Procedures */
+body[data-theme="dark"] .highlight .cp { color: var(--dark-proc-col); font-style: normal; text-decoration: none; }
+@media (prefers-color-scheme: dark) {body:not([data-theme="light"]) .highlight .cp { color: var(--dark-proc-col); font-style: normal; text-decoration: none; }}
+body[data-theme="light"] .highlight .cp { color: var(--light-proc-col); font-style: normal; text-decoration: none; }
+@media (prefers-color-scheme: light) {body:not([data-theme="dark"]) .highlight .cp { color: var(--light-proc-col); font-style: normal; text-decoration: none; }}
+
+/* Headers */
+body[data-theme="dark"] .highlight .cpf { color: var(--dark-header-col); font-style: normal; text-decoration: none; }
+@media (prefers-color-scheme: dark) {body:not([data-theme="light"]) .highlight .cpf { color: var(--dark-header-col); font-style: normal; text-decoration: none; }}
+body[data-theme="light"] .highlight .cpf { color: var(--light-header-col); font-style: normal; text-decoration: none; }
+@media (prefers-color-scheme: light) {body:not([data-theme="dark"]) .highlight .cpf { color: var(--light-header-col); font-style: normal; text-decoration: none; }}
+
+/* Base text color */
+body[data-theme="dark"] .highlight .n { color: var(--dark-base-text-col); font-style: normal; text-decoration: none; }
+@media (prefers-color-scheme: dark) {body:not([data-theme="light"]) .highlight .n { color: var(--dark-base-text-col); font-style: normal; text-decoration: none; }}
+body[data-theme="light"] .highlight .n { color: var(--light-base-text-col); font-style: normal; text-decoration: none; }
+@media (prefers-color-scheme: light) {body:not([data-theme="dark"]) .highlight .n { color: var(--light-base-text-col); font-style: normal; text-decoration: none; }}
+
+/* Methods */
+body[data-theme="dark"] .highlight .nf { color: var(--dark-method-col); font-style: normal; text-decoration: none; }
+@media (prefers-color-scheme: dark) {body:not([data-theme="light"]) .highlight .nf { color: var(--dark-method-col); font-style: normal; text-decoration: none; }}
+body[data-theme="light"] .highlight .nf { color: var(--light-method-col); font-style: normal; text-decoration: none; }
+@media (prefers-color-scheme: light) {body:not([data-theme="dark"]) .highlight .nf { color: var(--light-method-col); font-style: normal; text-decoration: none; }}
+
+/* Classes */
+body[data-theme="dark"] .highlight .nc { color: var(--dark-class-col); font-style: normal; text-decoration: none; }
+@media (prefers-color-scheme: dark) {body:not([data-theme="light"]) .highlight .nc { color: var(--dark-class-col); font-style: normal; text-decoration: none; }}
+body[data-theme="light"] .highlight .nc { color: var(--light-class-col); font-style: normal; text-decoration: none; }
+@media (prefers-color-scheme: light) {body:not([data-theme="dark"]) .highlight .nc { color: var(--light-class-col); font-style: normal; text-decoration: none; }}
+
+/* Namespace qualifiers (RaeptorCogs::) */
+body[data-theme="dark"] .highlight .nn { color: var(--dark-namespace-col); font-style: normal; text-decoration: none; }
+@media (prefers-color-scheme: dark) {body:not([data-theme="light"]) .highlight .nn { color: var(--dark-namespace-col); font-style: normal; text-decoration: none; }}
+body[data-theme="light"] .highlight .nn { color: var(--light-namespace-col); font-style: normal; text-decoration: none; }
+@media (prefers-color-scheme: light) {body:not([data-theme="dark"]) .highlight .nn { color: var(--light-namespace-col); font-style: normal; text-decoration: none; }}
+
+/* Numbers */
+body[data-theme="dark"] .highlight .mi { color: var(--dark-number-col); font-style: normal; text-decoration: none; }
+@media (prefers-color-scheme: dark) {body:not([data-theme="light"]) .highlight .mi { color: var(--dark-number-col); font-style: normal; text-decoration: none; }}
+body[data-theme="light"] .highlight .mi { color: var(--light-number-col); font-style: normal; text-decoration: none; }
+@media (prefers-color-scheme: light) {body:not([data-theme="dark"]) .highlight .mi { color: var(--light-number-col); font-style: normal; text-decoration: none; }}
+body[data-theme="dark"] .highlight .mf { color: var(--dark-number-col); font-style: normal; text-decoration: none; }
+@media (prefers-color-scheme: dark) {body:not([data-theme="light"]) .highlight .mf { color: var(--dark-number-col); font-style: normal; text-decoration: none; }}
+body[data-theme="light"] .highlight .mf { color: var(--light-number-col); font-style: normal; text-decoration: none; }
+@media (prefers-color-scheme: light) {body:not([data-theme="dark"]) .highlight .mf { color: var(--light-number-col); font-style: normal; text-decoration: none; }}
+
+/* Strings */
+body[data-theme="dark"] .highlight .s { color: var(--dark-string-col); font-style: normal; text-decoration: none; }
+@media (prefers-color-scheme: dark) {body:not([data-theme="light"]) .highlight .s { color: var(--dark-string-col); font-style: normal; text-decoration: none; }}
+body[data-theme="light"] .highlight .s { color: var(--light-string-col); font-style: normal; text-decoration: none; }
+@media (prefers-color-scheme: light) {body:not([data-theme="dark"]) .highlight .s { color: var(--light-string-col); font-style: normal; text-decoration: none; }}
+
+/* Types */
+body[data-theme="dark"] .highlight .kt { color: var(--dark-type-col); font-style: normal; text-decoration: none; }
+@media (prefers-color-scheme: dark) {body:not([data-theme="light"]) .highlight .kt { color: var(--dark-type-col); font-style: normal; text-decoration: none; }}
+body[data-theme="light"] .highlight .kt { color: var(--light-type-col); font-style: normal; text-decoration: none; }
+@media (prefers-color-scheme: light) {body:not([data-theme="dark"]) .highlight .kt { color: var(--light-type-col); font-style: normal; text-decoration: none; }}
+
+/* Keywords */
+body[data-theme="dark"] .highlight .k { color: var(--dark-keyword-col); font-style: normal; text-decoration: none; }
+@media (prefers-color-scheme: dark) {body:not([data-theme="light"]) .highlight .k { color: var(--dark-keyword-col); font-style: normal; text-decoration: none; }}
+body[data-theme="light"] .highlight .k { color: var(--light-keyword-col); font-style: normal; text-decoration: none; }
+@media (prefers-color-scheme: light) {body:not([data-theme="dark"]) .highlight .k { color: var(--light-keyword-col); font-style: normal; text-decoration: none; }}
+
+/* ----------------------------------------------
+   Modern Docs Code Blocks (Furo override)
+   Compatible with light/dark themes
+-----------------------------------------------*/
+
+
+/* Light / Dark specific adjustments */
+:root {
+    --code-bg-dark: #1d1e20;
+    --code-fg-dark: #d4d4d4;
+    --code-bg-light: #fafafa;
+    --code-fg-light: #1f1f1f;
+    
+    --code-left-bar-dark: #364046;
+    --code-left-bar-light: #0066cc;
+}
+
+body[data-theme="dark"] {
+    --color-code-background: var(--code-bg-dark) !important;
+    --color-code-foreground: var(--code-fg-dark) !important;
+}
+body[data-theme="light"] {
+    --color-code-background: var(--code-bg-light) !important;
+    --color-code-foreground: var(--code-fg-light) !important;
+}
+@media (prefers-color-scheme: dark) {body:not([data-theme="light"]) {
+    --color-code-background: var(--code-bg-dark) !important;
+    --color-code-foreground: var(--code-fg-dark) !important;
+}}
+@media (prefers-color-scheme: light) {body:not([data-theme="dark"]) {
+    --color-code-background: var(--code-bg-light) !important;
+    --color-code-foreground: var(--code-fg-light) !important;
+}}
+
+
+/* Code background */
+body[data-theme="dark"] div.highlight {
+    background: var(--color-code-background);
+}
+@media (prefers-color-scheme: dark) {body:not([data-theme="light"]) div.highlight {
+    background: var(--color-code-background);
+}}
+body[data-theme="light"] div.highlight {
+    background: var(--color-code-background);
+}
+@media (prefers-color-scheme: light) {body:not([data-theme="dark"]) div.highlight {
+    background: var(--color-code-background);
+}}
+
+/* Container */
+div.highlight {
+    position: relative;
+    border-radius: 6px;
+    padding: 0.3rem 0.3rem !important;
+    line-height: 1.55;
+    /*border: 1px solid var(--color-foreground-border);*/
+    background: var(--color-code-background);
+    overflow-x: auto;
+}
+
+/* small bar at the left */
+div.highlight pre::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 6px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+body[data-theme="dark"] div.highlight pre::before {
+    background: var(--code-left-bar-dark);
+}
+body[data-theme="light"] div.highlight pre::before {
+    background: var(--code-left-bar-light);
+}
+@media (prefers-color-scheme: dark) {
+    div.highlight pre::before {
+        background: var(--code-left-bar-dark);
+    }
+}
+@media (prefers-color-scheme: light) {
+    div.highlight pre::before {
+        background: var(--code-left-bar-light);
+    }
+}
+
+/* A subtle floating shadow */
+div.highlight {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* Make code font cleaner */
+code, pre, .highlight span {
+  font-family: "Google Sans Code", monospace;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* Comments */
+.highlight .c, .highlight .c1 {
+    color: var(--color-foreground-muted);
+    font-style: italic;
+}
+
+
+
+/* ===== VS CODE DARK+ COLORS FOR BREATHE SIGNATURES ===== */
+
+/* Base signature color (identifiers) */
+.sig-name,
+.sig-name .n,
+.sig-name .pre {
+  color: #D4D4D4 !important; /* VS Code default text */
+}
+
+/* Functions */
+.sig-name.descname {
+  color: #DCDCAA !important; /* Function color */
+}
+
+/* Types and classes */
+.sig-type,
+.sig-type .n,
+.sig-type .pre,
+.sig-name.classname,
+.sig-name.typename {
+  color: #4EC9B0 !important; 
+}
+
+/* Keywords (static, inline, noexcept, etc.) */
+.sig-prename,
+.sig-prename .k,
+.sig-prename .pre {
+  color: #569CD6 !important;
+}
+
+/* Namespace qualifiers (RaeptorCogs::) */
+.sig-name .sig-namespace,
+.sig-name .sig-namespace .n {
+  color: #C586C0 !important;
+}
+
+/* Template parameters */
+.sig-template,
+.sig-template .n,
+.sig-template .pre {
+  color: #4EC9B0 !important;
+}
+
+/* Punctuation: keep subtle */
+.sig-punctuation {
+  color: #D4D4D4 !important;
+}
+
+/* Parameters */
+.sig-param,
+.sig-param .n,
+.sig-param .pre {
+  color: #9CDCFE !important; /* VSCode variable param color */
+}
+
+/* Strings inside signatures (rare, but possible) */
+.sig-string,
+.sig-string .s {
+  color: #CE9178 !important;
+}
+
+/* Also apply explicitly when Sphinx sets a light theme attribute */
+body[data-theme="light"] .sig-name,
+body[data-theme="light"] .sig-name .n,
+body[data-theme="light"] .sig-name .pre {
+  color: #222222 !important;
+}
+body[data-theme="light"] .sig-name.descname { color: #0066CC !important; }
+body[data-theme="light"] .sig-type,
+body[data-theme="light"] .sig-type .n,
+body[data-theme="light"] .sig-type .pre,
+body[data-theme="light"] .sig-name.classname,
+body[data-theme="light"] .sig-name.typename { color: #00695C !important; }
+body[data-theme="light"] .sig-prename,
+body[data-theme="light"] .sig-prename .k,
+body[data-theme="light"] .sig-prename .pre { color: #00008B !important; }
+body[data-theme="light"] .sig-name .sig-namespace,
+body[data-theme="light"] .sig-name .sig-namespace .n { color: #6A3EA0 !important; }
+body[data-theme="light"] .sig-template,
+body[data-theme="light"] .sig-template .n,
+body[data-theme="light"] .sig-template .pre { color: #00695C !important; }
+body[data-theme="light"] .sig-punctuation { color: #222222 !important; }
+body[data-theme="light"] .sig-param,
+body[data-theme="light"] .sig-param .n,
+body[data-theme="light"] .sig-param .pre { color: #0B66D0 !important; }
+body[data-theme="light"] .sig-string,
+body[data-theme="light"] .sig-string .s { color: #A31515 !important; }

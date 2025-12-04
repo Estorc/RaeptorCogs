@@ -2,61 +2,74 @@
 #include <iostream>
 #include <glm/ext/matrix_transform.hpp>
 #include <RaeptorCogs/IO/String.hpp>
+#include <RaeptorCogs/RaeptorCogs.hpp>
 namespace RaeptorCogs {
 
-Glyph::Glyph(Text &text, const unsigned char *character, glm::vec2 advance) : text(&text), character(character) {
+Glyph::Glyph(Text2D &text, const U8Char &character, glm::vec2 advance) : text(&text), character(character) {
     this->setAnchor(glm::vec2(0.0f, 0.0f)); // Set default anchor to center
     setCharacter(character, advance);
 }
 
 Glyph::Glyph() : text(nullptr), character(nullptr) {}
 
-void Glyph::setCharacter(const unsigned char *_character, glm::vec2 advance) {
+void Glyph::setCharacter(const U8Char &_character, glm::vec2 advance) {
+    advance *= (this->text->getTextSize() / NORMAL_FONT_SIZE);
     this->character = _character;
-    this->setSize(this->text->getFont()->getGlyphSize(_character));
+    this->setSize(this->text->getFont()->getGlyphSize(_character) * (this->text->getTextSize() / NORMAL_FONT_SIZE));
     this->setVisibility(this->text->isVisible());
-    this->setPosition(this->text->getPosition());
-    this->setRotation(this->text->getRotation());
+    this->setPosition(glm::vec2(0.0f, 0.0f));
+    this->setRotation(0.0f);
     this->setZIndex(this->text->getZIndex());
     this->setAnchor(glm::vec2(0.0f, 0.0f)); // Reset anchor to top-left
-    this->setColor(this->text->getColor());
 
-    // Apply rotation to the glyph offset and advance
-    float sinRot = sin(this->text->getRotation());
-    float cosRot = cos(this->text->getRotation());
+    glm::vec2 glyphOffset = this->text->getFont()->getGlyphOffset(_character) * (this->text->getTextSize() / NORMAL_FONT_SIZE);
     
-    // Rotate glyph offset
-    glm::vec2 rotatedOffset = glm::vec2(
-        this->text->getFont()->getGlyphOffset(_character).x * cosRot - this->text->getFont()->getGlyphOffset(_character).y * sinRot,
-        this->text->getFont()->getGlyphOffset(_character).x * sinRot + this->text->getFont()->getGlyphOffset(_character).y * cosRot
-    );
-    
-    // Rotate advance
-    glm::vec2 rotatedAdvance = glm::vec2(
-        advance.x * cosRot - advance.y * sinRot,
-        advance.x * sinRot + advance.y * cosRot
-    );
-    
-    this->position += rotatedOffset * 2.0f;
-    this->position += rotatedAdvance;
+    this->setPosition(this->getPosition() + glyphOffset * 2.0f + advance);
 }
 
-void Glyph::addToRenderer(Singletons::Renderer &_renderer) {
-    // Add to renderer's batch
-    _renderer.addGraphic(this);
-}
+bool Glyph::computeInstanceData(GAPI::Common::InstanceAllocator &instanceAllocator, ComputeInstanceDataMode mode) {
+    GAPI::Common::GraphicBatchHandler &batchHandler = this->getBatchHandler();
 
-void Glyph::computeInstanceData(InstanceData &data, std::vector<float> &instanceDataBuffer) {
-    if (this->text->needsRebuild()) {
-        this->text->rebuild(); // Ensure text is rebuilt before computing instance data
+    if (this->text->isTextDirty()) {
+        this->text->rebuildText(); // Ensure text is rebuilt before computing instance data
     }
-    data.model = this->getModelMatrix();
-    data.uvRect = this->text->getFont()->getGlyphUVRect(character);
-    data.type = RENDERER_MODE_2D_TEXT;
 
-    glm::vec3 color = this->getColor();
-    data.dataOffset = instanceDataBuffer.size(); // Offset into the instance data buffer
-    instanceDataBuffer.insert(instanceDataBuffer.end(), reinterpret_cast<float*>(&color), reinterpret_cast<float*>(&color) + sizeof(color) / sizeof(float));
+    if (mode == ComputeInstanceDataMode::FORCE_REBUILD) {
+        instanceAllocator.allocate(batchHandler, 4); // RGB color + smoothness
+    }
+
+    auto& staticDataBuffer = instanceAllocator.getStaticInstanceData(batchHandler.staticDataCursor);
+    auto* dynamicDataBuffer = instanceAllocator.getDynamicInstanceData(batchHandler.dynamicDataCursor);
+
+    if (this->isDataDirty() || mode == ComputeInstanceDataMode::FORCE_REBUILD) {
+
+        // Static instance data
+
+        staticDataBuffer.model = this->getModelMatrix();
+        staticDataBuffer.uvRect = this->text->getFont()->getGlyphUVRect(character);
+        staticDataBuffer.type = this->isVisible() ? RENDERER_MODE_2D_TEXT : RENDERER_MODE_DEFAULT;
+        staticDataBuffer.readingMaskID = this->getReadingMaskID();
+        staticDataBuffer.writingMaskID = this->getWritingMaskID();
+        if (mode == ComputeInstanceDataMode::FORCE_REBUILD) {
+            staticDataBuffer.dataOffset = batchHandler.dynamicDataCursor; // Offset into the instance data buffer
+        }
+
+        // Dynamic instance data
+
+        glm::vec3 color = this->getGlobalColor();
+        float smoothness = 0.2f * (NORMAL_FONT_SIZE / this->text->getTextSize());
+        dynamicDataBuffer[0] = color[0];
+        dynamicDataBuffer[1] = color[1];
+        dynamicDataBuffer[2] = color[2];
+        dynamicDataBuffer[3] = std::min(smoothness, 0.5f);
+    }
+
+    if (this->isDataDirty()) {
+        this->setDataDirty(false);
+        return true;
+    }
+    return false;
+
 }
 
 void Glyph::bind() const {
@@ -67,265 +80,295 @@ GLuint Glyph::getID() const {
     return this->text->getFont()->getID();
 }
 
-Text::Text(Font &font, const std::string &content) : font(&font), content(content) {
-    this->flags |= GraphicFlags::NEEDS_REBUILD;
+Text2D::Text2D(Font &font, const U8String &content) : font(font), content(content) {
+    FlagSet<TextFlags>::setFlag(TextFlags::TEXT_DIRTY);
+    FlagSet<GraphicFlags>::setFlag(GraphicFlags::NO_BATCHING);
+    this->setLocalMatrixDirty(true);
     this->setVisibility(true);
 }
 
-Text::~Text() {
+Text2D::~Text2D() {
     glyphs.clear();
+   // this->setRenderer(nullptr);
 }
 
 
-void Text::addToRenderer(Singletons::Renderer &_renderer) {
+void Text2D::setRenderer(Singletons::Renderer *renderer) {
     // Add to renderer's batch
-    _renderer.addGraphic(this);
-    this->rebuild(); // Ensure text is rebuilt before adding to renderer
+    Graphic2D::setRenderer(renderer);
+    FlagSet<TextFlags>::setFlag(TextFlags::TEXT_DIRTY);
+    this->rebuildText(); // Ensure text is rebuilt before adding to renderer
 }
 
-void Text::rebuild() {
-    if (!(this->flags & GraphicFlags::NEEDS_REBUILD)) {
+void Text2D::rebuildText() {
+    if (!this->getRenderer()) {
+        return;
+    }
+    if (!FlagSet<TextFlags>::hasFlag(TextFlags::TEXT_DIRTY)) {
         return;
     }
     // Set the rebuild flag
-    this->flags &= ~GraphicFlags::NEEDS_REBUILD;
-
-    // Rebuild the model matrix
-    this->modelMatrix = glm::mat4(1.0f);
-    this->modelMatrix = glm::translate(this->modelMatrix, glm::vec3(position, 0.0f));
-    this->modelMatrix = glm::rotate(this->modelMatrix, rotation, glm::vec3(0.0f, 0.0f, 1.0f));
-    this->modelMatrix = glm::scale(this->modelMatrix, glm::vec3(size, 1.0f));
+    FlagSet<TextFlags>::clearFlag(TextFlags::TEXT_DIRTY);
 
     // Rebuild glyphs based on content and font
 
     glm::vec2 size = this->measureTextSize();
     float lineHeight = font->getFontSize();
 
+    for (auto& glyph : glyphs) {
+        this->removeChild(glyph.get());
+    }
+
+
     if (font) {
-        glm::vec2 advance = glm::vec2(-font->getGlyphXAdvance(reinterpret_cast<const unsigned char*>(&content[0])) * 0.25f, lineHeight*0.75f); // Initialize advance vector
-        size_t i = 0, charCount = 0, lastSpaceIndex = 0, lastSpaceCharCount = 0;
+        glm::vec2 advance = glm::vec2(0.0f, lineHeight * 0.75f); // Initialize advance vector
+        size_t charCount = 0, lastSpaceCharCount = 0;
+        U8CharIterator lastSpaceIt = content.end();
 
         float alignOffset = 0.0f;
         if (this->alignment == TextAlignment::CENTER) {
-            alignOffset = (size.x - measureLineWidth(&content[i])) / 2.0f;
+            alignOffset = (size.x - measureLineWidth(content)) / 2.0f;
         } else if (this->alignment == TextAlignment::RIGHT) {
-            alignOffset = size.x - measureLineWidth(&content[i]);
+            alignOffset = size.x - measureLineWidth(content);
         }
 
-        for (; content[i] != '\0'; ++charCount) {
-            char c = content[i];
+        for (auto it = content.begin(); it != content.end(); ++it, ++charCount) {
+            U8Char c = *it;
             if (glyphs.size() < charCount + 1) {
-                glyphs.push_back(std::make_shared<Glyph>(*this, reinterpret_cast<const unsigned char*>(&content[i]), advance - glm::vec2(size.x - alignOffset*2.0f, size.y) * this->anchor));
-                glyphs[charCount]->addToRenderer(*this->getRenderer()); // Add glyph to renderer
+                glyphs.push_back(std::make_shared<Glyph>(*this, c, advance - glm::vec2(size.x - alignOffset*2.0f, size.y) * this->getAnchor()));
+                this->getRenderer()->add(*glyphs[charCount].get());
             } else {
-                glyphs[charCount]->setCharacter(reinterpret_cast<const unsigned char*>(&content[i]), advance - glm::vec2(size.x - alignOffset*2.0f, size.y) * this->anchor);
+                glyphs[charCount]->setCharacter(c, advance - glm::vec2(size.x - alignOffset*2.0f, size.y) * this->getAnchor());
             }
-            if (c == '\n') {
-                advance.x = -font->getGlyphXAdvance(reinterpret_cast<const unsigned char*>(&content[0])) * 0.25f; // Reset x offset for new line
+            if (c == "\n") {
+                advance.x = 0.0f; // Reset x offset for new line
                 advance.y += lineHeight; // Move down by line height
-                i++;
                 charCount--;
 
+                c = *(it+1); // Move to the character after the space
+
                 if (this->alignment == TextAlignment::CENTER) {
-                    alignOffset = (size.x - measureLineWidth(&content[i])) / 2.0f;
+                    alignOffset = (size.x - measureLineWidth(&c)) / 2.0f;
                 } else if (this->alignment == TextAlignment::RIGHT) {
-                    alignOffset = size.x - measureLineWidth(&content[i]);
+                    alignOffset = size.x - measureLineWidth(&c);
                 }
                 continue; // Skip to the next character
             }
-            if (c == ' ') {
-                lastSpaceIndex = i; // Remember the last space index
+            if (c == " ") {
+                lastSpaceIt = it; // Remember the last space iterator
                 lastSpaceCharCount = charCount;
             }
-            advance.x += font->getGlyphXAdvance(reinterpret_cast<const unsigned char*>(&content[i])); // Subtract the x advance of the glyph
-            advance.x += font->getGlyphSize(reinterpret_cast<const unsigned char*>(&content[i])).x / 2.0f; // Add the x offset of the glyph
+            advance.x += font->getGlyphXAdvance(c); // Subtract the x advance of the glyph
+            //advance.x += font->getGlyphSize(reinterpret_cast<const unsigned char*>(&content[i])).x / 2.0f; // Add the x offset of the glyph
 
             if (this->wordWrapType == TextWordWrap::CHARACTER && advance.x > this->wordWrapWidth) {
                 // If character wrapping is enabled and the width exceeds the limit, move to the next line
-                advance.x = -font->getGlyphXAdvance(reinterpret_cast<const unsigned char*>(&content[0])) * 0.25f; // Reset x offset for new line
+                advance.x = 0.0f; // Reset x offset for new line
                 advance.y += lineHeight; // Move down by line height
 
                 if (this->alignment == TextAlignment::CENTER) {
-                    alignOffset = (size.x - measureLineWidth(&content[i])) / 2.0f;
+                    alignOffset = (size.x - measureLineWidth(&c)) / 2.0f;
                 } else if (this->alignment == TextAlignment::RIGHT) {
-                    alignOffset = size.x - measureLineWidth(&content[i]);
+                    alignOffset = size.x - measureLineWidth(&c);
                 }
             }
-            if (this->wordWrapType == TextWordWrap::WORD && advance.x > this->wordWrapWidth && lastSpaceIndex) {
+            if (this->wordWrapType == TextWordWrap::WORD && advance.x > this->wordWrapWidth && lastSpaceIt != content.end()) {
                 // If word wrapping is enabled and the width exceeds the limit, move to the next line
-                advance.x = -font->getGlyphXAdvance(reinterpret_cast<const unsigned char*>(&content[0])) * 0.25f; // Reset x offset for new line
+                advance.x = 0; // Reset x offset for new line
                 advance.y += lineHeight; // Move down by line height
-                i = lastSpaceIndex + 1; // Move back to the last space
+                it = lastSpaceIt; // Reset iterator to last space
                 charCount = lastSpaceCharCount; // Reset character count to the last space
-                lastSpaceIndex = 0; // Reset last space index
+                lastSpaceIt = content.end();
+
+                c = *(it+1); // Move to the character after the space
 
                 if (this->alignment == TextAlignment::CENTER) {
-                    alignOffset = (size.x - measureLineWidth(&content[i])) / 2.0f;
+                    alignOffset = (size.x - measureLineWidth(&c)) / 2.0f;
                 } else if (this->alignment == TextAlignment::RIGHT) {
-                    alignOffset = size.x - measureLineWidth(&content[i]);
+                    alignOffset = size.x - measureLineWidth(&c);
                 }
                 continue;
             }
-
-            i += utf8_char_length(reinterpret_cast<const unsigned char*>(&content[i]));
         }
         glyphs.resize(charCount); // Resize glyphs vector to match the number of characters processed
     } else {
         std::cerr << "No font set for Text object." << std::endl;
     }
+
+    for (auto& glyph : glyphs) {
+        this->addChild(glyph.get());
+    }
 }
 
-void Text::bind() const {
+void Text2D::bind() const {
     if (font) {
         font->bind();
     }
 }
 
-void Text::setZIndex(float z) {
-    this->zIndex = z;
+void Text2D::setZIndex(float z) {
+    TransformableGraphic2D::setZIndex(z);
     //this->rendererKey = std::make_tuple(z, this->isOpaque(), this->getID());
-    this->renderer->changeGraphicPosition(this);
     for (auto& glyph : glyphs) {
         glyph->setZIndex(z);
     }
 }
 
-void Text::setContent(const std::string &content) {
+void Text2D::setContent(const U8String &content) {
     if (content == this->content) return; // No change in content
     this->content = content;
-    this->flags |= GraphicFlags::NEEDS_REBUILD;
-    this->rebuild(); // Rebuild glyphs based on new content
+    FlagSet<TextFlags>::setFlag(TextFlags::TEXT_DIRTY);
+    this->rebuildText(); // Rebuild glyphs based on new content
 }
 
-const std::string& Text::getContent() const {
+const U8String& Text2D::getContent() const {
     return content;
 }
 
-void Text::setFont(Font &font) {
-    bool needChangeGraphicPosition = (this->font && this->font->getID() != font.getID());
-    this->font = &font;
-    this->flags |= GraphicFlags::NEEDS_REBUILD;
+void Text2D::setFont(Font &font) {
+    bool needChangeGraphicPosition = (this->font && this->font->getID() != font->getID());
+    this->font = font;
+    FlagSet<TextFlags>::setFlag(TextFlags::TEXT_DIRTY);
     if (needChangeGraphicPosition) {
-        this->renderer->changeGraphicPosition(this);
         for (auto& glyph : glyphs) {
-            this->renderer->changeGraphicPosition(glyph.get());
+            glyph->updatePositionInRenderLists();
         }
     }
 }
 
-void Text::setWordWrap(TextWordWrap wrap, float width) {
+void Text2D::setWordWrap(TextWordWrap wrap, float width) {
     this->wordWrapType = wrap;
     this->wordWrapWidth = width;
-    this->flags |= GraphicFlags::NEEDS_REBUILD; // Mark as needing rebuild
-    this->rebuild(); // Rebuild text with new word wrap settings
+    FlagSet<TextFlags>::setFlag(TextFlags::TEXT_DIRTY); // Mark as needing rebuild
+    this->rebuildText(); // Rebuild text with new word wrap settings
 }
 
-void Text::setAlignment(TextAlignment align) {
+void Text2D::setAlignment(TextAlignment align) {
     this->alignment = align;
-    this->flags |= GraphicFlags::NEEDS_REBUILD; // Mark as needing rebuild
-    this->rebuild(); // Rebuild text with new alignment settings
+    FlagSet<TextFlags>::setFlag(TextFlags::TEXT_DIRTY); // Mark as needing rebuild
+    this->rebuildText(); // Rebuild text with new alignment settings
+}
+
+void Text2D::setTextSize(float size) {
+    this->textSize = size;
+    FlagSet<TextFlags>::setFlag(TextFlags::TEXT_DIRTY); // Mark as needing rebuild
+    this->rebuildText(); // Rebuild text with new text size
+}
+
+void Text2D::setTextDirty(bool dirty) {
+    if (dirty) {
+        FlagSet<TextFlags>::setFlag(TextFlags::TEXT_DIRTY);
+    } else {
+        FlagSet<TextFlags>::clearFlag(TextFlags::TEXT_DIRTY);
+    }
 }
 
 
-Font* Text::getFont() const {
+
+Font Text2D::getFont() const {
     return font;
 }
 
-GLuint Text::getID() const {
+GLuint Text2D::getID() const {
     return font ? font->getID() : 0;
 }
 
-TextWordWrap Text::getWordWrapType() const {
+TextWordWrap Text2D::getWordWrapType() const {
     return wordWrapType;
 }
 
-float Text::getWordWrapWidth() const {
+float Text2D::getWordWrapWidth() const {
     return wordWrapWidth;
 }
 
-TextAlignment Text::getAlignment() const {
+TextAlignment Text2D::getAlignment() const {
     return this->alignment;
+}
+
+float Text2D::getTextSize() const {
+    return textSize;
+}
+
+bool Text2D::isTextDirty() const {
+    return FlagSet<TextFlags>::hasFlag(TextFlags::TEXT_DIRTY);
 }
 
 
 
 
-glm::vec2 Text::measureTextSize() const {
+glm::vec2 Text2D::measureTextSize() const {
     glm::vec2 size(0.0f, 0.0f);
-    float currentLineWidth = -font->getGlyphXAdvance(reinterpret_cast<const unsigned char*>(&content[0])) * 0.25f;
+    float currentLineWidth = 0.0f;
     float lineHeight = this->font->getFontSize();
     float lastSpaceWidth = 0.0f; // Width of the last space character
-    size_t i = 0, lastSpaceIndex = 0;
-    for (; content[i] != '\0';) {
-        unsigned char c = static_cast<unsigned char>(content[i]);
-        if (c == '\n') {
+    U8CharIterator lastSpaceIt = content.end();
+    for (auto it = content.begin(); it != content.end(); ++it) {
+        U8Char c = *it;
+        if (c == "\n") {
             size.x = std::max(size.x, currentLineWidth);
             size.y += lineHeight;
-            currentLineWidth = -font->getGlyphXAdvance(reinterpret_cast<const unsigned char*>(&content[0])) * 0.25f; // Reset for new line
-            i++;
+            currentLineWidth = 0.0f; // Reset for new line
             continue;
         }
-        if (c == ' ') {
-            lastSpaceIndex = i; // Remember the last space index
+        if (c == " ") {
+            lastSpaceIt = it; // Remember the last space index
             lastSpaceWidth = currentLineWidth; // Get the width of the space character
         }
-        GlyphData* glyph = this->font->getGlyph(reinterpret_cast<const unsigned char*>(&content[i]));
+        GlyphData* glyph = this->font->getGlyph(c);
         if (glyph) {
             currentLineWidth += glyph->getXAdvance();
-            currentLineWidth += glyph->getSize().x / 2.0f;
         }
         if (this->wordWrapType == TextWordWrap::CHARACTER && currentLineWidth > this->wordWrapWidth) {
             // If character wrapping is enabled and the width exceeds the limit, move to the next line
             size.x = std::max(size.x, currentLineWidth); // Reset x offset for new line
             size.y += lineHeight; // Move down by line height
-            currentLineWidth = -font->getGlyphXAdvance(reinterpret_cast<const unsigned char*>(&content[0])) * 0.25f; // Reset for new line
+            currentLineWidth = 0.0f; // Reset for new line
         }
-        if (this->wordWrapType == TextWordWrap::WORD && currentLineWidth > this->wordWrapWidth && lastSpaceIndex) {
+        if (this->wordWrapType == TextWordWrap::WORD && currentLineWidth > this->wordWrapWidth && lastSpaceIt != content.end()) {
             // If word wrapping is enabled and the width exceeds the limit, move to the next line
             currentLineWidth = lastSpaceWidth; // Reset to the width of the last space
             size.x = std::max(size.x, currentLineWidth); // Reset x offset for new line
             size.y += lineHeight; // Move down by line height
-            i = lastSpaceIndex + 1; // Move back to the last space
-            lastSpaceIndex = 0; // Reset last space index
-            currentLineWidth = -font->getGlyphXAdvance(reinterpret_cast<const unsigned char*>(&content[0])) * 0.25f; // Reset for new line
+            it = lastSpaceIt; // Move back to the last space
+            lastSpaceIt = content.end(); // Reset last space index
+            currentLineWidth = 0.0f; // Reset for new line
             continue;
         }
-        i += utf8_char_length(reinterpret_cast<const unsigned char*>(&content[i]));
     }
     size.x = std::max(size.x, currentLineWidth);
     size.y += lineHeight;
     return size;
 }
 
-float Text::measureLineWidth(const std::string& text) const {
-    float width = -font->getGlyphXAdvance(reinterpret_cast<const unsigned char*>(&content[0])) * 0.25f;
+float Text2D::measureLineWidth(const U8String& text) const {
+    float width = 0.0f;
     float lastSpaceWidth = 0.0f; // Width of the last space character
-    size_t i = 0;
-    for (; text[i] != '\0';) {
-        unsigned char c = static_cast<unsigned char>(text[i]);
-        if (c == '\n') {
+    for (auto c : text) {
+        if (c == "\n") {
             break;
         }
-        if (c == ' ') {
+        if (c == " ") {
             lastSpaceWidth = width; // Get the width of the space character
         }
-        GlyphData* glyph = this->font->getGlyph(reinterpret_cast<const unsigned char*>(&text[i]));
+        GlyphData* glyph = this->font->getGlyph(c);
         if (glyph) {
             width += glyph->getXAdvance();
-            width += glyph->getSize().x / 2.0f;
         }
         if (this->wordWrapType == TextWordWrap::CHARACTER && width > this->wordWrapWidth) {
             // If character wrapping is enabled and the width exceeds the limit, move to the next line
             break;
         }
-        if (this->wordWrapType == TextWordWrap::WORD && width > this->wordWrapWidth && lastSpaceWidth) {
+        if (this->wordWrapType == TextWordWrap::WORD && width > this->wordWrapWidth && lastSpaceWidth != 0.0f) {
             // If word wrapping is enabled and the width exceeds the limit, move to the next line
             width = lastSpaceWidth; // Reset to the width of the last space
             break;
         }
-        i += utf8_char_length(reinterpret_cast<const unsigned char*>(&text[i]));
     }
     return width;
+}
+
+bool Text2D::isVisible() const {
+    return RenderableGraphic2D::isVisible() && font && font->isLoaded();
 }
 
 }

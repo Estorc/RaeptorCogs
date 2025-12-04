@@ -1,8 +1,8 @@
 #include <RaeptorCogs/BitOp.hpp>
 namespace RaeptorCogs {
 
-uint64_t next_power_of_2_64(uint64_t n) {
-    if (n == 0) return 1; // Handle the case for 0
+uint64_t NextPowerOf2(uint64_t n) {
+    if (n == 0) return 0; // Handle the case for 0
     n--;
     n |= n >> 1;
     n |= n >> 2;

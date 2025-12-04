@@ -1,4 +1,6 @@
 #include <RaeptorCogs/IO/FileIO.hpp>
+#include <RaeptorCogs/IO/String.hpp>
+#include <RaeptorCogs/RaeptorCogs.hpp>
 #include <iostream>
 #include <fstream>
 #include <map>
@@ -20,9 +22,8 @@
 
 namespace RaeptorCogs {
 // Helper function to load a file into memory
-FileData LoadFile(const char* filename) {
-    std::ifstream file;
-    file.open(filename, std::ios::binary);
+FileData LoadFile(const std::filesystem::path& filename) {
+    std::ifstream file(filename, std::ios::binary);
     if (!file) {
         std::cerr << "Failed to open file: " << filename << std::endl;
         return {};
@@ -34,7 +35,7 @@ FileData LoadFile(const char* filename) {
         std::cerr << "File is empty or invalid: " << filename << std::endl;
         return {};
     }
-    FileData buffer(size);
+    FileData buffer(static_cast<size_t>(size));
     file.read(reinterpret_cast<char*>(buffer.data()), size);
     if (!file) {
         std::cerr << "Failed to read file: " << filename << std::endl;
@@ -92,9 +93,10 @@ void OpenFileDialog(FileCallback callback, const FileDialogFilters& filters) {
     for (const auto& filter : filters) {
         _filters.push_back({ filter[0].c_str(), filter[1].c_str() });
     }
-    nfdopendialogu8args_t args = {0};
+    nfdopendialogu8args_t args;
+    args.defaultPath = nullptr;
     args.filterList = _filters.data();
-    args.filterCount = _filters.size();
+    args.filterCount = static_cast<nfdfiltersize_t>(_filters.size());
     nfdresult_t result = NFD_OpenDialogU8_With(&outPath, &args);
         
     if ( result == NFD_OKAY ) {

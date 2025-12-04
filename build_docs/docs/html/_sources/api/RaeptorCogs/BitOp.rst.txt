@@ -1,0 +1,22 @@
+BitOp
+=====
+
+.. doxygenfile:: RaeptorCogs/BitOp.hpp
+   :project: RaeptorCogs
+   :no-link:
+   :sections: briefdescription detaileddescription
+
+Functions
+---------
+
+.. list-table:: Functions
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Function
+     - Description
+   * - ``RaeptorCogs::NextPowerOf2(uint64_t n)``
+     - Calculate the next power of 2 greater than or equal to n.
+.. doxygenfunction:: RaeptorCogs::NextPowerOf2(uint64_t n)
+   :project: RaeptorCogs
+

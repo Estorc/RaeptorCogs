@@ -1,0 +1,44 @@
+Shape
+=====
+
+.. doxygenfile:: RaeptorCogs/Shape.hpp
+   :project: RaeptorCogs
+   :no-link:
+   :sections: briefdescription detaileddescription
+
+Classes
+-------
+
+.. list-table:: Classes
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Class
+     - Description
+   * - ``RaeptorCogs::Quad``
+     - Quad shape class.
+   * - ``RaeptorCogs::RegularPolygon``
+     - Regular polygon shape class.
+   * - ``RaeptorCogs::Shape``
+     - Base Shape class.
+.. doxygenclass:: RaeptorCogs::Quad
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+
+.. doxygenclass:: RaeptorCogs::RegularPolygon
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+
+.. doxygenclass:: RaeptorCogs::Shape
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+

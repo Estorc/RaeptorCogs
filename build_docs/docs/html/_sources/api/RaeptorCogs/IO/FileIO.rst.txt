@@ -1,0 +1,61 @@
+FileIO
+======
+
+.. doxygenfile:: RaeptorCogs/IO/FileIO.hpp
+   :project: RaeptorCogs
+   :no-link:
+   :sections: briefdescription detaileddescription
+
+Types
+-----
+
+.. list-table:: Type Definitions
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Type
+     - Description
+   * - ``RaeptorCogs::FileCallback``
+     - Callback function type for file dialog operations.
+   * - ``RaeptorCogs::FileData``
+     - Raw file data type.
+   * - ``RaeptorCogs::FileDialogFilter``
+     - File dialog filter type.
+   * - ``RaeptorCogs::FileDialogFilters``
+     - File dialog filter collection.
+.. doxygentypedef:: RaeptorCogs::FileCallback
+   :project: RaeptorCogs
+
+.. doxygentypedef:: RaeptorCogs::FileData
+   :project: RaeptorCogs
+
+.. doxygentypedef:: RaeptorCogs::FileDialogFilter
+   :project: RaeptorCogs
+
+.. doxygentypedef:: RaeptorCogs::FileDialogFilters
+   :project: RaeptorCogs
+
+Functions
+---------
+
+.. list-table:: Functions
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Function
+     - Description
+   * - ``RaeptorCogs::LoadFile(const std::filesystem::path &filename)``
+     - Loads a file from disk into memory.
+   * - ``RaeptorCogs::LocalizeWorkingDirectory()``
+     - Sets the working directory to the executable's directory.
+   * - ``RaeptorCogs::OpenFileDialog(FileCallback callback, const FileDialogFilters &filters={})``
+     - Opens a file dialog to select a file.
+.. doxygenfunction:: RaeptorCogs::LoadFile(const std::filesystem::path &filename)
+   :project: RaeptorCogs
+
+.. doxygenfunction:: RaeptorCogs::LocalizeWorkingDirectory()
+   :project: RaeptorCogs
+
+.. doxygenfunction:: RaeptorCogs::OpenFileDialog(FileCallback callback, const FileDialogFilters &filters={})
+   :project: RaeptorCogs
+

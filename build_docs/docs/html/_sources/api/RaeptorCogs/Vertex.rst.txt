@@ -1,0 +1,35 @@
+Vertex
+======
+
+.. doxygenfile:: RaeptorCogs/Vertex.hpp
+   :project: RaeptorCogs
+   :no-link:
+   :sections: briefdescription detaileddescription
+
+Structs
+-------
+
+.. list-table:: Structures
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Struct
+     - Description
+   * - ``RaeptorCogs::Vertex2D``
+     - Vertex structure for 2D graphics.
+   * - ``RaeptorCogs::Vertex3D``
+     - Vertex structure for 3D graphics.
+.. doxygenstruct:: RaeptorCogs::Vertex2D
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+
+.. doxygenstruct:: RaeptorCogs::Vertex3D
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+

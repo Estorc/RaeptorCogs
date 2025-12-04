@@ -1,0 +1,6 @@
+Namespace RaeptorCogs::GAPI::Common
+====================================
+
+.. doxygennamespace:: RaeptorCogs::GAPI::Common
+   :project: RaeptorCogs
+   :desc-only:
