@@ -1,0 +1,54 @@
+GraphicHandler
+==============
+
+.. doxygenfile:: RaeptorCogs/GAPI/Common/Core/GraphicHandler.hpp
+   :project: RaeptorCogs
+   :no-link:
+   :sections: briefdescription detaileddescription
+
+Structs
+-------
+
+.. list-table:: Structures
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Struct
+     - Description
+   * - ``RaeptorCogs::BatchKey``
+     - Batch key structure.
+   * - ``RaeptorCogs::GAPI::Common::GraphicBatchHandler``
+     - Graphic batch handler structure.
+.. doxygenstruct:: RaeptorCogs::BatchKey
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+
+.. doxygenstruct:: RaeptorCogs::GAPI::Common::GraphicBatchHandler
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+
+Functions
+---------
+
+.. list-table:: Functions
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Function
+     - Description
+   * - ``std::operator<<(std::ostream &os, const RaeptorCogs::BatchKey &key)``
+     - Stream output operator for BatchKey.
+   * - ``std::operator<<(std::ostream &os, const RaeptorCogs::GAPI::Common::GraphicBatchHandler &handler)``
+     - Stream output operator for GraphicBatchHandler.
+.. doxygenfunction:: std::operator<<(std::ostream &os, const RaeptorCogs::BatchKey &key)
+   :project: RaeptorCogs
+
+.. doxygenfunction:: std::operator<<(std::ostream &os, const RaeptorCogs::GAPI::Common::GraphicBatchHandler &handler)
+   :project: RaeptorCogs
+

@@ -1,0 +1,70 @@
+Images
+======
+
+.. doxygenfile:: RaeptorCogs/IO/Images.hpp
+   :project: RaeptorCogs
+   :no-link:
+   :sections: briefdescription detaileddescription
+
+Structs
+-------
+
+.. list-table:: Structures
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Struct
+     - Description
+   * - ``RaeptorCogs::Image``
+     - Image data structure.
+.. doxygenstruct:: RaeptorCogs::Image
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+
+Functions
+---------
+
+.. list-table:: Functions
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Function
+     - Description
+   * - ``RaeptorCogs::CreateImage(size_t width, size_t height)``
+     - Create an empty image with specified dimensions.
+   * - ``RaeptorCogs::LoadImageFromFile(const std::filesystem::path &filename, size_t s_width=0, size_t s_height=0)``
+     - Load an image from a file.
+   * - ``RaeptorCogs::LoadImageFromMemory(const FileData &data, size_t s_width=0, size_t s_height=0)``
+     - Load an image from memory.
+   * - ``RaeptorCogs::LoadImageFromURL(const std::filesystem::path &url)``
+     - Load an image from a URL.
+   * - ``RaeptorCogs::LoadTexture(const std::filesystem::path &filename)``
+     - Load a texture from an image file.
+   * - ``RaeptorCogs::saveTextureToPNG(GLuint textureID, size_t width, size_t height, const std::filesystem::path &filename)``
+     - No description.
+   * - ``RaeptorCogs::saveTextureToPNG(uint32_t textureID, size_t width, size_t height, const std::filesystem::path &filename)``
+     - Save an OpenGL texture to a PNG file.
+.. doxygenfunction:: RaeptorCogs::CreateImage(size_t width, size_t height)
+   :project: RaeptorCogs
+
+.. doxygenfunction:: RaeptorCogs::LoadImageFromFile(const std::filesystem::path &filename, size_t s_width=0, size_t s_height=0)
+   :project: RaeptorCogs
+
+.. doxygenfunction:: RaeptorCogs::LoadImageFromMemory(const FileData &data, size_t s_width=0, size_t s_height=0)
+   :project: RaeptorCogs
+
+.. doxygenfunction:: RaeptorCogs::LoadImageFromURL(const std::filesystem::path &url)
+   :project: RaeptorCogs
+
+.. doxygenfunction:: RaeptorCogs::LoadTexture(const std::filesystem::path &filename)
+   :project: RaeptorCogs
+
+.. doxygenfunction:: RaeptorCogs::saveTextureToPNG(GLuint textureID, size_t width, size_t height, const std::filesystem::path &filename)
+   :project: RaeptorCogs
+
+.. doxygenfunction:: RaeptorCogs::saveTextureToPNG(uint32_t textureID, size_t width, size_t height, const std::filesystem::path &filename)
+   :project: RaeptorCogs
+

@@ -1,0 +1,54 @@
+VertexArray
+===========
+
+.. doxygenfile:: RaeptorCogs/GAPI/GL/Ressources/VertexArray.hpp
+   :project: RaeptorCogs
+   :no-link:
+   :sections: briefdescription detaileddescription
+
+Types
+-----
+
+.. list-table:: Type Definitions
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Type
+     - Description
+   * - ``RaeptorCogs::GAPI::GL::VAO``
+     - No description.
+.. doxygentypedef:: RaeptorCogs::GAPI::GL::VAO
+   :project: RaeptorCogs
+
+Classes
+-------
+
+.. list-table:: Classes
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Class
+     - Description
+   * - ``RaeptorCogs::GAPI::GL::VertexArray``
+     - No description.
+.. doxygenclass:: RaeptorCogs::GAPI::GL::VertexArray
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+
+Functions
+---------
+
+.. list-table:: Functions
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Function
+     - Description
+   * - ``RaeptorCogs::GAPI::GL::REGISTER(Common::VertexArray, VertexArray)``
+     - Register VertexArray with the FactoryRegistry.
+.. doxygenfunction:: RaeptorCogs::GAPI::GL::REGISTER(Common::VertexArray, VertexArray)
+   :project: RaeptorCogs
+

@@ -1,0 +1,45 @@
+ImGuiModule
+===========
+
+.. doxygenfile:: RaeptorCogs/GAPI/Vulkan/Core/Internal/ImGuiModule.hpp
+   :project: RaeptorCogs
+   :no-link:
+   :sections: briefdescription detaileddescription
+
+Classes
+-------
+
+.. list-table:: Classes
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Class
+     - Description
+   * - ``RaeptorCogs::GAPI::Vulkan::ImGuiModule``
+     - Vulkan ImGui implementation.
+.. doxygenclass:: RaeptorCogs::GAPI::Vulkan::ImGuiModule
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+
+Functions
+---------
+
+.. list-table:: Functions
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Function
+     - Description
+   * - ``RaeptorCogs::GAPI::Vulkan::beginSingleTimeCommands()``
+     - No description.
+   * - ``RaeptorCogs::GAPI::Vulkan::endSingleTimeCommands(VkCommandBuffer commandBuffer)``
+     - No description.
+.. doxygenfunction:: RaeptorCogs::GAPI::Vulkan::beginSingleTimeCommands()
+   :project: RaeptorCogs
+
+.. doxygenfunction:: RaeptorCogs::GAPI::Vulkan::endSingleTimeCommands(VkCommandBuffer commandBuffer)
+   :project: RaeptorCogs
+

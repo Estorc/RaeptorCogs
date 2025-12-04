@@ -1,0 +1,136 @@
+Texture
+=======
+
+.. doxygenfile:: RaeptorCogs/IO/Texture.hpp
+   :project: RaeptorCogs
+   :no-link:
+   :sections: briefdescription detaileddescription
+
+Types
+-----
+
+.. list-table:: Type Definitions
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Type
+     - Description
+   * - ``RaeptorCogs::Singletons::TextureAtlasMap``
+     - Map of texture atlases by type.
+   * - ``RaeptorCogs::TextureAtlasTypeKey``
+     - Type key for texture atlas map.
+.. doxygentypedef:: RaeptorCogs::Singletons::TextureAtlasMap
+   :project: RaeptorCogs
+
+.. doxygentypedef:: RaeptorCogs::TextureAtlasTypeKey
+   :project: RaeptorCogs
+
+Enums
+-----
+
+.. list-table:: Enumerations
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Enum
+     - Description
+   * - ``RaeptorCogs::TextureAtlasFlags``
+     - Texture atlas flags enumeration.
+.. doxygenenum:: RaeptorCogs::TextureAtlasFlags
+   :project: RaeptorCogs
+
+Structs
+-------
+
+.. list-table:: Structures
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Struct
+     - Description
+   * - ``RaeptorCogs::Texture::OnLoadProxy``
+     - Proxy structure for setting the onLoad callback.
+   * - ``RaeptorCogs::TextureOptions``
+     - Texture loading options structure.
+.. doxygenstruct:: RaeptorCogs::Texture::OnLoadProxy
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+
+.. doxygenstruct:: RaeptorCogs::TextureOptions
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+
+Classes
+-------
+
+.. list-table:: Classes
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Class
+     - Description
+   * - ``RaeptorCogs::Singletons::TextureAtlasManager``
+     - Texture atlas manager singleton class.
+   * - ``RaeptorCogs::Texture``
+     - High-level texture handler class.
+   * - ``RaeptorCogs::TextureAtlas``
+     - Texture atlas class.
+   * - ``RaeptorCogs::TextureBase``
+     - Base texture class.
+.. doxygenclass:: RaeptorCogs::Singletons::TextureAtlasManager
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+
+.. doxygenclass:: RaeptorCogs::Texture
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+
+.. doxygenclass:: RaeptorCogs::TextureAtlas
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+
+.. doxygenclass:: RaeptorCogs::TextureBase
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+
+Functions
+---------
+
+.. list-table:: Functions
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Function
+     - Description
+   * - ``std::operator<<(std::ostream &os, const RaeptorCogs::TextureOptions &options)``
+     - Output stream operator for TextureOptions.
+.. doxygenfunction:: std::operator<<(std::ostream &os, const RaeptorCogs::TextureOptions &options)
+   :project: RaeptorCogs
+
+Variables
+---------
+
+.. doxygenvariable:: RaeptorCogs::ATLAS_PADDING
+   :project: RaeptorCogs
+
+.. doxygenvariable:: RaeptorCogs::COMMON_ATLAS_SIZE
+   :project: RaeptorCogs
+

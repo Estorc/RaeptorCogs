@@ -1,0 +1,53 @@
+Memory
+======
+
+.. doxygenfile:: RaeptorCogs/Memory.hpp
+   :project: RaeptorCogs
+   :no-link:
+   :sections: briefdescription detaileddescription
+
+Structs
+-------
+
+.. list-table:: Structures
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Struct
+     - Description
+   * - ``RaeptorCogs::UniqueKey``
+     - Struct to create unique keys for resource management.
+   * - ``RaeptorCogs::is_streamable``
+     - Helper trait to check if a type is streamable to std::ostringstream.
+.. doxygenstruct:: RaeptorCogs::UniqueKey
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+
+.. doxygenstruct:: RaeptorCogs::is_streamable
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+
+Classes
+-------
+
+.. list-table:: Classes
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Class
+     - Description
+   * - ``RaeptorCogs::Singletons::ResourceManager``
+     - ResourceManager class template.
+.. doxygenclass:: RaeptorCogs::Singletons::ResourceManager
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+

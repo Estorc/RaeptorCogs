@@ -1,0 +1,19 @@
+/* Collapse children in page-level toctrees */
+.toctree-wrapper ul ul {
+    display: none;
+    margin-left: 1em;
+}
+
+.toctree-wrapper .has-children > a {
+    cursor: pointer;
+}
+
+.toctree-wrapper .caret::before {
+    content: "►";
+    margin-right: 0.3em;
+    font-size: 0.8em;
+}
+
+.toctree-wrapper .caret.expanded::before {
+    content: "▼";
+}

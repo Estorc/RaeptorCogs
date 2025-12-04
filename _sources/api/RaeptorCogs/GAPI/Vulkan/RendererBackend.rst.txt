@@ -1,0 +1,51 @@
+RendererBackend
+===============
+
+.. doxygenfile:: RaeptorCogs/GAPI/Vulkan/RendererBackend.hpp
+   :project: RaeptorCogs
+   :no-link:
+   :sections: briefdescription detaileddescription
+
+Classes
+-------
+
+.. list-table:: Classes
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Class
+     - Description
+   * - ``RaeptorCogs::GAPI::Vulkan::RendererBackend``
+     - Vulkan Renderer backend implementation.
+.. doxygenclass:: RaeptorCogs::GAPI::Vulkan::RendererBackend
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+
+Functions
+---------
+
+.. list-table:: Functions
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Function
+     - Description
+   * - ``RaeptorCogs::GAPI::Vulkan::debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageType, const VkDebugUtilsMessengerCallbackDataEXT *pCallbackData, void *pUserData)``
+     - No description.
+   * - ``RaeptorCogs::GAPI::Vulkan::recordCommandBuffer(RaeptorCogs::GAPI::Vulkan::RendererBackend *backend, RaeptorCogs::GAPI::Vulkan::WindowContext *context, VkCommandBuffer commandBuffer, VkFramebuffer framebuffer)``
+     - No description.
+.. doxygenfunction:: RaeptorCogs::GAPI::Vulkan::debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageType, const VkDebugUtilsMessengerCallbackDataEXT *pCallbackData, void *pUserData)
+   :project: RaeptorCogs
+
+.. doxygenfunction:: RaeptorCogs::GAPI::Vulkan::recordCommandBuffer(RaeptorCogs::GAPI::Vulkan::RendererBackend *backend, RaeptorCogs::GAPI::Vulkan::WindowContext *context, VkCommandBuffer commandBuffer, VkFramebuffer framebuffer)
+   :project: RaeptorCogs
+
+Variables
+---------
+
+.. doxygenvariable:: RaeptorCogs::GAPI::Vulkan::debugMessenger
+   :project: RaeptorCogs
+

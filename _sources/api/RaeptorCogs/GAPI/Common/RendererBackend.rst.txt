@@ -1,0 +1,40 @@
+RendererBackend
+===============
+
+.. doxygenfile:: RaeptorCogs/GAPI/Common/RendererBackend.hpp
+   :project: RaeptorCogs
+   :no-link:
+   :sections: briefdescription detaileddescription
+
+Enums
+-----
+
+.. list-table:: Enumerations
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Enum
+     - Description
+   * - ``RaeptorCogs::GraphicsBackend``
+     - Graphics backend enumeration.
+.. doxygenenum:: RaeptorCogs::GraphicsBackend
+   :project: RaeptorCogs
+
+Classes
+-------
+
+.. list-table:: Classes
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Class
+     - Description
+   * - ``RaeptorCogs::GAPI::Common::RendererBackend``
+     - No description.
+.. doxygenclass:: RaeptorCogs::GAPI::Common::RendererBackend
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+

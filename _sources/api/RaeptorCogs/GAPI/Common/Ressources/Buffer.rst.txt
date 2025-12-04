@@ -1,0 +1,105 @@
+Buffer
+======
+
+.. doxygenfile:: RaeptorCogs/GAPI/Common/Ressources/Buffer.hpp
+   :project: RaeptorCogs
+   :no-link:
+   :sections: briefdescription detaileddescription
+
+Types
+-----
+
+.. list-table:: Type Definitions
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Type
+     - Description
+   * - ``RaeptorCogs::GAPI::Common::EBO``
+     - Type alias for Elementbuffer.
+   * - ``RaeptorCogs::GAPI::Common::FBO``
+     - Type aliases for common buffer types.
+   * - ``RaeptorCogs::GAPI::Common::RBO``
+     - Type alias for Renderbuffer.
+   * - ``RaeptorCogs::GAPI::Common::SSBO``
+     - Type alias for ShaderStorageBuffer.
+   * - ``RaeptorCogs::GAPI::Common::VBO``
+     - Type alias for Vertexbuffer.
+.. doxygentypedef:: RaeptorCogs::GAPI::Common::EBO
+   :project: RaeptorCogs
+
+.. doxygentypedef:: RaeptorCogs::GAPI::Common::FBO
+   :project: RaeptorCogs
+
+.. doxygentypedef:: RaeptorCogs::GAPI::Common::RBO
+   :project: RaeptorCogs
+
+.. doxygentypedef:: RaeptorCogs::GAPI::Common::SSBO
+   :project: RaeptorCogs
+
+.. doxygentypedef:: RaeptorCogs::GAPI::Common::VBO
+   :project: RaeptorCogs
+
+Classes
+-------
+
+.. list-table:: Classes
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Class
+     - Description
+   * - ``RaeptorCogs::GAPI::Common::Buffer``
+     - Buffer interface.
+   * - ``RaeptorCogs::GAPI::Common::Elementbuffer``
+     - Elementbuffer class.
+   * - ``RaeptorCogs::GAPI::Common::Framebuffer``
+     - Framebuffer class.
+   * - ``RaeptorCogs::GAPI::Common::Renderbuffer``
+     - Renderbuffer class.
+   * - ``RaeptorCogs::GAPI::Common::ShaderStorageBuffer``
+     - ShaderStorageBuffer class.
+   * - ``RaeptorCogs::GAPI::Common::Vertexbuffer``
+     - Vertexbuffer class.
+.. doxygenclass:: RaeptorCogs::GAPI::Common::Buffer
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+
+.. doxygenclass:: RaeptorCogs::GAPI::Common::Elementbuffer
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+
+.. doxygenclass:: RaeptorCogs::GAPI::Common::Framebuffer
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+
+.. doxygenclass:: RaeptorCogs::GAPI::Common::Renderbuffer
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+
+.. doxygenclass:: RaeptorCogs::GAPI::Common::ShaderStorageBuffer
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+
+.. doxygenclass:: RaeptorCogs::GAPI::Common::Vertexbuffer
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+

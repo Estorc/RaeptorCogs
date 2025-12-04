@@ -1,0 +1,121 @@
+Flags
+=====
+
+.. doxygenfile:: RaeptorCogs/Flags.hpp
+   :project: RaeptorCogs
+   :no-link:
+   :sections: briefdescription detaileddescription
+
+Structs
+-------
+
+.. list-table:: Structures
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Struct
+     - Description
+   * - ``RaeptorCogs::EnumStorage``
+     - Storage structure for enum flags.
+   * - ``RaeptorCogs::isClassEnum``
+     - Check if a enum is a class enum.
+   * - ``RaeptorCogs::isPlainEnum``
+     - Check if a enum is a plain enum.
+.. doxygenstruct:: RaeptorCogs::EnumStorage
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+
+.. doxygenstruct:: RaeptorCogs::isClassEnum
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+
+.. doxygenstruct:: RaeptorCogs::isPlainEnum
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+
+Classes
+-------
+
+.. list-table:: Classes
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Class
+     - Description
+   * - ``RaeptorCogs::FlagSet``
+     - FlagSet class for managing multiple enum class flags.
+.. doxygenclass:: RaeptorCogs::FlagSet
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+
+Functions
+---------
+
+.. list-table:: Functions
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Function
+     - Description
+   * - ``RaeptorCogs::operator!(Enum a)``
+     - Enable NOT operator for a given enum class.
+   * - ``RaeptorCogs::operator!=(Enum a, Enum b)``
+     - Enable inequality operator for a given enum class.
+   * - ``RaeptorCogs::operator&(Enum a, Enum b)``
+     - Enable AND bitmask operator for a given enum class.
+   * - ``RaeptorCogs::operator&=(Enum &a, Enum b)``
+     - Enable AND assignment bitmask operator for a given enum class.
+   * - ``RaeptorCogs::operator==(Enum a, Enum b)``
+     - Enable equality operator for a given enum class.
+   * - ``RaeptorCogs::operator^(Enum a, Enum b)``
+     - Enable XOR bitmask operator for a given enum class.
+   * - ``RaeptorCogs::operator^=(Enum &a, Enum b)``
+     - Enable XOR assignment bitmask operator for a given enum class.
+   * - ``RaeptorCogs::operator|(Enum a, Enum b)``
+     - Enable OR bitmask operator for a given enum class.
+   * - ``RaeptorCogs::operator|=(Enum &a, Enum b)``
+     - Enable OR assignment bitmask operator for a given enum class.
+   * - ``RaeptorCogs::operator~(Enum a)``
+     - Enable NOT bitmask operator for a given enum class.
+.. doxygenfunction:: RaeptorCogs::operator!(Enum a)
+   :project: RaeptorCogs
+
+.. doxygenfunction:: RaeptorCogs::operator!=(Enum a, Enum b)
+   :project: RaeptorCogs
+
+.. doxygenfunction:: RaeptorCogs::operator&(Enum a, Enum b)
+   :project: RaeptorCogs
+
+.. doxygenfunction:: RaeptorCogs::operator&=(Enum &a, Enum b)
+   :project: RaeptorCogs
+
+.. doxygenfunction:: RaeptorCogs::operator==(Enum a, Enum b)
+   :project: RaeptorCogs
+
+.. doxygenfunction:: RaeptorCogs::operator^(Enum a, Enum b)
+   :project: RaeptorCogs
+
+.. doxygenfunction:: RaeptorCogs::operator^=(Enum &a, Enum b)
+   :project: RaeptorCogs
+
+.. doxygenfunction:: RaeptorCogs::operator|(Enum a, Enum b)
+   :project: RaeptorCogs
+
+.. doxygenfunction:: RaeptorCogs::operator|=(Enum &a, Enum b)
+   :project: RaeptorCogs
+
+.. doxygenfunction:: RaeptorCogs::operator~(Enum a)
+   :project: RaeptorCogs
+

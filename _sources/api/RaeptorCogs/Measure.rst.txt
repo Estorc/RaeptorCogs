@@ -1,0 +1,8 @@
+Measure
+=======
+
+.. doxygenfile:: RaeptorCogs/Measure.hpp
+   :project: RaeptorCogs
+   :no-link:
+   :sections: briefdescription detaileddescription
+

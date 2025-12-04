@@ -1,0 +1,40 @@
+Shader
+======
+
+.. doxygenfile:: RaeptorCogs/GAPI/GL/Ressources/Shader.hpp
+   :project: RaeptorCogs
+   :no-link:
+   :sections: briefdescription detaileddescription
+
+Classes
+-------
+
+.. list-table:: Classes
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Class
+     - Description
+   * - ``RaeptorCogs::GAPI::GL::Shader``
+     - No description.
+.. doxygenclass:: RaeptorCogs::GAPI::GL::Shader
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+
+Functions
+---------
+
+.. list-table:: Functions
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Function
+     - Description
+   * - ``RaeptorCogs::GAPI::GL::REGISTER(Common::Shader, Shader)``
+     - Register Shader with the FactoryRegistry.
+.. doxygenfunction:: RaeptorCogs::GAPI::GL::REGISTER(Common::Shader, Shader)
+   :project: RaeptorCogs
+

@@ -1,0 +1,26 @@
+Singleton
+=========
+
+.. doxygenfile:: RaeptorCogs/Singleton.hpp
+   :project: RaeptorCogs
+   :no-link:
+   :sections: briefdescription detaileddescription
+
+Structs
+-------
+
+.. list-table:: Structures
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Struct
+     - Description
+   * - ``RaeptorCogs::SingletonAccessor``
+     - SingletonAccessor struct.
+.. doxygenstruct:: RaeptorCogs::SingletonAccessor
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+

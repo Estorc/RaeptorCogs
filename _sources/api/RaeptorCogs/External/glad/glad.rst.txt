@@ -1,0 +1,8 @@
+glad
+====
+
+.. doxygenfile:: RaeptorCogs/External/glad/glad.hpp
+   :project: RaeptorCogs
+   :no-link:
+   :sections: briefdescription detaileddescription
+

@@ -1,0 +1,26 @@
+Time
+====
+
+.. doxygenfile:: RaeptorCogs/Time.hpp
+   :project: RaeptorCogs
+   :no-link:
+   :sections: briefdescription detaileddescription
+
+Classes
+-------
+
+.. list-table:: Classes
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Class
+     - Description
+   * - ``RaeptorCogs::Singletons::Time``
+     - Time singleton class.
+.. doxygenclass:: RaeptorCogs::Singletons::Time
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+

@@ -1,0 +1,26 @@
+RendererBackend
+===============
+
+.. doxygenfile:: RaeptorCogs/GAPI/GL/RendererBackend.hpp
+   :project: RaeptorCogs
+   :no-link:
+   :sections: briefdescription detaileddescription
+
+Classes
+-------
+
+.. list-table:: Classes
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Class
+     - Description
+   * - ``RaeptorCogs::GAPI::GL::RendererBackend``
+     - OpenGL Renderer backend implementation.
+.. doxygenclass:: RaeptorCogs::GAPI::GL::RendererBackend
+   :project: RaeptorCogs
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+

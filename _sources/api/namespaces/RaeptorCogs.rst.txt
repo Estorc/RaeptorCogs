@@ -1,0 +1,6 @@
+Namespace RaeptorCogs
+======================
+
+.. doxygennamespace:: RaeptorCogs
+   :project: RaeptorCogs
+   :desc-only:
