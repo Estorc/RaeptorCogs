@@ -6,6 +6,7 @@
 #include <RaeptorCogs/External/stb/stb.hpp>
 
 #include <cstdlib>
+#include <cstring>
 #include <iostream>
 #include <memory>
 #include <RaeptorCogs/External/glad/glad.hpp>

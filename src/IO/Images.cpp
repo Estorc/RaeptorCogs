@@ -4,6 +4,7 @@
 #include <RaeptorCogs/IO/FileIO.hpp>
 #include <RaeptorCogs/IO/Path.hpp>
 #include <RaeptorCogs/External/glad/glad.hpp>
+#include <cstring>
 #ifndef __EMSCRIPTEN__
 //#include <httplib.h>
 #endif
