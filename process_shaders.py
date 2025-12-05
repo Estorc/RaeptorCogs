@@ -74,6 +74,8 @@ def main():
     
     shader_files = [Path(arg) for arg in remaining_args]
 
+    # Generate the folder if it doesn't exist
+    out_path.parent.mkdir(parents=True, exist_ok=True)
     with out_path.open("w") as out_file:
         out_file.write("// Auto-generated header with embedded shaders\n\n")
         for shader_path in shader_files:
