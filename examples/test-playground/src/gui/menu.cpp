@@ -90,7 +90,12 @@ void createMenu(glm::vec2 windowSize) {
                 RaeptorCogs::Text2D *text = dynamic_cast<RaeptorCogs::Text2D*>(node.sprite.get());
 
                 char textInput[256];
+                #ifdef _WIN32
                 strncpy_s(textInput, sizeof(textInput), text->getContent().c_str(), _TRUNCATE);
+                #else
+                std::strncpy(textInput, text->getContent().c_str(), sizeof(textInput));
+                textInput[sizeof(textInput) - 1] = '\0'; // Ensure null-termination
+                #endif
                 if (ImGui::InputTextMultiline("Text2D Input", textInput, sizeof(textInput))) text->setContent(textInput);
 
                 glm::vec2 textPosition = text->getPosition();
