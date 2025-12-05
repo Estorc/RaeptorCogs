@@ -238,10 +238,14 @@ endif()
 # Helper macro: disable warnings for a target if it exists
 function(disable_warnings TARGET_NAME)
     if (TARGET ${TARGET_NAME})
-        if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+        if (MSVC)
             target_compile_options(${TARGET_NAME} PRIVATE
                 /W0
                 /clang:-Wno-everything
+            )
+        elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+            target_compile_options(${TARGET_NAME} PRIVATE
+                -Wno-everything
             )
         elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
             target_compile_options(${TARGET_NAME} PRIVATE
