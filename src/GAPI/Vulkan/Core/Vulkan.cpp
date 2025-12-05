@@ -1,6 +1,7 @@
 #include <RaeptorCogs/GAPI/Vulkan/Core/Vulkan.hpp>
 #include <RaeptorCogs/GAPI/Vulkan/RendererBackend.hpp>
 #include <vulkan/vk_enum_string_helper.h>
+#include <cstring>
 #include <iostream>
 
 VkFormat findDepthFormat(VkPhysicalDevice physicalDevice) {
