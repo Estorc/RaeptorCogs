@@ -289,5 +289,4 @@ namespace RaeptorCogs::GAPI {
  * 
  * @note Used internally to register object types with the factory registry.
  */
-#define REGISTER(CommonType, BackendType) \
-    template struct Register<CommonType, BackendType>;
+#define REGISTER(CommonType, BackendType) template struct Register<CommonType, BackendType>;

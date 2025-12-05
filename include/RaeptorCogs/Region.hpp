@@ -112,7 +112,7 @@ class RegionBuffer {
 
             // Insert position based on begin
             auto it = std::lower_bound(regions.begin(), regions.end(), newRegion,
-                [](const Region& a, const Region& b) {
+                [](const auto& a, const auto& b) {
                     return a.first < b.first;
                 }
             );
