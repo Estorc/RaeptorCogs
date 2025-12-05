@@ -39,10 +39,10 @@
 
 #pragma once
 #include <RaeptorCogs/GAPI/Common/Core/Internal/GraphicCore.hpp>
-#include <RaeptorCogs/GAPI/Vulkan/Ressources/Buffer.hpp>
-#include <RaeptorCogs/GAPI/Vulkan/Ressources/TextureData.hpp>
-#include <RaeptorCogs/GAPI/Vulkan/Ressources/Shader.hpp>
-#include <RaeptorCogs/GAPI/Vulkan/Ressources/VertexArray.hpp>
+#include <RaeptorCogs/GAPI/Vulkan/Resources/Buffer.hpp>
+#include <RaeptorCogs/GAPI/Vulkan/Resources/TextureData.hpp>
+#include <RaeptorCogs/GAPI/Vulkan/Resources/Shader.hpp>
+#include <RaeptorCogs/GAPI/Vulkan/Resources/VertexArray.hpp>
 #include <RaeptorCogs/IO/Texture.hpp>
 #include <vulkan/vulkan.h>
 

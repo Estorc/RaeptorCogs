@@ -39,8 +39,8 @@
 
 #pragma once
 #include <RaeptorCogs/GAPI/Common/Core/Internal/WindowContext.hpp>
-#include <RaeptorCogs/GAPI/Common/Ressources/Object.hpp>
-#include <RaeptorCogs/GAPI/Common/Ressources/VertexArray.hpp>
+#include <RaeptorCogs/GAPI/Common/Resources/Object.hpp>
+#include <RaeptorCogs/GAPI/Common/Resources/VertexArray.hpp>
 
 namespace RaeptorCogs::GAPI::GL {
 

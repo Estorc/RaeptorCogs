@@ -1,5 +1,5 @@
 #include <RaeptorCogs/RaeptorCogs.hpp>
-#include <RaeptorCogs/GAPI/Vulkan/Ressources/Buffer.hpp>
+#include <RaeptorCogs/GAPI/Vulkan/Resources/Buffer.hpp>
 
 namespace RaeptorCogs::GAPI::Vulkan {
 

@@ -41,8 +41,8 @@
 #include <RaeptorCogs/Flags.hpp>
 #include <RaeptorCogs/GAPI/Common/Core/GraphicHandler.hpp>
 #include <RaeptorCogs/GAPI/Common/Core/InstanceData.hpp>
-#include <RaeptorCogs/GAPI/Common/Ressources/Buffer.hpp>
-#include <RaeptorCogs/GAPI/Common/Ressources/Object.hpp>
+#include <RaeptorCogs/GAPI/Common/Resources/Buffer.hpp>
+#include <RaeptorCogs/GAPI/Common/Resources/Object.hpp>
 #include <vector>
 #include <unordered_map>
 #include <algorithm>

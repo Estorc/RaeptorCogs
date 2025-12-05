@@ -1,15 +1,15 @@
 /** ********************************************************************************
- * @section GAPI_Common_Vulkan_Object_Overview Overview
- * @file Object.hpp
- * @brief Object interface.
+ * @section GAPI_Common_GL_TextureData_Overview Overview
+ * @file TextureData.hpp
+ * @brief TextureData interface.
  * @details
  * Typical use cases:
- * - Defining Vulkan-specific object implementations
+ * - Defining OpenGL-specific texture data implementations
  * *********************************************************************************
- * @section GAPI_Common_Vulkan_Object_Header Header
- * <RaeptorCogs/GAPI/Vulkan/Ressources/Object.hpp>
+ * @section GAPI_Common_GL_TextureData_Header Header
+ * <RaeptorCogs/GAPI/GL/Resources/TextureData.hpp>
  ***********************************************************************************
- * @section GAPI_Common_Vulkan_Object_Metadata Metadata
+ * @section GAPI_Common_GL_TextureData_Metadata Metadata
  * @author Estorc
  * @version v1.0
  * @copyright Copyright (c) 2025 Estorc MIT License.
@@ -38,16 +38,50 @@
  ***********************************************************************************/
 
 #pragma once
-#include <RaeptorCogs/GAPI/Common/Ressources/Object.hpp>
-#include <unordered_map>
-#include <typeindex>
+#include <RaeptorCogs/GAPI/GL/Resources/Object.hpp>
+#include <RaeptorCogs/GAPI/Common/Resources/TextureData.hpp>
 
-namespace RaeptorCogs::GAPI::Vulkan {
+namespace RaeptorCogs::GAPI::GL {
 
 /**
- * @brief Declaration of factory registry for Vulkan objects.
- * @see RaeptorCogs::GAPI::Common::ObjectData
+ * @see RaeptorCogs::GAPI::Common::TextureData
  */
-FACTORY_REGISTRY_DECLARATION();
+class TextureData : public Common::TextureData {
+    public:
+        /**
+         * @brief Initialize the texture data.
+         * 
+         * Initializes the OpenGL texture object.
+         * 
+         * @note Overrides the pure virtual method from the base class.
+         */
+        void initialize() override;
+
+        /**
+         * @brief Bind the texture for use.
+         *
+         * Binds the OpenGL texture object.
+         *
+         * @note Overrides the pure virtual method from the base class.
+         */
+        void bind() override;
+
+        /**
+         * @brief Unbind the texture.
+         * 
+         * Unbinds the OpenGL texture object.
+         * 
+         * @note Overrides the pure virtual method from the base class.
+         */
+        void unbind() const override;
+
+        /**
+         * @see RaeptorCogs::GAPI::Common::TextureData::build()
+         */
+        void build(int width, int height, void * data, GLenum minFilter = GL_LINEAR_MIPMAP_NEAREST, GLenum magFilter = GL_LINEAR) override;
+};
+
+/** @brief Register TextureData with the FactoryRegistry.*/
+REGISTER(Common::TextureData, TextureData);
 
 }

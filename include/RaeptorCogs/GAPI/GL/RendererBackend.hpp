@@ -57,7 +57,7 @@
 #include <RaeptorCogs/GAPI/GL/Core/Internal/ImGuiModule.hpp>
 #include <RaeptorCogs/GAPI/GL/Core/Internal/RenderPipeline.hpp>
 #include <RaeptorCogs/GAPI/GL/Core/Internal/GraphicCore.hpp>
-#include <RaeptorCogs/GAPI/Common/Ressources/Object.hpp>
+#include <RaeptorCogs/GAPI/Common/Resources/Object.hpp>
 #include <RaeptorCogs/GAPI/GL/Constants.hpp>
 
 

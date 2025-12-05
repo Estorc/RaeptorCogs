@@ -2,7 +2,7 @@
 #include <RaeptorCogs/GAPI/Common/Core/Internal/RenderPipeline.hpp>
 #include <RaeptorCogs/GAPI/Common/Core/Internal/GraphicCore.hpp>
 #include <RaeptorCogs/GAPI/Common/RendererBackend.hpp>
-#include <RaeptorCogs/GAPI/Common/Ressources/Shader.hpp>
+#include <RaeptorCogs/GAPI/Common/Resources/Shader.hpp>
 #include <RaeptorCogs/Graphic.hpp>
 
 #include <glm/ext/matrix_transform.hpp>

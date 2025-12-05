@@ -1,5 +1,5 @@
 #include <RaeptorCogs/RaeptorCogs.hpp>
-#include <RaeptorCogs/GAPI/GL/Ressources/VertexArray.hpp>
+#include <RaeptorCogs/GAPI/GL/Resources/VertexArray.hpp>
 #include <RaeptorCogs/External/glad/glad.hpp>
 
 namespace RaeptorCogs::GAPI::GL {

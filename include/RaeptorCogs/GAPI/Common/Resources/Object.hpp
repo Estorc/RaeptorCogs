@@ -7,7 +7,7 @@
  * - Defining a common interface for different graphics objects
  * *********************************************************************************
  * @section GAPI_Common_Core_Object_Header Header
- * <RaeptorCogs/GAPI/Common/Ressources/Object.hpp>
+ * <RaeptorCogs/GAPI/Common/Resources/Object.hpp>
  ***********************************************************************************
  * @section GAPI_Common_Core_Object_Metadata Metadata
  * @author Estorc

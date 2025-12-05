@@ -40,8 +40,8 @@
 #pragma once
 #include <RaeptorCogs/Region.hpp>
 #include <RaeptorCogs/GAPI/Common/Core/InstanceData.hpp>
-#include <RaeptorCogs/GAPI/Common/Ressources/Object.hpp>
-#include <RaeptorCogs/GAPI/Common/Ressources/Shader.hpp>
+#include <RaeptorCogs/GAPI/Common/Resources/Object.hpp>
+#include <RaeptorCogs/GAPI/Common/Resources/Shader.hpp>
 
 namespace RaeptorCogs::GAPI::Common {
 

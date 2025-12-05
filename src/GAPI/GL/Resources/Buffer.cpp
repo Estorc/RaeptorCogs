@@ -1,5 +1,5 @@
 #include <RaeptorCogs/RaeptorCogs.hpp>
-#include <RaeptorCogs/GAPI/GL/Ressources/Buffer.hpp>
+#include <RaeptorCogs/GAPI/GL/Resources/Buffer.hpp>
 #include <RaeptorCogs/External/glad/glad.hpp>
 
 namespace RaeptorCogs::GAPI::GL {

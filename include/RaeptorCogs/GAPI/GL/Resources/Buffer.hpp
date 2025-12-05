@@ -7,7 +7,7 @@
  * - Defining a common interface for different buffer types
  * *********************************************************************************
  * @section GAPI_Common_GL_Buffer_Header Header
- * <RaeptorCogs/GAPI/GL/Ressources/Buffer.hpp>
+ * <RaeptorCogs/GAPI/GL/Resources/Buffer.hpp>
  ***********************************************************************************
  * @section GAPI_Common_GL_Buffer_Metadata Metadata
  * @author Estorc
@@ -38,8 +38,8 @@
  ***********************************************************************************/
 
 #pragma once
-#include <RaeptorCogs/GAPI/Common/Ressources/Buffer.hpp>
-#include <RaeptorCogs/GAPI/GL/Ressources/Object.hpp>
+#include <RaeptorCogs/GAPI/Common/Resources/Buffer.hpp>
+#include <RaeptorCogs/GAPI/GL/Resources/Object.hpp>
 
 namespace RaeptorCogs::GAPI::GL {
 

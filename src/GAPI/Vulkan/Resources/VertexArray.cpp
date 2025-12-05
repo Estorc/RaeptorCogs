@@ -1,5 +1,5 @@
 #include <RaeptorCogs/RaeptorCogs.hpp>
-#include <RaeptorCogs/GAPI/Vulkan/Ressources/VertexArray.hpp>
+#include <RaeptorCogs/GAPI/Vulkan/Resources/VertexArray.hpp>
 
 namespace RaeptorCogs::GAPI::Vulkan {
 

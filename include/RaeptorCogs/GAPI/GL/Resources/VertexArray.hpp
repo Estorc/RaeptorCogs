@@ -7,7 +7,7 @@
  * - Defining OpenGL-specific vertex array implementations
  * *********************************************************************************
  * @section GAPI_Common_GL_VertexArray_Header Header
- * <RaeptorCogs/GAPI/GL/Ressources/VertexArray.hpp>
+ * <RaeptorCogs/GAPI/GL/Resources/VertexArray.hpp>
  ***********************************************************************************
  * @section GAPI_Common_GL_VertexArray_Metadata Metadata
  * @author Estorc
@@ -38,8 +38,8 @@
  ***********************************************************************************/
 
 #pragma once
-#include <RaeptorCogs/GAPI/GL/Ressources/Object.hpp>
-#include <RaeptorCogs/GAPI/Common/Ressources/VertexArray.hpp>
+#include <RaeptorCogs/GAPI/GL/Resources/Object.hpp>
+#include <RaeptorCogs/GAPI/Common/Resources/VertexArray.hpp>
 
 namespace RaeptorCogs::GAPI::GL {
 

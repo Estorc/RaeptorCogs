@@ -7,7 +7,7 @@
  * - Defining Vulkan-specific buffer implementations
  * *********************************************************************************
  * @section GAPI_Common_Vulkan_Buffer_Header Header
- * <RaeptorCogs/GAPI/Vulkan/Ressources/Buffer.hpp>
+ * <RaeptorCogs/GAPI/Vulkan/Resources/Buffer.hpp>
  ***********************************************************************************
  * @section GAPI_Common_Vulkan_Buffer_Metadata Metadata
  * @author Estorc
@@ -38,8 +38,8 @@
  ***********************************************************************************/
 
 #pragma once
-#include <RaeptorCogs/GAPI/Common/Ressources/Buffer.hpp>
-#include <RaeptorCogs/GAPI/Vulkan/Ressources/Object.hpp>
+#include <RaeptorCogs/GAPI/Common/Resources/Buffer.hpp>
+#include <RaeptorCogs/GAPI/Vulkan/Resources/Object.hpp>
 
 namespace RaeptorCogs::GAPI::Vulkan {
 

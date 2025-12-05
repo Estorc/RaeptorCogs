@@ -1,15 +1,15 @@
 /** ********************************************************************************
- * @section GAPI_Common_Vulkan_VertexArray_Overview Overview
- * @file VertexArray.hpp
- * @brief VertexArray interface.
+ * @section GAPI_Common_Core_TextureData_Overview Overview
+ * @file TextureData.hpp
+ * @brief TextureData interface.
  * @details
  * Typical use cases:
- * - Defining Vulkan-specific vertex array implementations
+ * - Defining a common interface for texture data management
  * *********************************************************************************
- * @section GAPI_Common_Vulkan_VertexArray_Header Header
- * <RaeptorCogs/GAPI/Vulkan/Ressources/VertexArray.hpp>
+ * @section GAPI_Common_Core_TextureData_Header Header
+ * <RaeptorCogs/GAPI/Common/Resources/TextureData.hpp>
  ***********************************************************************************
- * @section GAPI_Common_Vulkan_VertexArray_Metadata Metadata
+ * @section GAPI_Common_Core_TextureData_Metadata Metadata
  * @author Estorc
  * @version v1.0
  * @copyright Copyright (c) 2025 Estorc MIT License.
@@ -38,50 +38,32 @@
  ***********************************************************************************/
 
 #pragma once
-#include <RaeptorCogs/GAPI/Vulkan/Ressources/Object.hpp>
-#include <RaeptorCogs/GAPI/Common/Ressources/VertexArray.hpp>
+#include <RaeptorCogs/GAPI/Common/Resources/Object.hpp>
+#include <RaeptorCogs/GAPI/GL/Constants.hpp>
 
-namespace RaeptorCogs::GAPI::Vulkan {
+namespace RaeptorCogs::GAPI::Common {
 
 /**
- * @see RaeptorCogs::GAPI::Common::VertexArray
+ * @brief TextureData interface.
+ * 
+ * Provides a common interface for texture data management.
+ * 
+ * @note This is an abstract base class and should be inherited by specific texture data implementations.
  */
-class VertexArray : public Common::VertexArray {
+class TextureData : public ObjectData {
     public:
         /**
-         * @brief Initialize the vertex array.
+         * @brief Build the texture data.
          * 
-         * Initializes the Vulkan vertex array object.
+         * @param width Width of the texture.
+         * @param height Height of the texture.
+         * @param data Pointer to the texture data.
+         * @param minFilter Minification filter (default: GL_LINEAR_MIPMAP_NEAREST).
+         * @param magFilter Magnification filter (default: GL_LINEAR).
          * 
-         * @note Overrides the pure virtual method from the base class.
+         * @note Must be implemented by derived classes.
          */
-        virtual void initialize() override;
-        
-        /**
-         * @brief Bind the vertex array for use.
-         * 
-         * Binds the Vulkan vertex array object.
-         * 
-         * @note Overrides the pure virtual method from the base class.
-         */
-        void bind() override;
-
-        /**
-         * @brief Unbind the vertex array.
-         * 
-         * Unbinds the Vulkan vertex array object.
-         * 
-         * @note Overrides the pure virtual method from the base class.
-         */
-        void unbind() const override;
+        virtual void build(int width, int height, void * data, GLenum minFilter = GL_LINEAR_MIPMAP_NEAREST, GLenum magFilter = GL_LINEAR) = 0;
 };
 
-/**
- * @see RaeptorCogs::GAPI::Common::VAO
- */
-using VAO = VertexArray;
-
-/** @brief Register VertexArray with the FactoryRegistry.*/
-REGISTER(Common::VertexArray, VertexArray);
-
-} // namespace RaeptorCogs::GAPI::Vulkan
+}

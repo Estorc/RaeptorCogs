@@ -1,6 +1,6 @@
 #include <RaeptorCogs/RaeptorCogs.hpp>
 #include <RaeptorCogs/IO/Texture.hpp>
-#include <RaeptorCogs/GAPI/Common/Ressources/Buffer.hpp>
+#include <RaeptorCogs/GAPI/Common/Resources/Buffer.hpp>
 #include <RaeptorCogs/BitOp.hpp>
 #include <algorithm>
 #include <RaeptorCogs/External/glad/glad.hpp>

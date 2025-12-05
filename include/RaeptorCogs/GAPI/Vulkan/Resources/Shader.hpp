@@ -1,15 +1,15 @@
 /** ********************************************************************************
- * @section GAPI_Common_GL_Shader_Overview Overview
+ * @section GAPI_Common_Vulkan_Shader_Overview Overview
  * @file Shader.hpp
  * @brief Shader interface.
  * @details
  * Typical use cases:
- * - Defining OpenGL-specific shader implementations
+ * - Defining Vulkan-specific shader implementations
  * *********************************************************************************
- * @section GAPI_Common_GL_Shader_Header Header
- * <RaeptorCogs/GAPI/GL/Ressources/Shader.hpp>
+ * @section GAPI_Common_Vulkan_Shader_Header Header
+ * <RaeptorCogs/GAPI/Vulkan/Resources/Shader.hpp>
  ***********************************************************************************
- * @section GAPI_Common_GL_Shader_Metadata Metadata
+ * @section GAPI_Common_Vulkan_Shader_Metadata Metadata
  * @author Estorc
  * @version v1.0
  * @copyright Copyright (c) 2025 Estorc MIT License.
@@ -38,20 +38,16 @@
  ***********************************************************************************/
 
 #pragma once
-#include <RaeptorCogs/GAPI/GL/Ressources/Object.hpp>
-#include <RaeptorCogs/GAPI/Common/Ressources/Shader.hpp>
+#include <RaeptorCogs/GAPI/Vulkan/Resources/Object.hpp>
+#include <RaeptorCogs/GAPI/Common/Resources/Shader.hpp>
 
-namespace RaeptorCogs::GAPI::GL {
+namespace RaeptorCogs::GAPI::Vulkan {
 
 /**
  * @see RaeptorCogs::GAPI::Common::Shader
  */
 class Shader : public Common::Shader {
     public:
-
-        // ============================================================================
-        //                             PUBLIC METHODS
-        // ============================================================================
 
         /**
          * @brief Default constructor.
@@ -62,36 +58,30 @@ class Shader : public Common::Shader {
          * @brief Virtual destructor.
          */
         ~Shader() override = default;
-        
+
         /**
          * @see RaeptorCogs::GAPI::Common::Shader::build()
          */
         virtual void build(const char* vertexSource, const char* fragmentSource) override;
 
         /**
-         * @brief Initialize the shader object.
+         * @brief Initialize the shader.
          * 
-         * Initializes the OpenGL shader program.
-         * 
-         * @note Overrides the pure virtual method from the base class.
+         * Initializes the Vulkan shader modules.
          */
         void initialize() override;
 
         /**
-         * @brief Bind the shader program for use.
+         * @brief Bind the shader for use.
          * 
-         * Binds the OpenGL shader program.
-         * 
-         * @note Overrides the pure virtual method from the base class.
+         * Binds the Vulkan shader program.
          */
         void bind() override;
 
         /**
-         * @brief Unbind the shader program.
+         * @brief Unbind the shader.
          * 
-         * Unbinds the OpenGL shader program.
-         * 
-         * @note Overrides the pure virtual method from the base class.
+         * Unbinds the Vulkan shader program.
          */
         void unbind() const override;
 
@@ -100,52 +90,52 @@ class Shader : public Common::Shader {
         // -------------------------------------------------------------
 
         /**
-         * @see RaeptorCogs::GAPI::Common::Shader::setBool() const
+         * @see RaeptorCogs::GAPI::Common::Shader::setBool()
          */
         void setBool(const std::string &name, bool value) const override;
 
         /**
-         * @see RaeptorCogs::GAPI::Common::Shader::setInt() const
+         * @see RaeptorCogs::GAPI::Common::Shader::setInt()
          */
         void setInt(const std::string &name, int value) const override;
 
         /**
-         * @see RaeptorCogs::GAPI::Common::Shader::setUInt() const
+         * @see RaeptorCogs::GAPI::Common::Shader::setUInt()
          */
         void setUInt(const std::string &name, unsigned int value) const override;
 
         /**
-         * @see RaeptorCogs::GAPI::Common::Shader::setFloat() const
+         * @see RaeptorCogs::GAPI::Common::Shader::setFloat()
          */
         void setFloat(const std::string &name, float value) const override;
 
         /**
-         * @see RaeptorCogs::GAPI::Common::Shader::setVec2() const
+         * @see RaeptorCogs::GAPI::Common::Shader::setVec2()
          */
         void setVec2(const std::string &name, const glm::vec2 &value) const override;
 
         /**
-         * @see RaeptorCogs::GAPI::Common::Shader::setVec3() const
+         * @see RaeptorCogs::GAPI::Common::Shader::setVec3()
          */
         void setVec3(const std::string &name, const glm::vec3 &value) const override;
 
         /**
-         * @see RaeptorCogs::GAPI::Common::Shader::setVec4() const
+         * @see RaeptorCogs::GAPI::Common::Shader::setVec4()
          */
         void setVec4(const std::string &name, const glm::vec4 &value) const override;
 
         /**
-         * @see RaeptorCogs::GAPI::Common::Shader::setMat2() const
+         * @see RaeptorCogs::GAPI::Common::Shader::setMat2()
          */
         void setMat2(const std::string &name, const glm::mat2 &mat) const override;
 
         /**
-         * @see RaeptorCogs::GAPI::Common::Shader::setMat3() const
+         * @see RaeptorCogs::GAPI::Common::Shader::setMat3()
          */
         void setMat3(const std::string &name, const glm::mat3 &mat) const override;
 
         /**
-         * @see RaeptorCogs::GAPI::Common::Shader::setMat4() const
+         * @see RaeptorCogs::GAPI::Common::Shader::setMat4()
          */
         void setMat4(const std::string &name, const glm::mat4 &mat) const override;
 };

@@ -41,8 +41,8 @@
 #include <RaeptorCogs/GAPI/Common/Core/Internal/FrameData.hpp>
 #include <RaeptorCogs/GAPI/Common/Core/GraphicHandler.hpp>
 #include <RaeptorCogs/GAPI/Common/Core/RenderList.hpp>
-#include <RaeptorCogs/GAPI/Common/Ressources/Object.hpp>
-#include <RaeptorCogs/GAPI/Common/Ressources/Shader.hpp>
+#include <RaeptorCogs/GAPI/Common/Resources/Object.hpp>
+#include <RaeptorCogs/GAPI/Common/Resources/Shader.hpp>
 #include <functional>
 
 

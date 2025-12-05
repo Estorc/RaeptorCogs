@@ -44,8 +44,8 @@
 
 #pragma once
 #include <RaeptorCogs/GAPI/GL/Constants.hpp>
-#include <RaeptorCogs/GAPI/Common/Ressources/Object.hpp>
-#include <RaeptorCogs/GAPI/Common/Ressources/TextureData.hpp>
+#include <RaeptorCogs/GAPI/Common/Resources/Object.hpp>
+#include <RaeptorCogs/GAPI/Common/Resources/TextureData.hpp>
 #include <RaeptorCogs/IO/Images.hpp>
 #include <RaeptorCogs/IO/FileIO.hpp>
 #include <RaeptorCogs/Flags.hpp>

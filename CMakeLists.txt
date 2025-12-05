@@ -51,124 +51,132 @@ file (GLOB_RECURSE HEADERS
 #========================================================================#
 # Doxygen
 #========================================================================#
-find_package(Doxygen REQUIRED)
+find_package(Doxygen)
 
-set(DOXYGEN_IN ${CMAKE_SOURCE_DIR}/docs/Doxyfile.in)
-set(DOXYGEN_OUT ${CMAKE_BINARY_DIR}/docs/doxygen/Doxyfile)
+if (DOXYGEN_FOUND)
+    message(STATUS "Doxygen found: ${DOXYGEN_EXECUTABLE}")
 
-doxygen_add_docs(
-    docs-doxygen
-    ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_SOURCE_DIR}/include
-)
+    set(DOXYGEN_IN ${CMAKE_SOURCE_DIR}/docs/Doxyfile.in)
+    set(DOXYGEN_OUT ${CMAKE_BINARY_DIR}/docs/doxygen/Doxyfile)
 
-# configure Doxyfile to point to the right paths
-configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
+    doxygen_add_docs(
+        docs-doxygen
+        ${CMAKE_SOURCE_DIR}/src
+        ${CMAKE_SOURCE_DIR}/include
+    )
 
-set(DOXYGEN_XML "${CMAKE_BINARY_DIR}/docs/doxygen/xml")
-set(DOXYGEN_INDEX "${DOXYGEN_XML}/index.xml")
+    # configure Doxyfile to point to the right paths
+    configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
 
-add_custom_command(
-    OUTPUT ${DOXYGEN_INDEX}
-    COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
-    DEPENDS ${HEADERS}
-)
+    set(DOXYGEN_XML "${CMAKE_BINARY_DIR}/docs/doxygen/xml")
+    set(DOXYGEN_INDEX "${DOXYGEN_XML}/index.xml")
+
+    add_custom_command(
+        OUTPUT ${DOXYGEN_INDEX}
+        COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
+        DEPENDS ${HEADERS}
+    )
 
 
-add_custom_target(RaeptorCogs_docs-doxygen
-  DEPENDS ${DOXYGEN_INDEX}
-  COMMENT "Generating Doxygen XML documentation"
-  VERBATIM
-)
+    add_custom_target(RaeptorCogs_docs-doxygen
+    DEPENDS ${DOXYGEN_INDEX}
+    COMMENT "Generating Doxygen XML documentation"
+    VERBATIM
+    )
+else()
+    message(STATUS "Doxygen not found. Doxygen documentation will not be generated.")
+endif()
 
 #========================================================================#
 # Sphinx
 #========================================================================#
-find_program(SPHINX_BUILD_EXECUTABLE sphinx-build)
-if(NOT SPHINX_BUILD_EXECUTABLE)
-  execute_process(
-      COMMAND ${Python3_EXECUTABLE} -m pip show sphinx
-      RESULT_VARIABLE SPHINX_PIP_RESULT
-      OUTPUT_QUIET
-      ERROR_QUIET
-  )
-  if(NOT SPHINX_PIP_RESULT EQUAL 0)
-      message(STATUS "Python package 'sphinx' not found. Installing...")
-      execute_process(
-          COMMAND ${Python3_EXECUTABLE} -m pip install --user sphinx
-          RESULT_VARIABLE PIP_INSTALL_RESULT
-      )
-      if(NOT PIP_INSTALL_RESULT EQUAL 0)
-          message(FATAL_ERROR "Failed to install Python package 'sphinx'. Please install it manually.")
-      endif()
-  endif()
-else()
+if (DOXYGEN_FOUND)
+    find_program(SPHINX_BUILD_EXECUTABLE sphinx-build)
+    if(NOT SPHINX_BUILD_EXECUTABLE)
+        execute_process(
+            COMMAND ${Python3_EXECUTABLE} -m pip show sphinx
+            RESULT_VARIABLE SPHINX_PIP_RESULT
+            OUTPUT_QUIET
+            ERROR_QUIET
+        )
+        if(NOT SPHINX_PIP_RESULT EQUAL 0)
+            message(STATUS "Python package 'sphinx' not found. Installing...")
+            execute_process(
+                COMMAND ${Python3_EXECUTABLE} -m pip install --user sphinx
+                RESULT_VARIABLE PIP_INSTALL_RESULT
+            )
+            if(NOT PIP_INSTALL_RESULT EQUAL 0)
+                message(FATAL_ERROR "Failed to install Python package 'sphinx'. Please install it manually.")
+            endif()
+        endif()
+    else()
 
-  execute_process(
-      COMMAND ${Python3_EXECUTABLE} -m pip show furo
-      RESULT_VARIABLE FURO_PIP_RESULT
-      OUTPUT_QUIET
-      ERROR_QUIET
-  )
-  if(NOT FURO_PIP_RESULT EQUAL 0)
-      message(STATUS "Python package 'furo' not found. Installing...")
-      execute_process(
-          COMMAND ${Python3_EXECUTABLE} -m pip install --upgrade furo
-          RESULT_VARIABLE FURO_INSTALL_RESULT
-      )
+        execute_process(
+            COMMAND ${Python3_EXECUTABLE} -m pip show furo
+            RESULT_VARIABLE FURO_PIP_RESULT
+            OUTPUT_QUIET
+            ERROR_QUIET
+        )
+        if(NOT FURO_PIP_RESULT EQUAL 0)
+            message(STATUS "Python package 'furo' not found. Installing...")
+            execute_process(
+                COMMAND ${Python3_EXECUTABLE} -m pip install --upgrade furo
+                RESULT_VARIABLE FURO_INSTALL_RESULT
+            )
 
-      if(NOT FURO_INSTALL_RESULT EQUAL 0)
-          message(FATAL_ERROR "Failed to install Furo theme")
-      endif()
-  endif()
+            if(NOT FURO_INSTALL_RESULT EQUAL 0)
+                message(FATAL_ERROR "Failed to install Furo theme")
+            endif()
+        endif()
 
-  set(SPHINX_SOURCE ${CMAKE_BINARY_DIR}/docs/sphinx)
-  set(SPHINX_BUILD  ${CMAKE_BINARY_DIR}/docs/html)
+        set(SPHINX_SOURCE ${CMAKE_BINARY_DIR}/docs/sphinx)
+        set(SPHINX_BUILD  ${CMAKE_BINARY_DIR}/docs/html)
 
-  set(SPHINX_IN ${CMAKE_SOURCE_DIR}/docs/sphinx/conf.py.in)
-  set(SPHINX_OUT ${CMAKE_BINARY_DIR}/docs/sphinx/conf.py)
-  set(DOXYGEN_XML_DIR "${CMAKE_BINARY_DIR}/docs/doxygen/xml")
+        set(SPHINX_IN ${CMAKE_SOURCE_DIR}/docs/sphinx/conf.py.in)
+        set(SPHINX_OUT ${CMAKE_BINARY_DIR}/docs/sphinx/conf.py)
+        set(DOXYGEN_XML_DIR "${CMAKE_BINARY_DIR}/docs/doxygen/xml")
 
-  configure_file(${SPHINX_IN} ${SPHINX_OUT} @ONLY)
-  set_property(DIRECTORY PROPERTY CMAKE_CONFIGURE_DEPENDS "${SPHINX_IN}")
-  set_property(SOURCE ${SPHINX_OUT} PROPERTY GENERATED TRUE)
+        configure_file(${SPHINX_IN} ${SPHINX_OUT} @ONLY)
+        set_property(DIRECTORY PROPERTY CMAKE_CONFIGURE_DEPENDS "${SPHINX_IN}")
+        set_property(SOURCE ${SPHINX_OUT} PROPERTY GENERATED TRUE)
 
-  # Copy rts files to build directory
-  copy_folder_if_changed(
-    "${CMAKE_SOURCE_DIR}/docs/sphinx/"
-    "${CMAKE_BINARY_DIR}/docs/"
-    "copy_sphinx"
-  )
+        # Copy rts files to build directory
+        copy_folder_if_changed(
+            "${CMAKE_SOURCE_DIR}/docs/sphinx/"
+            "${CMAKE_BINARY_DIR}/docs/"
+            "copy_sphinx"
+        )
 
-  copy_folder_if_changed(
-    "${CMAKE_SOURCE_DIR}/examples/demo/"
-    "${CMAKE_BINARY_DIR}/docs/sphinx/_static/"
-    "copy_demo_in_sphinx"
-  )
+        copy_folder_if_changed(
+            "${CMAKE_SOURCE_DIR}/examples/demo/"
+            "${CMAKE_BINARY_DIR}/docs/sphinx/_static/"
+            "copy_demo_in_sphinx"
+        )
 
-  set(SPHINX_OPTIONS -j auto)
+        set(SPHINX_OPTIONS -j auto)
 
-  option(SPHINX_FORCE_REBUILD "Force Sphinx to rebuild all documentation" OFF)
-  if (SPHINX_FORCE_REBUILD)
-    message(STATUS "Sphinx: Forcing full rebuild of documentation")
-    list(APPEND SPHINX_OPTIONS -E)
-  endif()
+        option(SPHINX_FORCE_REBUILD "Force Sphinx to rebuild all documentation" OFF)
+        if (SPHINX_FORCE_REBUILD)
+            message(STATUS "Sphinx: Forcing full rebuild of documentation")
+            list(APPEND SPHINX_OPTIONS -E)
+        endif()
 
-  add_custom_target(RaeptorCogs_docs-sphinx
-    COMMAND ${SPHINX_BUILD_EXECUTABLE} ${SPHINX_OPTIONS} -b html ${SPHINX_SOURCE} ${SPHINX_BUILD}
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-    COMMENT "Building Sphinx HTML documentation"
-    DEPENDS copy_sphinx copy_demo_in_sphinx
-    VERBATIM
-  )
+        add_custom_target(RaeptorCogs_docs-sphinx
+            COMMAND ${SPHINX_BUILD_EXECUTABLE} ${SPHINX_OPTIONS} -b html ${SPHINX_SOURCE} ${SPHINX_BUILD}
+            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+            COMMENT "Building Sphinx HTML documentation"
+            DEPENDS copy_sphinx copy_demo_in_sphinx
+            VERBATIM
+        )
 
-  # Make sphinx depend on doxygen XML (so Doxygen runs before Sphinx)
-  add_dependencies(RaeptorCogs_docs-sphinx RaeptorCogs_docs-doxygen)
+        # Make sphinx depend on doxygen XML (so Doxygen runs before Sphinx)
+        add_dependencies(RaeptorCogs_docs-sphinx RaeptorCogs_docs-doxygen)
 
-  # Optional: clean and then build
-  add_custom_target(RaeptorCogs_docs
-    DEPENDS RaeptorCogs_docs-doxygen RaeptorCogs_docs-sphinx
-  )
+        # Optional: clean and then build
+        add_custom_target(RaeptorCogs_docs
+            DEPENDS RaeptorCogs_docs-doxygen RaeptorCogs_docs-sphinx
+        )
+    endif()
 endif()
 
 #========================================================================#

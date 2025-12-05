@@ -1,15 +1,15 @@
 /** ********************************************************************************
- * @section GAPI_Common_GL_Object_Overview Overview
+ * @section GAPI_Common_Vulkan_Object_Overview Overview
  * @file Object.hpp
  * @brief Object interface.
  * @details
  * Typical use cases:
- * - Defining OpenGL-specific object implementations
+ * - Defining Vulkan-specific object implementations
  * *********************************************************************************
- * @section GAPI_Common_GL_Object_Header Header
- * <RaeptorCogs/GAPI/GL/Ressources/Object.hpp>
+ * @section GAPI_Common_Vulkan_Object_Header Header
+ * <RaeptorCogs/GAPI/Vulkan/Resources/Object.hpp>
  ***********************************************************************************
- * @section GAPI_Common_GL_Object_Metadata Metadata
+ * @section GAPI_Common_Vulkan_Object_Metadata Metadata
  * @author Estorc
  * @version v1.0
  * @copyright Copyright (c) 2025 Estorc MIT License.
@@ -38,14 +38,14 @@
  ***********************************************************************************/
 
 #pragma once
-#include <RaeptorCogs/GAPI/Common/Ressources/Object.hpp>
+#include <RaeptorCogs/GAPI/Common/Resources/Object.hpp>
 #include <unordered_map>
 #include <typeindex>
 
-namespace RaeptorCogs::GAPI::GL {
+namespace RaeptorCogs::GAPI::Vulkan {
 
 /**
- * @brief Declaration of factory registry for OpenGL objects.
+ * @brief Declaration of factory registry for Vulkan objects.
  * @see RaeptorCogs::GAPI::Common::ObjectData
  */
 FACTORY_REGISTRY_DECLARATION();

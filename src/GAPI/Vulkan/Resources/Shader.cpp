@@ -1,5 +1,5 @@
 #include <RaeptorCogs/RaeptorCogs.hpp>
-#include <RaeptorCogs/GAPI/Vulkan/Ressources/Shader.hpp>
+#include <RaeptorCogs/GAPI/Vulkan/Resources/Shader.hpp>
 #include <iostream>
 
 namespace RaeptorCogs::GAPI::Vulkan {

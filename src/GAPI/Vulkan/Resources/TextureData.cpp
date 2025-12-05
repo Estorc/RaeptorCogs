@@ -1,5 +1,5 @@
 #include <RaeptorCogs/RaeptorCogs.hpp>
-#include <RaeptorCogs/GAPI/Vulkan/Ressources/TextureData.hpp>
+#include <RaeptorCogs/GAPI/Vulkan/Resources/TextureData.hpp>
 
 namespace RaeptorCogs::GAPI::Vulkan {
 

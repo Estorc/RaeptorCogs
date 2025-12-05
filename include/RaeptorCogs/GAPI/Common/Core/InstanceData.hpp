@@ -40,8 +40,8 @@
 #pragma once
 #include <RaeptorCogs/Region.hpp>
 #include <RaeptorCogs/GAPI/Common/Core/GraphicHandler.hpp>
-#include <RaeptorCogs/GAPI/Common/Ressources/Buffer.hpp>
-#include <RaeptorCogs/GAPI/Common/Ressources/Object.hpp>
+#include <RaeptorCogs/GAPI/Common/Resources/Buffer.hpp>
+#include <RaeptorCogs/GAPI/Common/Resources/Object.hpp>
 #include <vector>
 #include <glm/vec4.hpp>
 #include <glm/mat4x4.hpp>

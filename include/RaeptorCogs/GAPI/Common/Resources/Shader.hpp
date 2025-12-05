@@ -7,7 +7,7 @@
  * - Defining a common interface for shader management
  * *********************************************************************************
  * @section GAPI_Common_Core_Shader_Header Header
- * <RaeptorCogs/GAPI/Common/Ressources/Shader.hpp>
+ * <RaeptorCogs/GAPI/Common/Resources/Shader.hpp>
  ***********************************************************************************
  * @section GAPI_Common_Core_Shader_Metadata Metadata
  * @author Estorc
@@ -38,7 +38,7 @@
  ***********************************************************************************/
 
 #pragma once
-#include <RaeptorCogs/GAPI/Common/Ressources/Object.hpp>
+#include <RaeptorCogs/GAPI/Common/Resources/Object.hpp>
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>

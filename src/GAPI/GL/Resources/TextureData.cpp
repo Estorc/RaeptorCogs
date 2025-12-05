@@ -1,4 +1,4 @@
-#include <RaeptorCogs/GAPI/GL/Ressources/TextureData.hpp>
+#include <RaeptorCogs/GAPI/GL/Resources/TextureData.hpp>
 #include <iostream>
 #include <RaeptorCogs/External/glad/glad.hpp>
 

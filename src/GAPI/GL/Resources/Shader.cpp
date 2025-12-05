@@ -1,5 +1,5 @@
 #include <RaeptorCogs/RaeptorCogs.hpp>
-#include <RaeptorCogs/GAPI/GL/Ressources/Shader.hpp>
+#include <RaeptorCogs/GAPI/GL/Resources/Shader.hpp>
 #include <iostream>
 #include <RaeptorCogs/External/glad/glad.hpp>
 

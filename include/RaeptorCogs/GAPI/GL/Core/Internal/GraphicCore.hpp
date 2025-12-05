@@ -39,10 +39,10 @@
 
 #pragma once
 #include <RaeptorCogs/GAPI/Common/Core/Internal/GraphicCore.hpp>
-#include <RaeptorCogs/GAPI/GL/Ressources/Buffer.hpp>
-#include <RaeptorCogs/GAPI/GL/Ressources/TextureData.hpp>
-#include <RaeptorCogs/GAPI/GL/Ressources/Shader.hpp>
-#include <RaeptorCogs/GAPI/GL/Ressources/VertexArray.hpp>
+#include <RaeptorCogs/GAPI/GL/Resources/Buffer.hpp>
+#include <RaeptorCogs/GAPI/GL/Resources/TextureData.hpp>
+#include <RaeptorCogs/GAPI/GL/Resources/Shader.hpp>
+#include <RaeptorCogs/GAPI/GL/Resources/VertexArray.hpp>
 
 namespace RaeptorCogs::GAPI::GL {
 

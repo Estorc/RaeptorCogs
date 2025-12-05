@@ -38,8 +38,8 @@
  ***********************************************************************************/
 
 #pragma once
-#include <RaeptorCogs/GAPI/Common/Ressources/Object.hpp>
-#include <RaeptorCogs/GAPI/Common/Ressources/Shader.hpp>
+#include <RaeptorCogs/GAPI/Common/Resources/Object.hpp>
+#include <RaeptorCogs/GAPI/Common/Resources/Shader.hpp>
 #include <glm/mat4x4.hpp>
 #include <unordered_map>
 #include <variant>

@@ -7,7 +7,7 @@
  * - Defining a common interface for different buffer types
  * *********************************************************************************
  * @section GAPI_Common_Core_Buffer_Header Header
- * <RaeptorCogs/GAPI/Common/Ressources/Buffer.hpp>
+ * <RaeptorCogs/GAPI/Common/Resources/Buffer.hpp>
  ***********************************************************************************
  * @section GAPI_Common_Core_Buffer_Metadata Metadata
  * @author Estorc
@@ -38,7 +38,7 @@
  ***********************************************************************************/
 
 #pragma once
-#include <RaeptorCogs/GAPI/Common/Ressources/Object.hpp>
+#include <RaeptorCogs/GAPI/Common/Resources/Object.hpp>
 
 namespace RaeptorCogs::GAPI::Common {
 

@@ -43,7 +43,7 @@
 #include <RaeptorCogs/GAPI/Vulkan/Core/Internal/ImGuiModule.hpp>
 #include <RaeptorCogs/GAPI/Vulkan/Core/Internal/RenderPipeline.hpp>
 #include <RaeptorCogs/GAPI/Vulkan/Core/Internal/GraphicCore.hpp>
-#include <RaeptorCogs/GAPI/Vulkan/Ressources/Object.hpp>
+#include <RaeptorCogs/GAPI/Vulkan/Resources/Object.hpp>
 
 /**
  * @brief RaeptorCogs GAPI Vulkan namespace.
