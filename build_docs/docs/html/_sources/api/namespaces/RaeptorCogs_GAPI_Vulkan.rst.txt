@@ -1,6 +1,0 @@
-Namespace RaeptorCogs::GAPI::Vulkan
-====================================
-
-.. doxygennamespace:: RaeptorCogs::GAPI::Vulkan
-   :project: RaeptorCogs
-   :desc-only:

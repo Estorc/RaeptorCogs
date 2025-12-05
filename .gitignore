@@ -7,11 +7,12 @@ protected/
 /cmake-build-*/
 
 # Documentation build
-!build_docs/
-build_docs/*
-!build_docs/docs/
-build_docs/docs/*
-!build_docs/docs/html/
+#!build_docs/
+#build_docs/*
+#!build_docs/docs/
+#build_docs/docs/*
+#!build_docs/docs/html/
+publish_docs.bat
 
 # CMake files
 CMakeFiles/

@@ -1,6 +1,0 @@
-Namespace RaeptorCogs::Singletons
-==================================
-
-.. doxygennamespace:: RaeptorCogs::Singletons
-   :project: RaeptorCogs
-   :desc-only:

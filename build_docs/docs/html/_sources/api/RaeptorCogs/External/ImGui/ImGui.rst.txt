@@ -1,8 +1,0 @@
-ImGui
-=====
-
-.. doxygenfile:: RaeptorCogs/External/ImGui/ImGui.hpp
-   :project: RaeptorCogs
-   :no-link:
-   :sections: briefdescription detaileddescription
-

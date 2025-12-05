@@ -1,6 +1,0 @@
-Namespace RaeptorCogs::GAPI
-============================
-
-.. doxygennamespace:: RaeptorCogs::GAPI
-   :project: RaeptorCogs
-   :desc-only:

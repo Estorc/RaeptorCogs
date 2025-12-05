@@ -1,8 +1,0 @@
-stb
-===
-
-.. doxygenfile:: RaeptorCogs/External/stb/stb.hpp
-   :project: RaeptorCogs
-   :no-link:
-   :sections: briefdescription detaileddescription
-

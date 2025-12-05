@@ -1,8 +1,0 @@
-miniz
-=====
-
-.. doxygenfile:: RaeptorCogs/External/miniz/miniz.hpp
-   :project: RaeptorCogs
-   :no-link:
-   :sections: briefdescription detaileddescription
-

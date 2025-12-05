@@ -1,6 +1,0 @@
-Namespace std
-==============
-
-.. doxygennamespace:: std
-   :project: RaeptorCogs
-   :desc-only:
