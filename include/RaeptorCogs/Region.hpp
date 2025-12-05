@@ -43,6 +43,7 @@
 #include <vector>
 #include <stdexcept>
 #include <algorithm>
+#include <cstdint>
 
 namespace RaeptorCogs { 
 

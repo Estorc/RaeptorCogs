@@ -40,6 +40,8 @@
 #pragma once
 #include <iostream>
 #include <vector>
+#include <cstdint>
+#include <tuple>
 
 namespace RaeptorCogs {
     class Graphic2D;
