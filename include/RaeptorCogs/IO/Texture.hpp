@@ -620,7 +620,7 @@ class Texture {
          * 
          * Initializes the texture to a null state.
          */
-        Texture(nullptr_t) : ptr(nullptr) {}
+        Texture(std::nullptr_t) : ptr(nullptr) {}
 
         /**
          * @brief Constructor for Texture from a shared pointer to TextureBase.

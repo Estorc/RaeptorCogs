@@ -566,7 +566,7 @@ class Font {
          * 
          * Initializes an empty Font instance.
          */
-        Font(nullptr_t) : ptr(nullptr) {}
+        Font(std::nullptr_t) : ptr(nullptr) {}
 
         /**
          * @brief Constructor for Font from a shared pointer to FontBase.

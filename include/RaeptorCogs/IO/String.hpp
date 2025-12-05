@@ -125,7 +125,7 @@ class U8Char {
          * @brief Constructor for null U8Char.
          * Creates an empty U8Char.
          */
-        U8Char(nullptr_t) : view_("") {}
+        U8Char(std::nullptr_t) : view_("") {}
 
         /**
          * @brief Conversion operator to std::string_view.
