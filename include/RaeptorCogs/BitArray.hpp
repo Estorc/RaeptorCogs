@@ -41,6 +41,7 @@
 #include <vector>
 #include <iostream>
 #include <bitset>
+#include <cstdint>
 
 namespace RaeptorCogs {
 
