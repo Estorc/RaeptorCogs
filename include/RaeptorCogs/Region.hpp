@@ -42,6 +42,7 @@
 #include <iostream>
 #include <vector>
 #include <stdexcept>
+#include <algorithm>
 
 namespace RaeptorCogs { 
 
