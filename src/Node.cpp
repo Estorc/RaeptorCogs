@@ -1,4 +1,6 @@
 #include <RaeptorCogs/Node.hpp>
+#include <algorithm>
+#include <cstdint>
 
 namespace RaeptorCogs {
 
