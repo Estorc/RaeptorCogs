@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
 Name=@NAME@
-Exec=@EXECUTABLE_PATH@
+Exec=$<TARGET_FILE:@NAME@>
 Icon=@NAME@
 Terminal=false
 Categories=Utility;
