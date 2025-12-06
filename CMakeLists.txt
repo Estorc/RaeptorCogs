@@ -559,14 +559,14 @@ function(add_example NAME)
         install(FILES ${CMAKE_SOURCE_DIR}/examples/raeptor-cogs-icon-48.png DESTINATION share/icons/hicolor/48x48/apps RENAME ${NAME}.png)
         install(FILES ${CMAKE_SOURCE_DIR}/examples/raeptor-cogs-icon-128.png DESTINATION share/icons/hicolor/128x128/apps RENAME ${NAME}.png)
 
+        # Get executable path
+        get_filename_component(EXECUTABLE_PATH "$<TARGET_FILE:${NAME}>" ABSOLUTE)
+
         # Create app.desktop file in build dir
         configure_file(${CMAKE_SOURCE_DIR}/examples/app.desktop.in
             ${CMAKE_BINARY_DIR}/${NAME}.desktop
             @ONLY
         )
-
-        # Get excecutable path
-        get_filename_component(EXECUTABLE_PATH "$<TARGET_FILE:${NAME}>" ABSOLUTE)
         
         # Install app.desktop file
         install(FILES ${CMAKE_BINARY_DIR}/${NAME}.desktop
