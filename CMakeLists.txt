@@ -545,7 +545,30 @@ function(add_example NAME)
         set(EXAMPLE_CPP_SOURCES ${EXAMPLE_SOURCES})
     endif()
 
-    add_executable(${NAME} ${EXAMPLE_CPP_SOURCES} ${CMAKE_SOURCE_DIR}/examples/resources.rc)
+    add_executable(${NAME} ${EXAMPLE_CPP_SOURCES})
+
+    if (WIN32)
+        # Windows icon via resource file
+        target_sources(${NAME} PRIVATE
+            ${CMAKE_SOURCE_DIR}/examples/resources.rc
+        )
+    else()
+        # Linux desktop entry + icon
+        install(FILES ${CMAKE_SOURCE_DIR}/examples/raeptor-cogs-icon-16.png DESTINATION share/icons/hicolor/16x16/apps RENAME ${NAME}.png)
+        install(FILES ${CMAKE_SOURCE_DIR}/examples/raeptor-cogs-icon-32.png DESTINATION share/icons/hicolor/32x32/apps RENAME ${NAME}.png)
+        install(FILES ${CMAKE_SOURCE_DIR}/examples/raeptor-cogs-icon-48.png DESTINATION share/icons/hicolor/48x48/apps RENAME ${NAME}.png)
+        install(FILES ${CMAKE_SOURCE_DIR}/examples/raeptor-cogs-icon-128.png DESTINATION share/icons/hicolor/128x128/apps RENAME ${NAME}.png)
+
+        # Create app.desktop file in build dir
+        configure_file(${CMAKE_SOURCE_DIR}/examples/app.desktop.in
+            ${CMAKE_BINARY_DIR}/${NAME}.desktop
+            @ONLY
+        )
+        
+        # Install app.desktop file
+        install(FILES ${CMAKE_BINARY_DIR}/${NAME}.desktop
+            DESTINATION share/applications)
+    endif()
 
     target_link_libraries(${NAME} PRIVATE
         RaeptorCogs
