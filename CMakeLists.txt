@@ -562,9 +562,15 @@ function(add_example NAME)
         set(EXEC_PATH "$<TARGET_FILE:${NAME}>")
 
         # Create app.desktop file in build dir
+        configure_file(${CMAKE_SOURCE_DIR}/examples/app.desktop.in
+            ${CMAKE_BINARY_DIR}/${NAME}.desktop.in
+            @ONLY
+        )
+
+        # Create app.desktop file in build dir
         file(GENERATE
             OUTPUT "${CMAKE_BINARY_DIR}/${NAME}.desktop"
-            INPUT  "${CMAKE_SOURCE_DIR}/examples/app.desktop.in"
+            INPUT  "${CMAKE_BINARY_DIR}/${NAME}.desktop.in"
         )
         
         # Install app.desktop file
