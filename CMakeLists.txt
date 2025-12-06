@@ -547,12 +547,15 @@ function(add_example NAME)
 
     add_executable(${NAME} ${EXAMPLE_CPP_SOURCES})
 
+    target_compile_definitions(${NAME} PRIVATE APP_ID="${NAME}")
+
     if (WIN32)
         # Windows icon via resource file
         target_sources(${NAME} PRIVATE
             ${CMAKE_SOURCE_DIR}/examples/resources.rc
         )
     else()
+
         # Linux desktop entry + icon
         install(FILES ${CMAKE_SOURCE_DIR}/examples/raeptor-cogs-icon-16.png DESTINATION share/icons/hicolor/16x16/apps RENAME ${NAME}.png)
         install(FILES ${CMAKE_SOURCE_DIR}/examples/raeptor-cogs-icon-32.png DESTINATION share/icons/hicolor/32x32/apps RENAME ${NAME}.png)

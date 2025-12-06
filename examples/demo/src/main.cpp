@@ -112,6 +112,9 @@ int main() {
     RaeptorCogs::Initialize();
     RaeptorCogs::Renderer().initialize();
     Initialize();
+    #ifndef _WIN32
+        glfwWindowHintString(GLFW_WAYLAND_APP_ID, APP_ID);
+    #endif
     RaeptorCogs::Window& mainWindow = *RaeptorCogs::Platform().createWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "RaeptorCogs Demo");
     mainWindow.setIcon({
                         "assets/icons/raeptor-cogs-icon-16.png",

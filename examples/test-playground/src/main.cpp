@@ -270,6 +270,9 @@ int main() {
     std::cout << "Substring: " << anotherString.c_str() << std::endl;
     RaeptorCogs::Initialize();
     RaeptorCogs::Renderer().initialize();
+    #ifndef _WIN32
+        glfwWindowHintString(GLFW_WAYLAND_APP_ID, APP_ID);
+    #endif
     main_window = RaeptorCogs::Platform().createWindow(WINDOW_WIDTH, WINDOW_HEIGHT, appName);
     main_window->setIcon({"assets/icons/raeptor-cogs-icon-16.png",
                           "assets/icons/raeptor-cogs-icon-32.png",
@@ -302,6 +305,9 @@ void update(RaeptorCogs::Window *main_window) {
 int main() {
     RaeptorCogs::Initialize();
     RaeptorCogs::Renderer().initialize(RaeptorCogs::GraphicsBackend::Vulkan);
+    #ifndef _WIN32
+        glfwWindowHintString(GLFW_WAYLAND_APP_ID, APP_ID);
+    #endif
     main_window = RaeptorCogs::Renderer().createWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "RaeptorCogs Demo");
     main_window->setIcon({"assets/icons/raeptor-cogs-icon-16.png",
                           "assets/icons/raeptor-cogs-icon-32.png",
