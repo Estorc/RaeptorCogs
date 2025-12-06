@@ -564,6 +564,9 @@ function(add_example NAME)
             ${CMAKE_BINARY_DIR}/${NAME}.desktop
             @ONLY
         )
+
+        # Get excecutable path
+        get_filename_component(EXECUTABLE_PATH "$<TARGET_FILE:${NAME}>" ABSOLUTE)
         
         # Install app.desktop file
         install(FILES ${CMAKE_BINARY_DIR}/${NAME}.desktop
