@@ -561,8 +561,8 @@ function(add_example NAME)
 
         # Create app.desktop file in build dir
         file(GENERATE
-            INPUT ${CMAKE_SOURCE_DIR}/examples/app.desktop.in
-            OUTPUT ${CMAKE_BINARY_DIR}/${NAME}.desktop
+            OUTPUT "${CMAKE_BINARY_DIR}/${NAME}.desktop"
+            INPUT  "${CMAKE_SOURCE_DIR}/examples/app.desktop.in"
         )
         
         # Install app.desktop file
