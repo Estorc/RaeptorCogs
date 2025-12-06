@@ -560,9 +560,9 @@ function(add_example NAME)
         install(FILES ${CMAKE_SOURCE_DIR}/examples/raeptor-cogs-icon-128.png DESTINATION share/icons/hicolor/128x128/apps RENAME ${NAME}.png)
 
         # Create app.desktop file in build dir
-        configure_file(${CMAKE_SOURCE_DIR}/examples/app.desktop.in
-            ${CMAKE_BINARY_DIR}/${NAME}.desktop
-            @ONLY
+        file(GENERATE
+            INPUT ${CMAKE_SOURCE_DIR}/examples/app.desktop.in
+            OUTPUT ${CMAKE_BINARY_DIR}/${NAME}.desktop
         )
         
         # Install app.desktop file
