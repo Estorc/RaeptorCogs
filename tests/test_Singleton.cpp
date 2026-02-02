@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <RaeptorCogs/Singleton.hpp>
+#include <RaeptorCogs/Core/Singleton.hpp>
 
 using namespace RaeptorCogs;
 

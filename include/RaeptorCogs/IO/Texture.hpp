@@ -43,13 +43,13 @@
  ***********************************************************************************/
 
 #pragma once
-#include <RaeptorCogs/GAPI/GL/Constants.hpp>
-#include <RaeptorCogs/GAPI/Common/Resources/Object.hpp>
-#include <RaeptorCogs/GAPI/Common/Resources/TextureData.hpp>
+#include <RaeptorCogs/Graphics/GAPI/GL/Constants.hpp>
+#include <RaeptorCogs/Graphics/GAPI/Common/Resources/Object.hpp>
+#include <RaeptorCogs/Graphics/GAPI/Common/Resources/TextureData.hpp>
 #include <RaeptorCogs/IO/Images.hpp>
 #include <RaeptorCogs/IO/FileIO.hpp>
-#include <RaeptorCogs/Flags.hpp>
-#include <RaeptorCogs/Singleton.hpp>
+#include <RaeptorCogs/Core/Flags.hpp>
+#include <RaeptorCogs/Core/Singleton.hpp>
 #include <glm/vec2.hpp>
 #include <glm/vec4.hpp>
 #include <vector>
@@ -727,10 +727,7 @@ class Texture {
         }
 };
 
-}
 
-
-namespace RaeptorCogs::Singletons {
 
 /**
  * @brief Map of texture atlases by type.
@@ -741,7 +738,7 @@ namespace RaeptorCogs::Singletons {
 using TextureAtlasMap = std::map<TextureAtlasTypeKey, std::vector<std::shared_ptr<TextureAtlas>>>; // Map of texture atlases by type
 
 /**
- * @brief Texture atlas manager singleton class.
+ * @brief Texture atlas manager class.
  * 
  * Manages texture atlases and provides methods to add, remove, and retrieve atlases.
  * @see TextureAtlas
@@ -759,12 +756,14 @@ class TextureAtlasManager {
          */
         TextureAtlasMap atlases;
 
+    public:
+
         // ============================================================================
-        //                               PRIVATE METHODS
+        //                               PUBLIC METHODS
         // ============================================================================
 
         /**
-         * @brief Private constructor for TextureAtlasManager.
+         * @brief Constructor for TextureAtlasManager.
          * 
          * Use the SingletonAccessor to access the singleton instance.
          */
@@ -774,13 +773,6 @@ class TextureAtlasManager {
          * @brief Destructor for TextureAtlasManager.
          */
         ~TextureAtlasManager();
-
-        friend SingletonAccessor<TextureAtlasManager>;
-    public:
-
-        // ============================================================================
-        //                               PUBLIC METHODS
-        // ============================================================================
 
         /**
          * @brief Add a texture atlas to the manager.
@@ -795,6 +787,11 @@ class TextureAtlasManager {
          * @param atlas Pointer to the texture atlas to remove.
          */
         void removeAtlas(const TextureAtlas *atlas);
+
+        /**
+         * @brief Destroy all texture atlases managed by the manager.
+         */
+        void destroy();
 
         /**
          * @brief Sort texture atlases of a specific type.
@@ -813,8 +810,8 @@ class TextureAtlasManager {
          */
         std::shared_ptr<TextureAtlas> getAtlas(TextureAtlasTypeKey key);
 };
-}
 
+}
 
 namespace std {
 

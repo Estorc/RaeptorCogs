@@ -8,7 +8,7 @@ project(RaeptorCogs VERSION 1.0 LANGUAGES C CXX)
 
 set(AUTHOR "Estorc")
 set(YEAR "2025")
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 message(STATUS "C compiler: ${CMAKE_C_COMPILER}")
@@ -27,12 +27,19 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 include(FileIOUtils)
 
 include(FetchContent)
-find_package(Python3 COMPONENTS Interpreter REQUIRED)
 
-if(NOT Python3_Interpreter_FOUND)
-  message(FATAL_ERROR "Python3 interpreter not found. Please install Python3 to build this project.")
+# Support venv
+# ---- Python from venv (project-local) ----
+set(Python3_EXECUTABLE "${CMAKE_SOURCE_DIR}/venv/bin/python3.14" CACHE FILEPATH "Python from venv" FORCE)
+# ------------------------------------------
+
+find_package(Python3 COMPONENTS Interpreter)
+
+if(NOT Python3_FOUND)
+    message(FATAL_ERROR "Python3 not found. Please install Python3 and ensure it is in your PATH.")
+else()
+    message(STATUS "Python3 found: ${Python3_EXECUTABLE}")
 endif()
-
 
 #========================================================================#
 # SOURCES
@@ -100,14 +107,8 @@ if (DOXYGEN_FOUND)
             ERROR_QUIET
         )
         if(NOT SPHINX_PIP_RESULT EQUAL 0)
-            message(STATUS "Python package 'sphinx' not found. Installing...")
-            execute_process(
-                COMMAND ${Python3_EXECUTABLE} -m pip install --user sphinx
-                RESULT_VARIABLE PIP_INSTALL_RESULT
-            )
-            if(NOT PIP_INSTALL_RESULT EQUAL 0)
-                message(FATAL_ERROR "Failed to install Python package 'sphinx'. Please install it manually.")
-            endif()
+            message(STATUS "Python package 'sphinx' not found.")
+            message(FATAL_ERROR "Please install it manually.")
         endif()
     else()
 
@@ -118,15 +119,8 @@ if (DOXYGEN_FOUND)
             ERROR_QUIET
         )
         if(NOT FURO_PIP_RESULT EQUAL 0)
-            message(STATUS "Python package 'furo' not found. Installing...")
-            execute_process(
-                COMMAND ${Python3_EXECUTABLE} -m pip install --upgrade furo
-                RESULT_VARIABLE FURO_INSTALL_RESULT
-            )
-
-            if(NOT FURO_INSTALL_RESULT EQUAL 0)
-                message(FATAL_ERROR "Failed to install Furo theme")
-            endif()
+            message(STATUS "Python package 'furo' not found.")
+            message(FATAL_ERROR "Please install it manually.")
         endif()
 
         set(SPHINX_SOURCE ${CMAKE_BINARY_DIR}/docs/sphinx)
@@ -216,16 +210,6 @@ endif()
 #========================================================================#
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-if (MSVC)
-  add_compile_options(
-      /EHsc
-      /W4                    # MSVC warnings
-      /clang:-Wall
-      /clang:-Wextra
-      /clang:-Wpedantic
-      /clang:-Wconversion
-  )
-endif()
 
 if(TARGET_WEBASM)
     set(GL_VERSION "3.0")
@@ -271,14 +255,8 @@ execute_process(
 )
 
 if(NOT glad_pip_result EQUAL 0)
-  message(STATUS "Python package 'glad' not found. Installing...")
-  execute_process(
-    COMMAND ${Python3_EXECUTABLE} -m pip install --user glad
-    RESULT_VARIABLE pip_install_result
-  )
-  if(NOT pip_install_result EQUAL 0)
-    message(FATAL_ERROR "Failed to install Python package 'glad'. Please install it manually.")
-  endif()
+    message(STATUS "Python package 'glad' not found.")
+    message(FATAL_ERROR "Please install it manually.")
 endif()
 
 # Define where to generate glad files
@@ -335,7 +313,7 @@ if(NOT TARGET_WEBASM)
   FetchContent_Declare(
       glfw
       GIT_REPOSITORY  https://github.com/glfw/glfw.git
-      GIT_TAG         latest
+      GIT_TAG         3.4
   )
   FetchContent_MakeAvailable(glfw)
 endif()
@@ -343,7 +321,8 @@ endif()
 
 FetchContent_Declare(
     glm
-    GIT_REPOSITORY  https://github.com/g-truc/glm.git        
+    GIT_REPOSITORY  https://github.com/g-truc/glm.git
+    GIT_TAG         1.0.3        
 )
 FetchContent_MakeAvailable(glm)
 
@@ -357,7 +336,7 @@ FetchContent_MakeAvailable(stb)
 FetchContent_Declare(
   httplib
   GIT_REPOSITORY https://github.com/yhirose/cpp-httplib.git
-  GIT_TAG        master  # or a specific commit/tag for stability
+  GIT_TAG        v0.30.1  # or a specific commit/tag for stability
 )
 FetchContent_MakeAvailable(httplib)
 
@@ -366,41 +345,93 @@ include(FetchContent)
 FetchContent_Declare(
     miniz
     GIT_REPOSITORY https://github.com/richgel999/miniz.git
-    GIT_TAG master
+    GIT_TAG 3.1.0
 )
 
 FetchContent_MakeAvailable(miniz)
+
+FetchContent_Declare(
+    rgsl
+    GIT_REPOSITORY https://github.com/estorc/rgsl.git
+    GIT_TAG development
+)
+
+FetchContent_MakeAvailable(rgsl)
 
 if(NOT TARGET_WEBASM)
   # --- Fetch NFD ---
   FetchContent_Declare(
       nfd
       GIT_REPOSITORY  https://github.com/btzy/nativefiledialog-extended.git
+      GIT_TAG         v1.3.0
   )
   FetchContent_MakeAvailable(nfd)
 endif()
 
-find_package(Vulkan REQUIRED)
+find_package(Vulkan)
+find_package(OpenSSL)
+find_package(TBB QUIET)
+find_package(PkgConfig)
+if (PkgConfig_FOUND)
+    message(STATUS "PkgConfig found: ${PKG_CONFIG_EXECUTABLE}")
+    pkg_check_modules(WAYLAND REQUIRED wayland-client)
+else()
+    message(FATAL_ERROR "PkgConfig not found. Please install PkgConfig.")
+endif()
 
 disable_warnings(glfw)
 disable_warnings(glm)
 disable_warnings(stb)
 disable_warnings(nfd)
 disable_warnings(miniz)
+disable_warnings(rgsl)
 
 #========================================================================#
 # BUILD SHADERS
 #========================================================================#
 
-set(SHADER_DIR ${CMAKE_CURRENT_SOURCE_DIR}/shaders)
-set(EMBEDDED_SHADER_HEADER ${CMAKE_CURRENT_BINARY_DIR}/include/RaeptorCogs/EmbedShaders.hpp)
-file(GLOB_RECURSE SHADER_SOURCES "${SHADER_DIR}/*.glsl" "${SHADER_DIR}/*.vert" "${SHADER_DIR}/*.frag" "${SHADER_DIR}/*.fs" "${SHADER_DIR}/*.vs")
+set(SHADER_DIR ${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders)
+file(GLOB_RECURSE SHADER_SOURCES
+    "${SHADER_DIR}/*.vert"
+    "${SHADER_DIR}/*.frag"
+    "${SHADER_DIR}/*.fs"
+    "${SHADER_DIR}/*.vs"
+)
+
+set(NORMAL_SHADER_SOURCES ${SHADER_SOURCES})
+set(SPIRV_SHADER_SOURCES ${SHADER_SOURCES})
+
+list(FILTER NORMAL_SHADER_SOURCES EXCLUDE REGEX "${SHADER_DIR}/.*/common/.*") # Exclude common shaders
+list(FILTER NORMAL_SHADER_SOURCES EXCLUDE REGEX "${SHADER_DIR}/.*spir-v/.*") # Exclude spir-v shaders from normal shaders
+
+list(FILTER SPIRV_SHADER_SOURCES INCLUDE REGEX "${SHADER_DIR}/.*spir-v/.*") # Only include spir-v shaders
+
+set(EMBEDDED_NORMAL_SHADER_HEADER ${CMAKE_CURRENT_BINARY_DIR}/include/RaeptorCogs/EmbedShaders.hpp)
+set(EMBEDDED_SPIRV_SHADER_HEADER ${CMAKE_CURRENT_BINARY_DIR}/include/RaeptorCogs/EmbedSPIRVShaders.hpp)
 
 add_custom_command(
-    OUTPUT ${EMBEDDED_SHADER_HEADER}
-    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/process_shaders.py ${EMBEDDED_SHADER_HEADER} ${SHADER_SOURCES}
-    DEPENDS ${SHADER_SOURCES} ${CMAKE_CURRENT_SOURCE_DIR}/process_shaders.py
-    COMMENT "Embedding shaders into ${EMBEDDED_SHADER_HEADER}"
+    OUTPUT "${EMBEDDED_NORMAL_SHADER_HEADER}"
+    COMMAND $<TARGET_FILE:rgsl>
+        --include "${SHADER_DIR}"
+        -VC
+        --embed
+        --output "${EMBEDDED_NORMAL_SHADER_HEADER}"
+        ${NORMAL_SHADER_SOURCES}
+    DEPENDS ${NORMAL_SHADER_SOURCES} rgsl
+    COMMENT "Embedding shaders into ${EMBEDDED_NORMAL_SHADER_HEADER} using rgsl"
+    VERBATIM
+)
+
+add_custom_command(
+    OUTPUT "${EMBEDDED_SPIRV_SHADER_HEADER}"
+    COMMAND $<TARGET_FILE:rgsl>
+        --include "${SHADER_DIR}"
+        -VCS
+        --embed
+        --output "${EMBEDDED_SPIRV_SHADER_HEADER}"
+        ${SPIRV_SHADER_SOURCES}
+    DEPENDS ${SPIRV_SHADER_SOURCES} rgsl
+    COMMENT "Embedding shaders into ${EMBEDDED_SPIRV_SHADER_HEADER} using rgsl"
     VERBATIM
 )
 
@@ -412,15 +443,42 @@ add_library(RaeptorCogs STATIC ${LIB_SOURCES})
 
 if (TARGET_WEBASM)
   set_target_properties(RaeptorCogs PROPERTIES
-      LINK_FLAGS "-s -s USE_GLFW=3 -s USE_WEBGL2=1 -s FULL_ES3=1 -s ALLOW_MEMORY_GROWTH=1 -s ASSERTIONS=1"
+      LINK_FLAGS "
+      -sUSE_GLFW=3 
+      -sUSE_WEBGL2=1 
+      -sFULL_ES3=1 
+      -sALLOW_MEMORY_GROWTH=1 
+      -sASSERTIONS=1"
   )
 endif()
 
 # OpenSSL if needed
-find_package(OpenSSL)
 if(OpenSSL_FOUND)
     target_compile_definitions(RaeptorCogs PRIVATE CPPHTTPLIB_OPENSSL_SUPPORT)
     target_link_libraries(RaeptorCogs PRIVATE OpenSSL::SSL OpenSSL::Crypto)
+endif()
+
+if(Vulkan_FOUND)
+    message(STATUS "Vulkan found: ${Vulkan_LIBRARY}")
+    target_compile_definitions(RaeptorCogs PRIVATE VULKAN_SUPPORTED)
+    target_link_libraries(RaeptorCogs PUBLIC Vulkan::Vulkan)
+else()
+    message(STATUS "Vulkan not found. Vulkan support will be disabled.")
+endif()
+
+if (TBB_FOUND)
+    target_link_libraries(RaeptorCogs PUBLIC TBB::tbb)
+    target_compile_definitions(RaeptorCogs PUBLIC RAEPTOR_HAS_TBB)
+else()
+    message(STATUS "TBB not found, building without TBB support")
+endif()
+
+if (WAYLAND_FOUND)
+    target_include_directories(RaeptorCogs PRIVATE ${WAYLAND_INCLUDE_DIRS})
+    target_link_libraries(RaeptorCogs PRIVATE ${WAYLAND_LIBRARIES})
+    target_compile_definitions(RaeptorCogs PUBLIC RAEPTOR_HAS_WAYLAND)
+else()
+    message(STATUS "Wayland not found, building without Wayland support")
 endif()
 
 # ---- Include dirs ----
@@ -428,6 +486,7 @@ target_include_directories(RaeptorCogs
     PUBLIC
         ${stb_SOURCE_DIR}
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/assets/shaders>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
         $<INSTALL_INTERFACE:include>
     PRIVATE
@@ -438,11 +497,29 @@ target_include_directories(RaeptorCogs
 )
 
 #========================================================================#
+# COMPILE OPTIONS
+#========================================================================#
+
+if (MSVC)
+  target_compile_options(RaeptorCogs PRIVATE
+      /EHsc
+      /W4                    # MSVC warnings
+      /clang:-Wall
+      /clang:-Wextra
+      /clang:-Wpedantic
+      /clang:-Wconversion
+  )
+endif()
+
+#========================================================================#
 # LINK SHADERS
 #========================================================================#
 
-add_custom_target(embed_shaders DEPENDS ${EMBEDDED_SHADER_HEADER})
+add_custom_target(embed_shaders DEPENDS "${EMBEDDED_NORMAL_SHADER_HEADER}")
 add_dependencies(RaeptorCogs embed_shaders)
+
+add_custom_target(compile_spirv_shaders DEPENDS "${EMBEDDED_SPIRV_SHADER_HEADER}")
+add_dependencies(RaeptorCogs compile_spirv_shaders)
 
 #========================================================================#
 # IMGUI
@@ -468,7 +545,6 @@ if(RAEPTORCOGS_BUILD_IMGUI)
         ${imgui_SOURCE_DIR}/imgui_demo.cpp
         ${imgui_SOURCE_DIR}/backends/imgui_impl_glfw.cpp
         ${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp
-        ${imgui_SOURCE_DIR}/backends/imgui_impl_vulkan.cpp
     )
 
     target_include_directories(imgui PUBLIC
@@ -476,8 +552,16 @@ if(RAEPTORCOGS_BUILD_IMGUI)
         ${imgui_SOURCE_DIR}/backends
         ${GLAD_DIR}/include
         ${glfw_SOURCE_DIR}/include
-        ${Vulkan_INCLUDE_DIR}
     )
+
+    if (Vulkan_FOUND)
+        target_sources(imgui PRIVATE
+            ${imgui_SOURCE_DIR}/backends/imgui_impl_vulkan.cpp
+        )
+        target_include_directories(imgui PUBLIC
+            ${Vulkan_INCLUDE_DIRS}
+        )
+    endif()
 
     target_compile_definitions(imgui PUBLIC IMGUI_IMPL_OPENGL_LOADER_GLAD)
 
@@ -499,7 +583,6 @@ endif()
 #========================================================================#
 target_link_libraries(RaeptorCogs 
     PUBLIC
-        Vulkan::Vulkan
         glm
         glad
         httplib
@@ -528,6 +611,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(json)
 
 function(add_example NAME)
+    message(STATUS "Adding example: ${NAME}")
     set(options)
     set(oneValueArgs FOLDER)
     set(multiValueArgs SOURCES ASSETS)
@@ -545,16 +629,21 @@ function(add_example NAME)
         set(EXAMPLE_CPP_SOURCES ${EXAMPLE_SOURCES})
     endif()
 
-    add_executable(${NAME} ${EXAMPLE_CPP_SOURCES})
-
-    target_compile_definitions(${NAME} PRIVATE APP_ID="${NAME}")
 
     if (WIN32)
+
+        add_executable(${NAME} ${EXAMPLE_CPP_SOURCES})
+
+        #target_link_options(${NAME} PRIVATE -mwindows)
         # Windows icon via resource file
         target_sources(${NAME} PRIVATE
             ${CMAKE_SOURCE_DIR}/examples/resources.rc
         )
-    else()
+    elseif (UNIX)
+
+        add_executable(${NAME} ${EXAMPLE_CPP_SOURCES})
+
+        target_compile_definitions(${NAME} PRIVATE APP_ID="${NAME}")
 
         # Linux desktop entry + icon
         install(FILES ${CMAKE_SOURCE_DIR}/examples/raeptor-cogs-icon-16.png DESTINATION share/icons/hicolor/16x16/apps RENAME ${NAME}.png)
@@ -565,20 +654,21 @@ function(add_example NAME)
         set(EXEC_PATH "$<TARGET_FILE:${NAME}>")
 
         # Create app.desktop file in build dir
-        configure_file(${CMAKE_SOURCE_DIR}/examples/app.desktop.in
-            ${CMAKE_BINARY_DIR}/${NAME}.desktop.in
-            @ONLY
-        )
+        #configure_file(
+        #    ${CMAKE_SOURCE_DIR}/examples/app.desktop.in
+        #    ${CMAKE_BINARY_DIR}/${NAME}.desktop.in
+        #    @ONLY
+        #)
 
         # Create app.desktop file in build dir
-        file(GENERATE
-            OUTPUT "${CMAKE_BINARY_DIR}/${NAME}.desktop"
-            INPUT  "${CMAKE_BINARY_DIR}/${NAME}.desktop.in"
-        )
+        #file(GENERATE
+        #    OUTPUT "${CMAKE_BINARY_DIR}/${NAME}.desktop"
+        #    INPUT  "${CMAKE_BINARY_DIR}/${NAME}.desktop.in"
+        #)
         
         # Install app.desktop file
-        install(FILES ${CMAKE_BINARY_DIR}/${NAME}.desktop
-            DESTINATION share/applications)
+        #install(FILES ${CMAKE_BINARY_DIR}/${NAME}.desktop
+        #    DESTINATION share/applications)
     endif()
 
     target_link_libraries(${NAME} PRIVATE
@@ -597,6 +687,14 @@ function(add_example NAME)
             SUFFIX ".html"
             OUTPUT_NAME "${NAME}"
         )
+        target_link_options(${NAME} PRIVATE
+            -sUSE_GLFW=3
+            -sUSE_WEBGL2=1
+            -sFULL_ES3=1
+            -sALLOW_MEMORY_GROWTH=1
+            -sASSERTIONS=2
+            -sSAFE_HEAP=1
+        )
     endif()
 
     # Copy assets
@@ -606,22 +704,28 @@ function(add_example NAME)
             continue()
         endif()
 
-        # Resolve absolute path
-        get_filename_component(asset_abs "${asset}" ABSOLUTE)
-        if(NOT EXISTS "${asset_abs}")
-            message(WARNING "add_example(${NAME}): asset directory does not exist: ${asset_abs}")
-            continue()
+        if (TARGET_WEBASM)
+            target_link_options(${NAME} PRIVATE
+                "--preload-file=${asset}@/assets"
+            )
+        else()
+            # Resolve absolute path
+            get_filename_component(asset_abs "${asset}" ABSOLUTE)
+            if(NOT EXISTS "${asset_abs}")
+                message(WARNING "add_example(${NAME}): asset directory does not exist: ${asset_abs}")
+                continue()
+            endif()
+
+            # basename to create nice subfolder in binary dir
+            get_filename_component(asset_base "${asset_abs}" NAME)
+
+            add_custom_command(TARGET ${NAME} POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy_directory
+                    "${asset_abs}"
+                    "$<TARGET_FILE_DIR:${NAME}>/${asset_base}"
+                COMMENT "Copying ${asset_base} -> $<TARGET_FILE_DIR:${NAME}>/${asset_base}"
+            )
         endif()
-
-        # basename to create nice subfolder in binary dir
-        get_filename_component(asset_base "${asset_abs}" NAME)
-
-        add_custom_command(TARGET ${NAME} POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy_directory
-                "${asset_abs}"
-                "$<TARGET_FILE_DIR:${NAME}>/${asset_base}"
-            COMMENT "Copying ${asset_base} -> $<TARGET_FILE_DIR:${NAME}>/${asset_base}"
-        )
     endforeach()
 endfunction()
 
@@ -629,6 +733,7 @@ add_example(RaeptorCogsTestPlayground
     FOLDER ${CMAKE_SOURCE_DIR}/examples/test-playground
     ASSETS
         ${CMAKE_SOURCE_DIR}/examples/test-playground/assets
+        ${CMAKE_SOURCE_DIR}/examples/test-playground/protected
 )
 
 add_example(RaeptorCogsDemo

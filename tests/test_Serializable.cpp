@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <RaeptorCogs/Serializable.hpp>
+#include <RaeptorCogs/Core/Serializable.hpp>
 #include <sstream>
 
 using namespace RaeptorCogs;

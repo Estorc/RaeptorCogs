@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <RaeptorCogs/Worker.hpp>
+#include <RaeptorCogs/Core/Worker.hpp>
 
 using namespace RaeptorCogs;
 

@@ -42,17 +42,18 @@ void MainLoop(std::function<void(Window&)> updateFunction, Window &window) {
     Renderer().getBackend().getRenderPipeline().beginFrame();
     updateFunction(window);
     Renderer().getBackend().getRenderPipeline().endFrame();
-    glfwPollEvents();
     Input().update(window);
     Mouse().update(window);
+    glfwPollEvents();
     Time().computeDeltaTime();
+    Time().incrementFrameCount();
 }
 
 #ifdef __EMSCRIPTEN__
 static std::function<void(Window&)> g_updateFunction;
 Window* g_window = nullptr;
 void emscripten_loop_wrapper() {
-    MainLoop(g_updateFunction, g_window);
+    MainLoop(g_updateFunction, *g_window);
 }
 #endif
 
@@ -67,7 +68,7 @@ void StartLoop(std::function<void(Window&)> updateFunction, Window &window) {
     #else
     g_updateFunction = updateFunction;
     g_window = &window;
-    emscripten_set_main_loop(emscripten_loop_wrapper, 0, 1);
+    emscripten_set_main_loop(emscripten_loop_wrapper, 0, true);
     #endif
 }
 
@@ -76,6 +77,7 @@ void Destroy() {
     #ifndef __EMSCRIPTEN__
     NFD_Quit();
     #endif
+    Renderer().destroy();
 }
 
 #ifdef __EMSCRIPTEN__
@@ -99,10 +101,6 @@ double GetScreenHeight() {
 
 Singletons::Renderer& Renderer() {
     return RaeptorCogs::SingletonAccessor<Singletons::Renderer>::get();
-}
-
-Singletons::TextureAtlasManager& TextureAtlasManager() {
-    return RaeptorCogs::SingletonAccessor<Singletons::TextureAtlasManager>::get();
 }
 
 Singletons::Input& Input() {

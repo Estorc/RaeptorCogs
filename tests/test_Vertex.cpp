@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <RaeptorCogs/Vertex.hpp>
+#include <RaeptorCogs/Graphics/Vertex.hpp>
 #include <glm/gtc/epsilon.hpp>
 
 using namespace RaeptorCogs;

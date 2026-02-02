@@ -99,6 +99,7 @@ Image CreateImage(size_t width, size_t height) {
 }
 
 void saveTextureToPNG(GLuint textureID, size_t width, size_t height, const std::filesystem::path& filename) {
+    #ifndef __EMSCRIPTEN__
     glBindTexture(GL_TEXTURE_2D, textureID);
 
     // Allocate CPU buffer (RGBA8)
@@ -121,6 +122,12 @@ void saveTextureToPNG(GLuint textureID, size_t width, size_t height, const std::
     } else {
         std::cout << "Saved PNG: " << filename << std::endl;
     }
+    #else
+    (void) textureID;
+    (void) width;
+    (void) height;
+    (void) filename;
+    #endif
 }
 
 

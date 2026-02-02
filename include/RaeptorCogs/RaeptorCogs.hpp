@@ -39,15 +39,15 @@
  ***********************************************************************************/
 
 #pragma once
-#include <RaeptorCogs/Renderer.hpp>
-#include <RaeptorCogs/Memory.hpp>
+#include <RaeptorCogs/Graphics/Renderer.hpp>
+#include <RaeptorCogs/Core/Memory.hpp>
 #include <RaeptorCogs/IO/Texture.hpp>
-#include <RaeptorCogs/Worker.hpp>
+#include <RaeptorCogs/Core/Worker.hpp>
 #include <RaeptorCogs/IO/Input.hpp>
-#include <RaeptorCogs/Time.hpp>
-#include <RaeptorCogs/Random.hpp>
-#include <RaeptorCogs/Platform.hpp>
-#include <RaeptorCogs/Singleton.hpp>
+#include <RaeptorCogs/Core/Time.hpp>
+#include <RaeptorCogs/Core/Random.hpp>
+#include <RaeptorCogs/Core/Platform.hpp>
+#include <RaeptorCogs/Core/Singleton.hpp>
 #include <functional>
 
 /**
@@ -176,18 +176,6 @@ namespace RaeptorCogs {
      * @endcode
      */
     Singletons::Renderer& Renderer();
-
-    /**
-     * @brief Access the global TextureAtlasManager singleton.
-     * 
-     * @return Reference to the TextureAtlasManager singleton.
-     * 
-     * @code{.cpp}
-     * auto &atlasManager = RaeptorCogs::TextureAtlasManager();
-     * auto atlas = atlasManager.getAtlas(someKey);
-     * @endcode
-     */
-    Singletons::TextureAtlasManager& TextureAtlasManager();
 
     /**
      * @brief Access the global Input singleton.

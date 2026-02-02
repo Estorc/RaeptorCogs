@@ -1,9 +1,10 @@
 #include <RaeptorCogs/RaeptorCogs.hpp>
-#include <RaeptorCogs/Sprite.hpp>
-#include <RaeptorCogs/Window.hpp>
+#include <RaeptorCogs/Graphics/Sprite.hpp>
+#include <RaeptorCogs/Graphics/Window.hpp>
 #include <RaeptorCogs/IO/Texture.hpp>
-#include <RaeptorCogs/Text.hpp>
-#include <RaeptorCogs/Camera.hpp>
+#include <RaeptorCogs/Graphics/Text.hpp>
+#include <RaeptorCogs/Graphics/Camera.hpp>
+#include <GLFW/glfw3.h>
 
 constexpr int WINDOW_WIDTH = 800;
 constexpr int WINDOW_HEIGHT = 600;
@@ -17,7 +18,7 @@ struct RaeptorParticle {
     float speed;
 };
 
-std::array<RaeptorParticle, 10000> raeptorParticles;
+std::array<RaeptorParticle, 100000> raeptorParticles;
 
 RaeptorCogs::Text2D raeptorText;
 RaeptorCogs::Text2D creditsText;
@@ -110,9 +111,10 @@ void Update(RaeptorCogs::Window& mainWindow) {
 
 int main() {
     RaeptorCogs::Initialize();
-    RaeptorCogs::Renderer().initialize();
+    RaeptorCogs::Renderer().initialize(RaeptorCogs::GraphicsBackend::GL);
     Initialize();
     RaeptorCogs::Window& mainWindow = *RaeptorCogs::Platform().createWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "RaeptorCogs Demo");
+    glfwSwapInterval(0); // Enable VSync
     mainWindow.setIcon({
                         "assets/icons/raeptor-cogs-icon-16.png",
                         "assets/icons/raeptor-cogs-icon-32.png",

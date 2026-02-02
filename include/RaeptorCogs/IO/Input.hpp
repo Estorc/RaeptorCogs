@@ -39,8 +39,8 @@
  ***********************************************************************************/
 
 #pragma once
-#include <RaeptorCogs/Singleton.hpp>
-#include <RaeptorCogs/Window.hpp>
+#include <RaeptorCogs/Core/Singleton.hpp>
+#include <RaeptorCogs/Graphics/Window.hpp>
 #include <glm/vec2.hpp>
 #include <bitset>
 
@@ -137,6 +137,24 @@ enum class Key : uint32_t {
     RIGHT_SUPER = 347,
     MENU = 348,
     KEY_COUNT = 348
+};
+
+
+/**
+ * @brief Mouse button enumeration.
+ * 
+ * Represents various mouse buttons, mapped to GLFW button codes.
+ */
+enum class MouseButton : uint8_t {
+    LEFT = 0,
+    RIGHT = 1,
+    MIDDLE = 2,
+    BUTTON_4 = 3,
+    BUTTON_5 = 4,
+    BUTTON_6 = 5,
+    BUTTON_7 = 6,
+    BUTTON_8 = 7,
+    BUTTON_COUNT = 8
 };
 
 
@@ -240,23 +258,6 @@ class Input {
 };
 
 /**
- * @brief Mouse button enumeration.
- * 
- * Represents various mouse buttons, mapped to GLFW button codes.
- */
-enum class MouseButton : uint8_t {
-    LEFT = 0,
-    RIGHT = 1,
-    MIDDLE = 2,
-    BUTTON_4 = 3,
-    BUTTON_5 = 4,
-    BUTTON_6 = 5,
-    BUTTON_7 = 6,
-    BUTTON_8 = 7,
-    BUTTON_COUNT = 8
-};
-
-/**
  * @brief Mouse input handling class.
  * 
  * Provides methods to query the state of mouse buttons and cursor position.
@@ -294,6 +295,15 @@ class Mouse {
          * Stores the accumulated scroll offsets.
          */
         glm::vec2 scroll = glm::vec2(0.0f);
+
+        /**
+         * @brief Previous mouse position.
+         * 
+         * Stores the previous cursor position.
+         * 
+         * @note Used for calculating movement deltas.
+         */
+        glm::vec2 prevPosition = glm::vec2(0.0f);
 
         /**
          * @brief Current mouse position.
@@ -349,7 +359,7 @@ class Mouse {
          * }
          * @endcode
          */
-        bool isButtonPressed(int button); // button: 0-7
+        bool isButtonPressed(MouseButton button); // button: 0-7
 
         /**
          * @brief Check if a mouse button was released.
@@ -363,7 +373,35 @@ class Mouse {
          * }
          * @endcode
          */
-        bool isButtonReleased(int button); // button: 0-7
+        bool isButtonReleased(MouseButton button); // button: 0-7
+
+        /**
+         * @brief Check if a mouse button was just pressed.
+         * 
+         * @param button Mouse button to check.
+         * @return true if the button was just pressed, false otherwise.
+         * 
+         * @code{.cpp}
+         * if (RaeptorCogs::Mouse().isButtonJustPressed(RaeptorCogs::MouseButton::MIDDLE)) {
+         *     // Middle mouse button was just pressed
+         * }
+         * @endcode
+         */
+        bool isButtonJustPressed(MouseButton button); // button: 0-7
+
+        /**
+         * @brief Check if a mouse button was just released.
+         * 
+         * @param button Mouse button to check.
+         * @return true if the button was just released, false otherwise.
+         * 
+         * @code{.cpp}
+         * if (RaeptorCogs::Mouse().isButtonJustReleased(RaeptorCogs::MouseButton::LEFT)) {
+         *     // Left mouse button was just released
+         * }
+         * @endcode
+         */
+        bool isButtonJustReleased(MouseButton button); // button: 0-7
 
         /**
          * @brief Get the horizontal scroll offset.
@@ -406,6 +444,13 @@ class Mouse {
          * @return Position of the cursor as a glm::vec2.
          */
         glm::vec2 getPosition() const;
+
+        /**
+         * @brief Get the delta movement of the mouse cursor since the last update.
+         * 
+         * @return Delta movement of the cursor as a glm::vec2.
+         */
+        glm::vec2 getDeltaPosition() const;
 
         /**
          * @brief Get the hovered data identifier.

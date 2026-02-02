@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <RaeptorCogs/Graphic.hpp>
+#include <RaeptorCogs/Graphics/Graphic.hpp>
 
 using namespace RaeptorCogs;
 

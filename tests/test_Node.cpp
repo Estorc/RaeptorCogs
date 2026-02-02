@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <RaeptorCogs/Node.hpp>
+#include <RaeptorCogs/ECS/Node.hpp>
 
 namespace RaeptorCogs {
 

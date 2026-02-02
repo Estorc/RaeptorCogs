@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <RaeptorCogs/Memory.hpp>
+#include <RaeptorCogs/Core/Memory.hpp>
 #include <sstream>
 
 using namespace RaeptorCogs;

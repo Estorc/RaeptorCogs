@@ -1,7 +1,7 @@
 #include <RaeptorCogs/RaeptorCogs.hpp>
 #include <RaeptorCogs/IO/Texture.hpp>
-#include <RaeptorCogs/GAPI/Common/Resources/Buffer.hpp>
-#include <RaeptorCogs/BitOp.hpp>
+#include <RaeptorCogs/Graphics/GAPI/Common/Resources/Buffer.hpp>
+#include <RaeptorCogs/Core/BitOp.hpp>
 #include <algorithm>
 #include <RaeptorCogs/External/glad/glad.hpp>
 #include <glm/ext/matrix_transform.hpp>
@@ -128,7 +128,7 @@ bool TextureAtlas::tryAddTexture(TextureBase *texture, int width, int height) {
     r.id = 0;
 
     if (!stbrp_pack_rects(&this->ctx, &r, 1) || !r.was_packed) {
-        std::cerr << "Failed to pack texture into atlas!" << std::endl;
+        //std::cerr << "Failed to pack texture into atlas!" << std::endl;
         return false; // Packing failed
     }
 
@@ -248,7 +248,7 @@ void TextureBase::upload(const Image &img) {
         std::cerr << "Failed to load texture from image data." << std::endl;
         return;
     }
-    std::shared_ptr<TextureAtlas> atlas = RaeptorCogs::TextureAtlasManager().getAtlas(std::make_tuple(GL_LINEAR_MIPMAP_NEAREST, GL_LINEAR));
+    std::shared_ptr<TextureAtlas> atlas = RaeptorCogs::Renderer().getTextureAtlasManager().getAtlas(std::make_tuple(GL_LINEAR_MIPMAP_NEAREST, GL_LINEAR));
     uint64_t allocatedSize = NextPowerOf2(std::max(img.width + ATLAS_PADDING * 2, img.height + ATLAS_PADDING * 2));
     if (allocatedSize < COMMON_ATLAS_SIZE) {
         allocatedSize = COMMON_ATLAS_SIZE;
@@ -263,7 +263,7 @@ void TextureBase::upload(const Image &img) {
     if (needsNewAtlas) atlas = std::make_shared<TextureAtlas>(glm::ivec2(allocatedSize, allocatedSize), GL_LINEAR_MIPMAP_NEAREST, GL_LINEAR);
     if (textureAdded || atlas->tryAddTexture(this, static_cast<int>(img.width), static_cast<int>(img.height))) {
         atlas->uploadTexture(static_cast<GLint>(this->rect.x), static_cast<GLint>(this->rect.y), static_cast<GLint>(this->rect.z), static_cast<GLint>(this->rect.w), img.data.get(), needsNewAtlas);
-        if (needsNewAtlas) RaeptorCogs::TextureAtlasManager().addAtlas(atlas);
+        if (needsNewAtlas) RaeptorCogs::Renderer().getTextureAtlasManager().addAtlas(atlas);
         this->setAtlas(atlas);
     } else {
         std::cerr << "Failed to add texture to new atlas." << std::endl;
@@ -407,10 +407,6 @@ bool TextureBase::needsRebuild() const {
 
 #pragma endregion
 
-}
-
-namespace RaeptorCogs::Singletons {
-
 #pragma region TextureAtlasManager
 
 TextureAtlasManager::~TextureAtlasManager() {
@@ -443,6 +439,10 @@ void TextureAtlasManager::sort(TextureAtlasTypeKey key) {
 void TextureAtlasManager::removeAtlas(const TextureAtlas *atlas) {
     (void) atlas;
     // Placeholder for future implementation if needed
+}
+
+void TextureAtlasManager::destroy() {
+    this->atlases.clear();
 }
 
 std::shared_ptr<TextureAtlas> TextureAtlasManager::getAtlas(TextureAtlasTypeKey key) {

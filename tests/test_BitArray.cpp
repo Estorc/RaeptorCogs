@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <RaeptorCogs/BitArray.hpp>
+#include <RaeptorCogs/Core/BitArray.hpp>
 
 using namespace RaeptorCogs;
 

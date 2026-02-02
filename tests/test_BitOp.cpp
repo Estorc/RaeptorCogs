@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <RaeptorCogs/BitOp.hpp>
+#include <RaeptorCogs/Core/BitOp.hpp>
 
 using namespace RaeptorCogs;
 

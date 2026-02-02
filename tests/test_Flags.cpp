@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <RaeptorCogs/Flags.hpp>
+#include <RaeptorCogs/Core/Flags.hpp>
 
 using namespace RaeptorCogs;
 

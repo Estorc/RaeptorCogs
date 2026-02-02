@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <RaeptorCogs/Camera.hpp>
+#include <RaeptorCogs/Graphics/Camera.hpp>
 #include <glm/glm.hpp>
 
 using namespace RaeptorCogs;

@@ -1,9 +1,9 @@
 #include <RaeptorCogs/RaeptorCogs.hpp>
-#include <RaeptorCogs/Renderer.hpp>
-#include <RaeptorCogs/Memory.hpp>
+#include <RaeptorCogs/Graphics/Renderer.hpp>
+#include <RaeptorCogs/Core/Memory.hpp>
 #include <RaeptorCogs/IO/Font.hpp>
-#include <RaeptorCogs/Text.hpp>
-#include <RaeptorCogs/Sprite.hpp>
+#include <RaeptorCogs/Graphics/Text.hpp>
+#include <RaeptorCogs/Graphics/Sprite.hpp>
 #include <RaeptorCogs/IO/String.hpp>
 #include <RaeptorCogs/IO/FileIO.hpp>
 #include <global.hpp>

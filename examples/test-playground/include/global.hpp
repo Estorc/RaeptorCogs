@@ -1,11 +1,11 @@
 #pragma once
 #include <RaeptorCogs/RaeptorCogs.hpp>
-#include <RaeptorCogs/Graphic.hpp>
+#include <RaeptorCogs/Graphics/Graphic.hpp>
 #include <string>
 #include <memory>
 
-constexpr int WINDOW_WIDTH = 1280;
-constexpr int WINDOW_HEIGHT = 720;
+constexpr int WINDOW_WIDTH = 1920;
+constexpr int WINDOW_HEIGHT = 1080;
 
 
 extern int fontSize;

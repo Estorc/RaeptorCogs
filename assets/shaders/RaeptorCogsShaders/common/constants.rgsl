@@ -1,0 +1,44 @@
+#pragma once
+#if defined(__cplusplus)
+    #define RGSL_ENUM_CLASS(name, type) enum class name : type
+#elif defined(__rgsl)
+    #define RGSL_ENUM_CLASS(name, type) enum name
+#else
+    #define RGSL_ENUM_CLASS(name, type) enum name
+#endif
+
+#if defined(__cplusplus)
+    #define RGSL_CONST constexpr
+#elif defined(__rgsl)
+    #define RGSL_CONST const
+#else
+    #define RGSL_CONST static const
+#endif
+
+
+RGSL_CONST float PI = 3.14159265358979323846;
+RGSL_CONST float EPSILON = 1e-6;
+
+RGSL_CONST int IDATATEX_WIDTH = 2048;
+
+RGSL_ENUM_CLASS(RendererMode, unsigned) {
+    RENDERER_MODE_DEFAULT = 0,
+    RENDERER_MODE_2D_SPRITE = 1,
+    RENDERER_MODE_2D_TEXT = 2
+};
+
+RGSL_ENUM_CLASS(BlendMode, unsigned) {
+    BLEND_MODE_NONE = 0,
+    BLEND_MODE_ALPHA = 1,
+    BLEND_MODE_ADD = 2,
+    BLEND_MODE_MULTIPLY = 3
+};
+
+RGSL_ENUM_CLASS(MaskMode, unsigned) {
+    MASK_MODE_EQUAL = 0,
+    MASK_MODE_LESS_THAN = 1,
+    MASK_MODE_LESS_EQUAL = 2,
+    MASK_MODE_GREATER_THAN = 3,
+    MASK_MODE_GREATER_EQUAL = 4,
+    MASK_MODE_NOT_EQUAL = 5
+};

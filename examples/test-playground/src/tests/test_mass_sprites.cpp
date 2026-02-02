@@ -32,10 +32,12 @@ std::vector<RaeptorCogs::Sprite2D> &loadMassSprites(std::vector<std::string> &fi
 
     _sprites.reserve(jsonData.size());
     RaeptorCogs::Texture &testTexture = RaeptorCogs::ResourceManager<RaeptorCogs::Texture>().create("assets/textures/raeptor-cogs-logo.png");
-    for (const auto& [key, value] : jsonData.items()) {
+    for (const auto& item : jsonData.items()) {
+        const std::string& key = item.key();
+        const nlohmann::json& value = item.value();
         std::string filePath = (folderPath / value["file"]).string();
         fileNames.push_back(filePath);
-        RaeptorCogs::Texture& tex = RaeptorCogs::ResourceManager<RaeptorCogs::Texture>().get_or_create(filePath.c_str(), RaeptorCogs::TextureOptions{.s_width = 0, .s_height = 150});
+        RaeptorCogs::Texture& tex = RaeptorCogs::ResourceManager<RaeptorCogs::Texture>().get_or_create(filePath.c_str(), RaeptorCogs::TextureOptions{.s_width = 0, .s_height = 200});
         tex.onLoad = [&tex, &testTexture, key, size = jsonData.size()]() mutable {
             float aspectRatio = static_cast<float>(tex->getWidth()) / static_cast<float>(tex->getHeight());
             float spriteHeight = 150.0f; // Fixed height for all _sprites
@@ -50,7 +52,6 @@ std::vector<RaeptorCogs::Sprite2D> &loadMassSprites(std::vector<std::string> &fi
             image->setPosition(glm::vec2(0, 0));
             image->setSize(glm::vec2(spriteWidth, spriteHeight));
             image->setAnchor(glm::vec2(0.5f, 0.5f));
-            RaeptorCogs::Renderer().add(*image);
 
 
             _sprites.push_back(RaeptorCogs::Sprite2D(testTexture));
@@ -64,6 +65,7 @@ std::vector<RaeptorCogs::Sprite2D> &loadMassSprites(std::vector<std::string> &fi
 
             x += spriteWidth + 10; // 10 pixels gap
             //_sprites.back().setZIndex(static_cast<float>(_sprites.size()));
+            RaeptorCogs::Renderer().add(*image);
             RaeptorCogs::Renderer().add(_sprites.back());
             //std::cout << key << " / " << size << std::endl;
         };
@@ -101,7 +103,7 @@ std::vector<RaeptorCogs::Sprite2D> &createMassSprites(RaeptorCogs::Texture &text
                 _sprites.back().setSize(glm::vec2(6.0f, 6.0f));
                 _sprites.back().setAnchor(glm::vec2(0.5f, 0.5f));
                 _sprites.back().setVisibility(true);
-                _sprites.back().setZIndex(static_cast<float>(i)/1000.0f);
+                //_sprites.back().setZIndex(static_cast<float>(i)/1000.0f);
             }
 
             x += 7.0f; // 7 pixels gap

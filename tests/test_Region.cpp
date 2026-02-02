@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <RaeptorCogs/Region.hpp>
+#include <RaeptorCogs/Core/Region.hpp>
 
 using namespace RaeptorCogs;
 

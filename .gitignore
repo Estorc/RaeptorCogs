@@ -65,3 +65,6 @@ imgui.ini
 # Other temporary files
 *.log
 *.tmp
+
+venv/
+build/

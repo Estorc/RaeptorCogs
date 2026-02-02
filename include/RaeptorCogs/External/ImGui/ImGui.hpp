@@ -51,8 +51,10 @@
 
 #include <backends/imgui_impl_glfw.h>
 #include <backends/imgui_impl_opengl3.h>
+#ifdef VULKAN_SUPPORTED
 #include <vulkan/vulkan.h>
 #include <backends/imgui_impl_vulkan.h>
+#endif
 #include <imgui.h>
 
 #if defined(__clang__)
