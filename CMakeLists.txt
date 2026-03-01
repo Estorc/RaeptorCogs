@@ -41,6 +41,15 @@ else()
     message(STATUS "Python3 found: ${Python3_EXECUTABLE}")
 endif()
 
+# Install python dependencies via pip using requirements.txt
+execute_process(
+    COMMAND ${Python3_EXECUTABLE} -m pip install --user -r ${CMAKE_CURRENT_SOURCE_DIR}/requirements.txt
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    RESULT_VARIABLE PIP_INSTALL_RESULT
+    OUTPUT_QUIET
+    ERROR_QUIET
+)
+
 #========================================================================#
 # SOURCES
 #========================================================================#
