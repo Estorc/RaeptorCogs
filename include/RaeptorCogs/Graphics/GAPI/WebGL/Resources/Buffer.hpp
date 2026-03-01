@@ -119,52 +119,53 @@ REGISTER(Common::Elementbuffer, Elementbuffer);
  * @see RaeptorCogs::GAPI::Common::ShaderStorageBuffer
  */
 class ShaderStorageBuffer : public Common::ShaderStorageBuffer {
-    private:
-        std::shared_ptr<GLuint> doubleBuffer = 0;
-        size_t bindingPoint = 0;
-        size_t height = 0;
-    public:
-        /**
-         * @brief Initialize the shader storage buffer.
-         * 
-         * Initializes the OpenGL shader storage buffer object.
-         * 
-         * @note Overrides the pure virtual method from the base class.
-         */
-        virtual void initialize() override;
+  private:
+    std::shared_ptr<GLuint> doubleBuffer = 0;
+    size_t bindingPoint                  = 0;
+    size_t height                        = 0;
 
-        /**
-         * @brief Bind the shader storage buffer for use.
-         * 
-         * Binds the OpenGL shader storage buffer object.
-         * 
-         * @note Overrides the pure virtual method from the base class.
-         */
-        void bind() override;
+  public:
+    /**
+     * @brief Initialize the shader storage buffer.
+     *
+     * Initializes the OpenGL shader storage buffer object.
+     *
+     * @note Overrides the pure virtual method from the base class.
+     */
+    void Buffer();
 
-        /**
-         * @brief Unbind the shader storage buffer.
-         * 
-         * Unbinds the OpenGL shader storage buffer object.
-         * 
-         * @note Overrides the pure virtual method from the base class.
-         */
-        void unbind() const override;
+    /**
+     * @brief Bind the shader storage buffer for use.
+     *
+     * Binds the OpenGL shader storage buffer object.
+     *
+     * @note Overrides the pure virtual method from the base class.
+     */
+    void bind() override;
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::ShaderStorageBuffer::allocate
-         */
-        void allocate(size_t size) override;
+    /**
+     * @brief Unbind the shader storage buffer.
+     *
+     * Unbinds the OpenGL shader storage buffer object.
+     *
+     * @note Overrides the pure virtual method from the base class.
+     */
+    void unbind() const override;
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::ShaderStorageBuffer::setBindingPoint
-         */
-        void setBindingPoint(unsigned int bindingPoint) override;
+    /**
+     * @see RaeptorCogs::GAPI::Common::ShaderStorageBuffer::allocate
+     */
+    void allocate(size_t size) override;
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::ShaderStorageBuffer::upload
-         */
-        void upload(const void* data, size_t size, size_t offset = 0) override;
+    /**
+     * @see RaeptorCogs::GAPI::Common::ShaderStorageBuffer::setBindingPoint
+     */
+    void setBindingPoint(unsigned int bindingPoint) override;
+
+    /**
+     * @see RaeptorCogs::GAPI::Common::ShaderStorageBuffer::upload
+     */
+    void upload(const void *data, size_t size, size_t offset = 0) override;
 };
 
 /**
@@ -175,4 +176,4 @@ using SSBO = ShaderStorageBuffer;
 /** @brief Register ShaderStorageBuffer with the FactoryRegistry.*/
 REGISTER(Common::ShaderStorageBuffer, ShaderStorageBuffer);
 
-}
+} // namespace RaeptorCogs::GAPI::WebGL

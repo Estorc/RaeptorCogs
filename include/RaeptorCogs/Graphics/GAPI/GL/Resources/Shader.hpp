@@ -38,8 +38,9 @@
  ***********************************************************************************/
 
 #pragma once
-#include <RaeptorCogs/Graphics/GAPI/GL/Resources/Object.hpp>
 #include <RaeptorCogs/Graphics/GAPI/Common/Resources/Shader.hpp>
+#include <RaeptorCogs/Graphics/GAPI/GL/Resources/Object.hpp>
+
 
 namespace RaeptorCogs::GAPI::GL {
 
@@ -47,105 +48,104 @@ namespace RaeptorCogs::GAPI::GL {
  * @see RaeptorCogs::GAPI::Common::Shader
  */
 class Shader : public ObjectMixin<Common::Shader> {
-    public:
+  public:
+    // ============================================================================
+    //                             PUBLIC METHODS
+    // ============================================================================
 
-        // ============================================================================
-        //                             PUBLIC METHODS
-        // ============================================================================
+    /**
+     * @brief Constructor for Shader.
+     */
+    Shader();
 
-        /**
-         * @brief Constructor for Shader.
-         */
-        Shader();
+    /**
+     * @brief Destructor for Shader.
+     */
+    ~Shader();
 
-        /**
-         * @brief Destructor for Shader.
-         */
-        ~Shader();
-        
-        /**
-         * @see RaeptorCogs::GAPI::Common::Shader::build()
-         */
-        virtual void build(const Common::ShaderInfo &shaderInfo) override;
+    /**
+     * @see RaeptorCogs::GAPI::Common::Shader::build()
+     */
+    virtual void build(const Common::ShaderInfo &shaderInfo) override;
 
-        /**
-         * @brief Build the shader program from source code.
-         * @param vertexSource Source code for the vertex shader.
-         * @param fragmentSource Source code for the fragment shader.
-         */
-        void build(const char* vertexSource, const char* fragmentSource);
+    /**
+     * @brief Build the shader program from source code.
+     * @param vertexSource Source code for the vertex shader.
+     * @param fragmentSource Source code for the fragment shader.
+     */
+    void build(const char *vertexSource, const char *fragmentSource);
 
-        /**
-         * @brief Bind the shader program for use.
-         * 
-         * Binds the OpenGL shader program.
-         * 
-         * @note Overrides the pure virtual method from the base class.
-         */
-        void bind() override;
+    /**
+     * @brief Bind the shader program for use.
+     *
+     * Binds the OpenGL shader program.
+     *
+     * @note Overrides the pure virtual method from the base class.
+     */
+    void bind() override;
 
-        /**
-         * @brief Unbind the shader program.
-         * 
-         * Unbinds the OpenGL shader program.
-         * 
-         * @note Overrides the pure virtual method from the base class.
-         */
-        void unbind() const override;
+    /**
+     * @brief Unbind the shader program.
+     *
+     * Unbinds the OpenGL shader program.
+     *
+     * @note Overrides the pure virtual method from the base class.
+     */
+    void unbind() const override;
 
-        // -------------------------------------------------------------
-        //          Utility methods to set uniform variables
-        // -------------------------------------------------------------
+    // -------------------------------------------------------------
+    //          Utility methods to set uniform variables
+    // -------------------------------------------------------------
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::Shader::setBool() const
-         */
-        void setBool(const std::string &name, bool value) const override;
+    /**
+     * @see RaeptorCogs::GAPI::Common::Shader::setBool() const
+     */
+    void setBool(const std::string &name, bool value) const override;
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::Shader::setInt() const
-         */
-        void setInt(const std::string &name, int value) const override;
+    /**
+     * @see RaeptorCogs::GAPI::Common::Shader::setInt() const
+     */
+    void setInt(const std::string &name, int value) const override;
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::Shader::setUInt() const
-         */
-        void setUInt(const std::string &name, unsigned int value) const override;
+    /**
+     * @see RaeptorCogs::GAPI::Common::Shader::setUInt() const
+     */
+    void setUInt(const std::string &name, unsigned int value) const override;
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::Shader::setFloat() const
-         */
-        void setFloat(const std::string &name, float value) const override;
+    /**
+     * @see RaeptorCogs::GAPI::Common::Shader::setFloat() const
+     */
+    void setFloat(const std::string &name, float value) const override;
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::Shader::setVec2() const
-         */
-        void setVec2(const std::string &name, const glm::vec2 &value) const override;
+    /**
+     * @see RaeptorCogs::GAPI::Common::Shader::setVec2() const
+     */
+    void setVec2(const std::string &name, const glm::vec2 &value) const override;
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::Shader::setVec3() const
-         */
-        void setVec3(const std::string &name, const glm::vec3 &value) const override;
+    /**
+     * @see RaeptorCogs::GAPI::Common::Shader::setVec3() const
+     */
+    void setVec3(const std::string &name, const glm::vec3 &value) const override;
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::Shader::setVec4() const
-         */
-        void setVec4(const std::string &name, const glm::vec4 &value) const override;
+    /**
+     * @see RaeptorCogs::GAPI::Common::Shader::setVec4() const
+     */
+    void setVec4(const std::string &name, const glm::vec4 &value) const override;
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::Shader::setMat2() const
-         */
-        void setMat2(const std::string &name, const glm::mat2 &mat) const override;
+    /**
+     * @see RaeptorCogs::GAPI::Common::Shader::setMat2() const
+     */
+    void setMat2(const std::string &name, const glm::mat2 &mat) const override;
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::Shader::setMat3() const
-         */
-        void setMat3(const std::string &name, const glm::mat3 &mat) const override;
+    /**
+     * @see RaeptorCogs::GAPI::Common::Shader::setMat3() const
+     */
+    void setMat3(const std::string &name, const glm::mat3 &mat) const override;
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::Shader::setMat4() const
-         */
-        void setMat4(const std::string &name, const glm::mat4 &mat) const override;
+    /**
+     * @see RaeptorCogs::GAPI::Common::Shader::setMat4() const
+     */
+    void setMat4(const std::string &name, const glm::mat4 &mat) const override;
 };
 
 /** @brief Register Shader with the FactoryRegistry.*/
@@ -153,15 +153,14 @@ REGISTER(Common::Shader, Shader);
 
 /**
  * @brief Find an embedded shader by name, stage, and profile.
- * 
+ *
  * @param name Name of the shader.
  * @param stage Stage of the shader (vertex, fragment, etc.).
  * @param profile Profile of the shader (e.g., "core", "es").
  * @return Pointer to the shader source code, or nullptr if not found.
- * 
+ *
  * @note Searches the provided array for a matching shader.
  */
-const void * FindEmbeddedShader(const std::string& name, Common::ShaderStage stage, const std::string& profile);
+const void *FindEmbeddedShader(const std::string &name, Common::ShaderStage stage, const std::string &profile);
 
-
-}
+} // namespace RaeptorCogs::GAPI::GL

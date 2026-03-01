@@ -37,13 +37,13 @@
  * SOFTWARE.
  ***********************************************************************************/
 #pragma once
-#include <filesystem>
+#include <string>
 
 namespace RaeptorCogs {
 
 /**
  * @brief URL parts structure.
- * 
+ *
  * Holds the domain and path components of a parsed URL.
  */
 struct URLParts {
@@ -57,15 +57,15 @@ struct URLParts {
 
 /**
  * @brief Parse a URL into its components.
- * 
+ *
  * @param url The URL to parse.
  * @return structure containing the domain and path.
- * 
+ *
  * @code{.cpp}
  * RaeptorCogs::URLParts parts = RaeptorCogs::ParseURL("https://example.com/path/to/resource");
  * std::cout << "Domain: " << parts.domain << ", Path: " << parts.path << std::endl;
  * @endcode
  */
-URLParts ParseURL(const std::string_view& url);
+URLParts ParseURL(const std::string_view &url);
 
-}
+} // namespace RaeptorCogs

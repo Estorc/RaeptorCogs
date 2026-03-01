@@ -38,8 +38,8 @@
  ***********************************************************************************/
 
 #pragma once
-#include <RaeptorCogs/Graphics/GAPI/Vulkan/Resources/Object.hpp>
 #include <RaeptorCogs/Graphics/GAPI/Common/Resources/VertexArray.hpp>
+#include <RaeptorCogs/Graphics/GAPI/Vulkan/Resources/Object.hpp>
 
 namespace RaeptorCogs::GAPI::Vulkan {
 
@@ -47,29 +47,29 @@ namespace RaeptorCogs::GAPI::Vulkan {
  * @see RaeptorCogs::GAPI::Common::VertexArray
  */
 class VertexArray : public Common::VertexArray {
-    public:
-        /**
-         * @brief Constructor for VertexArray.
-         */
-        VertexArray();
-        
-        /**
-         * @brief Bind the vertex array for use.
-         * 
-         * Binds the Vulkan vertex array object.
-         * 
-         * @note Overrides the pure virtual method from the base class.
-         */
-        void bind() override;
+  public:
+    /**
+     * @brief Constructor for VertexArray.
+     */
+    VertexArray();
 
-        /**
-         * @brief Unbind the vertex array.
-         * 
-         * Unbinds the Vulkan vertex array object.
-         * 
-         * @note Overrides the pure virtual method from the base class.
-         */
-        void unbind() const override;
+    /**
+     * @brief Bind the vertex array for use.
+     *
+     * Binds the Vulkan vertex array object.
+     *
+     * @note Overrides the pure virtual method from the base class.
+     */
+    void bind() override;
+
+    /**
+     * @brief Unbind the vertex array.
+     *
+     * Unbinds the Vulkan vertex array object.
+     *
+     * @note Overrides the pure virtual method from the base class.
+     */
+    void unbind() const override;
 };
 
 /**

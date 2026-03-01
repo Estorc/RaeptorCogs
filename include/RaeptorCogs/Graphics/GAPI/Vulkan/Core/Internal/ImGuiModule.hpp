@@ -45,60 +45,65 @@ namespace RaeptorCogs::GAPI::Vulkan {
 
 /**
  * @brief Vulkan ImGui implementation.
- * 
+ *
  * Provides Vulkan-specific implementations for the ImGui backend interface.
  */
 class ImGuiModule : public Common::ImGuiModule {
-    private:
+  private:
+    // ============================================================================
+    //                             PRIVATE METHODS
+    // ============================================================================
 
-        // ============================================================================
-        //                             PRIVATE METHODS
-        // ============================================================================
+    /**
+     * @brief Vulkan descriptor pool for ImGui.
+     *
+     * Manages descriptor sets for ImGui rendering.
+     */
+    VkDescriptorPool imguiDescriptorPool;
 
-        /**
-         * @brief Vulkan descriptor pool for ImGui.
-         * 
-         * Manages descriptor sets for ImGui rendering.
-         */
-        VkDescriptorPool imguiDescriptorPool;
+  public:
+    // ============================================================================
+    //                               PUBLIC METHODS
+    // ============================================================================
 
-    public:
+    /**
+     * @brief Default constructor.
+     */
+    ImGuiModule() = default;
 
-        // ============================================================================
-        //                               PUBLIC METHODS
-        // ============================================================================
+    /**
+     * @brief Virtual destructor.
+     */
+    ~ImGuiModule() override = default;
 
-        /**
-         * @brief Default constructor.
-         */
-        ImGuiModule() = default;
+    /**
+     * @see RaeptorCogs::GAPI::Common::ImGuiModule::createImGuiContext()
+     */
+    void createImGuiContext(ImGuiContext *&imGuiContext, Window *window) override;
 
-        /**
-         * @brief Virtual destructor.
-         */
-        ~ImGuiModule() override = default;
+    /**
+     * @see RaeptorCogs::GAPI::Common::ImGuiModule::destroyImGuiContext()
+     */
+    void destroyImGuiContext() override;
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::ImGuiModule::createImGuiContext()
-         */
-        void createImGuiContext(ImGuiContext *&imGuiContext, Window* window) override;
-        
-        /**
-         * @brief Get the Vulkan descriptor pool for ImGui.
-         * 
-         * @return Vulkan descriptor pool for ImGui.
-         */
-        VkDescriptorPool& getImGuiDescriptorPool() { return this->imguiDescriptorPool; }
+    /**
+     * @brief Get the Vulkan descriptor pool for ImGui.
+     *
+     * @return Vulkan descriptor pool for ImGui.
+     */
+    VkDescriptorPool &getImGuiDescriptorPool() {
+      return this->imguiDescriptorPool;
+    }
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::RendererBackend::NewImGuiFrame()
-         */
-        void NewImGuiFrame() override;
+    /**
+     * @see RaeptorCogs::GAPI::Common::RendererBackend::NewImGuiFrame()
+     */
+    void NewImGuiFrame() override;
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::RendererBackend::RenderImGuiDrawData()
-         */
-        void RenderImGuiDrawData() override;
+    /**
+     * @see RaeptorCogs::GAPI::Common::RendererBackend::RenderImGuiDrawData()
+     */
+    void RenderImGuiDrawData() override;
 };
 
-}
+} // namespace RaeptorCogs::GAPI::Vulkan

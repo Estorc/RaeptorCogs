@@ -44,35 +44,40 @@ namespace RaeptorCogs::GAPI::GL {
 
 /**
  * @brief OpenGL ImGui implementation.
- * 
+ *
  * Provides OpenGL-specific implementations for the ImGui backend interface.
  */
 class ImGuiModule : public Common::ImGuiModule {
-    public:
-        /**
-         * @brief Default constructor.
-         */
-        ImGuiModule() = default;
+  public:
+    /**
+     * @brief Default constructor.
+     */
+    ImGuiModule() = default;
 
-        /**
-         * @brief Virtual destructor.
-         */
-        ~ImGuiModule() override = default;
+    /**
+     * @brief Virtual destructor.
+     */
+    ~ImGuiModule() override = default;
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::ImGuiModule::createImGuiContext()
-         */
-        void createImGuiContext(ImGuiContext *&imGuiContext, Window* window) override;
+    /**
+     * @see RaeptorCogs::GAPI::Common::ImGuiModule::createImGuiContext()
+     */
+    void createImGuiContext(ImGuiContext *&imGuiContext, Window *window) override;
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::ImGuiModule::NewImGuiFrame()
-         */
-        void NewImGuiFrame() override;
+    /**
+     * @see RaeptorCogs::GAPI::Common::ImGuiModule::destroyImGuiContext()
+     */
+    void destroyImGuiContext() override {};
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::ImGuiModule::RenderImGuiDrawData()
-         */
-        void RenderImGuiDrawData() override;
+    /**
+     * @see RaeptorCogs::GAPI::Common::ImGuiModule::NewImGuiFrame()
+     */
+    void NewImGuiFrame() override;
+
+    /**
+     * @see RaeptorCogs::GAPI::Common::ImGuiModule::RenderImGuiDrawData()
+     */
+    void RenderImGuiDrawData() override;
 };
 
-}
+} // namespace RaeptorCogs::GAPI::GL

@@ -39,161 +39,161 @@
 
 #pragma once
 #include <RaeptorCogs/Graphics/GAPI/Common/Resources/Object.hpp>
-#include <glm/vec2.hpp>
-#include <glm/vec3.hpp>
-#include <glm/vec4.hpp>
 #include <glm/mat2x2.hpp>
 #include <glm/mat3x3.hpp>
 #include <glm/mat4x4.hpp>
+#include <glm/vec2.hpp>
+#include <glm/vec3.hpp>
+#include <glm/vec4.hpp>
 #include <string>
 
 namespace RaeptorCogs::GAPI::Common {
 
 enum class ShaderStage : size_t {
-    VERTEX,
-    FRAGMENT,
-    GEOMETRY,
-    COMPUTE,
-    TESSELLATION_CONTROL,
-    TESSELLATION_EVALUATION
+  VERTEX,
+  FRAGMENT,
+  GEOMETRY,
+  COMPUTE,
+  TESSELLATION_CONTROL,
+  TESSELLATION_EVALUATION
 };
 
 struct ShaderInfo {
-    const void* fragment_shader;
-    const void* vertex_shader;
+    const void *fragment_shader;
+    const void *vertex_shader;
 };
 
 /**
  * @brief Shader interface.
- * 
+ *
  * Provides a common interface for shader management.
- * 
- * @note This is an abstract base class and should be inherited by specific shader implementations.
+ *
+ * @note This is an abstract base class and should be inherited by specific shader
+ * implementations.
  */
 class Shader : public ObjectData {
-    public:
+  public:
+    // ============================================================================
+    //                             PUBLIC METHODS
+    // ============================================================================
 
-        // ============================================================================
-        //                             PUBLIC METHODS
-        // ============================================================================
+    /**
+     * @brief Build the shader program from provided shader information.
+     *
+     * @param shaderInfo Information about the shaders to build.
+     *
+     * @note Must be implemented by derived classes.
+     */
+    virtual void build(const ShaderInfo &shaderInfo) = 0;
 
-        /**
-         * @brief Build the shader program from provided shader information.
-         * 
-         * @param shaderInfo Information about the shaders to build.
-         * 
-         * @note Must be implemented by derived classes.
-         */
-        virtual void build(const ShaderInfo& shaderInfo) = 0;
+    // -------------------------------------------------------------
+    //          Utility methods to set uniform variables
+    // -------------------------------------------------------------
 
-        // -------------------------------------------------------------
-        //          Utility methods to set uniform variables
-        // -------------------------------------------------------------
+    /**
+     * @brief Set a boolean uniform variable.
+     *
+     * @param name Name of the uniform variable.
+     * @param value Boolean value to set.
+     *
+     * @note Must be implemented by derived classes.
+     */
+    virtual void setBool(const std::string &name, bool value) const = 0;
 
-        /**
-         * @brief Set a boolean uniform variable.
-         * 
-         * @param name Name of the uniform variable.
-         * @param value Boolean value to set.
-         * 
-         * @note Must be implemented by derived classes.
-         */
-        virtual void setBool(const std::string &name, bool value) const = 0;
+    /**
+     * @brief Set an integer uniform variable.
+     *
+     * @param name Name of the uniform variable.
+     * @param value Integer value to set.
+     *
+     * @note Must be implemented by derived classes.
+     */
+    virtual void setInt(const std::string &name, int value) const = 0;
 
-        /**
-         * @brief Set an integer uniform variable.
-         * 
-         * @param name Name of the uniform variable.
-         * @param value Integer value to set.
-         * 
-         * @note Must be implemented by derived classes.
-         */
-        virtual void setInt(const std::string &name, int value) const = 0;
+    /**
+     * @brief Set an unsigned integer uniform variable.
+     *
+     * @param name Name of the uniform variable.
+     * @param value Unsigned integer value to set.
+     *
+     * @note Must be implemented by derived classes.
+     */
+    virtual void setUInt(const std::string &name, unsigned int value) const = 0;
 
-        /**
-         * @brief Set an unsigned integer uniform variable.
-         * 
-         * @param name Name of the uniform variable.
-         * @param value Unsigned integer value to set.
-         * 
-         * @note Must be implemented by derived classes.
-         */
-        virtual void setUInt(const std::string &name, unsigned int value) const = 0;
+    /**
+     * @brief Set a float uniform variable.
+     *
+     * @param name Name of the uniform variable.
+     * @param value Float value to set.
+     *
+     * @note Must be implemented by derived classes.
+     */
+    virtual void setFloat(const std::string &name, float value) const = 0;
 
-        /**
-         * @brief Set a float uniform variable.
-         * 
-         * @param name Name of the uniform variable.
-         * @param value Float value to set.
-         * 
-         * @note Must be implemented by derived classes.
-         */
-        virtual void setFloat(const std::string &name, float value) const = 0;
+    /**
+     * @brief Set a vec2 uniform variable.
+     *
+     * @param name Name of the uniform variable.
+     * @param value vec2 value to set.
+     *
+     * @note Must be implemented by derived classes.
+     */
+    virtual void setVec2(const std::string &name, const glm::vec2 &value) const = 0;
 
-        /**
-         * @brief Set a vec2 uniform variable.
-         * 
-         * @param name Name of the uniform variable.
-         * @param value vec2 value to set.
-         * 
-         * @note Must be implemented by derived classes.
-         */
-        virtual void setVec2(const std::string &name, const glm::vec2 &value) const = 0;
+    /**
+     * @brief Set a vec3 uniform variable.
+     *
+     * @param name Name of the uniform variable.
+     * @param value vec3 value to set.
+     *
+     * @note Must be implemented by derived classes.
+     */
+    virtual void setVec3(const std::string &name, const glm::vec3 &value) const = 0;
 
-        /**
-         * @brief Set a vec3 uniform variable.
-         * 
-         * @param name Name of the uniform variable.
-         * @param value vec3 value to set.
-         * 
-         * @note Must be implemented by derived classes.
-         */
-        virtual void setVec3(const std::string &name, const glm::vec3 &value) const = 0;
+    /**
+     * @brief Set a vec4 uniform variable.
+     *
+     * @param name Name of the uniform variable.
+     * @param value vec4 value to set.
+     *
+     * @note Must be implemented by derived classes.
+     */
+    virtual void setVec4(const std::string &name, const glm::vec4 &value) const = 0;
 
-        /**
-         * @brief Set a vec4 uniform variable.
-         * 
-         * @param name Name of the uniform variable.
-         * @param value vec4 value to set.
-         * 
-         * @note Must be implemented by derived classes.
-         */
-        virtual void setVec4(const std::string &name, const glm::vec4 &value) const = 0;
+    /**
+     * @brief Set a mat2 uniform variable.
+     *
+     * @param name Name of the uniform variable.
+     * @param mat mat2 value to set.
+     *
+     * @note Must be implemented by derived classes.
+     */
+    virtual void setMat2(const std::string &name, const glm::mat2 &mat) const = 0;
 
-        /**
-         * @brief Set a mat2 uniform variable.
-         * 
-         * @param name Name of the uniform variable.
-         * @param mat mat2 value to set.
-         * 
-         * @note Must be implemented by derived classes.
-         */
-        virtual void setMat2(const std::string &name, const glm::mat2 &mat) const = 0;
+    /**
+     * @brief Set a mat3 uniform variable.
+     *
+     * @param name Name of the uniform variable.
+     * @param mat mat3 value to set.
+     *
+     * @note Must be implemented by derived classes.
+     */
+    virtual void setMat3(const std::string &name, const glm::mat3 &mat) const = 0;
 
-        /**
-         * @brief Set a mat3 uniform variable.
-         * 
-         * @param name Name of the uniform variable.
-         * @param mat mat3 value to set.
-         * 
-         * @note Must be implemented by derived classes.
-         */
-        virtual void setMat3(const std::string &name, const glm::mat3 &mat) const = 0;
-
-        /**
-         * @brief Set a mat4 uniform variable.
-         * 
-         * @param name Name of the uniform variable.
-         * @param mat mat4 value to set.
-         * 
-         * @note Must be implemented by derived classes.
-         */
-        virtual void setMat4(const std::string &name, const glm::mat4 &mat) const = 0;
+    /**
+     * @brief Set a mat4 uniform variable.
+     *
+     * @param name Name of the uniform variable.
+     * @param mat mat4 value to set.
+     *
+     * @note Must be implemented by derived classes.
+     */
+    virtual void setMat4(const std::string &name, const glm::mat4 &mat) const = 0;
 };
 
 /**
  * @brief Find an embedded shader by name, stage, and profile.
- * 
+ *
  * @param rgsl_shaders Array of embedded shader blobs.
  * @param shader_size Size of each shader blob.
  * @param shader_count Number of shaders in the array.
@@ -202,9 +202,13 @@ class Shader : public ObjectData {
  * @param stages_map Mapping of ShaderStage to internal stage representation.
  * @param profile Profile of the shader (e.g., "core", "es").
  * @return Pointer to the shader source code, or nullptr if not found.
- * 
+ *
  * @note Searches the provided array for a matching shader.
  */
-const void * FindEmbeddedShader(const void* rgsl_shaders, size_t shader_size, size_t shader_count, const std::string& name, ShaderStage stage, const std::vector<std::pair<ShaderStage, size_t>>& stages_map, const std::string& profile);
+const void *FindEmbeddedShader(
+    const void *rgsl_shaders, size_t shader_size, size_t shader_count,
+    const std::string &name, ShaderStage stage,
+    const std::vector<std::pair<ShaderStage, size_t>> &stages_map,
+    const std::string &profile);
 
-}
+} // namespace RaeptorCogs::GAPI::Common

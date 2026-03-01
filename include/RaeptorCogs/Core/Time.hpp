@@ -26,15 +26,14 @@
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED
+ * "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+ * LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ * PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
 #pragma once
@@ -42,96 +41,95 @@
 
 namespace RaeptorCogs::Singletons {
 
+/**
+ * @brief Time singleton class.
+ *
+ * Manages time measurement and frame timing.
+ */
+class Time {
+  private:
+    // ============================================================================
+    //                               PRIVATE ATTRIBUTES
+    // ============================================================================
+
     /**
-     * @brief Time singleton class.
-     * 
-     * Manages time measurement and frame timing.
+     * @brief Delta time between frames in seconds.
+     *
+     * Used for frame-independent movement and updates.
      */
-    class Time {
-    private:
+    double deltaTime;
 
-        // ============================================================================
-        //                               PRIVATE ATTRIBUTES
-        // ============================================================================
+    /**
+     * @brief Time at the last frame in seconds.
+     *
+     * Used to compute delta time.
+     */
+    double lastFrameTime;
 
-        /**
-         * @brief Delta time between frames in seconds.
-         * 
-         * Used for frame-independent movement and updates.
-         */
-        double deltaTime;
-        
-        /**
-         * @brief Time at the last frame in seconds.
-         * 
-         * Used to compute delta time.
-         */
-        double lastFrameTime;
+    /**
+     * @brief Total frames count since the start.
+     */
+    long long framesCount;
 
-        /**
-         * @brief Total frames count since the start.
-         */
-        long long framesCount;
+    /**
+     * @brief Default constructor.
+     */
+    Time() = default;
 
-        /**
-         * @brief Default constructor.
-         */
-        Time() = default;
+    /**
+     * @brief Default destructor.
+     */
+    ~Time() = default;
+    friend SingletonAccessor<Time>;
 
-        /**
-         * @brief Default destructor.
-         */
-        ~Time() = default;
-        friend SingletonAccessor<Time>;
-    public:
+  public:
+    // ============================================================================
+    //                               PUBLIC METHODS
+    // ============================================================================
 
-        // ============================================================================
-        //                               PUBLIC METHODS
-        // ============================================================================
+    /**
+     * @brief Compute the delta time between frames.
+     *
+     * Updates the deltaTime attribute based on the current time.
+     */
+    void computeDeltaTime();
 
-        /**
-         * @brief Compute the delta time between frames.
-         * 
-         * Updates the deltaTime attribute based on the current time.
-         */
-        void computeDeltaTime();
+    /**
+     * @brief Get the delta time between frames.
+     *
+     * @return double The delta time in seconds.
+     */
+    double getPreciseDeltaTime();
 
-        /**
-         * @brief Get the delta time between frames.
-         * 
-         * @return double The delta time in seconds.
-         */
-        double getPreciseDeltaTime();
+    /**
+     * @brief Get the current time in seconds.
+     *
+     * @return double The current time in seconds.
+     */
+    double getPreciseTime();
 
-        /**
-         * @brief Get the current time in seconds.
-         * 
-         * @return double The current time in seconds.
-         */
-        double getPreciseTime();
+    /**
+     * @brief Get the delta time between frames.
+     *
+     * @return float The delta time in seconds.
+     */
+    float getDeltaTime();
 
-        /**
-         * @brief Get the delta time between frames.
-         * 
-         * @return float The delta time in seconds.
-         */
-        float getDeltaTime();
+    /**
+     * @brief Get the current time in seconds.
+     *
+     * @return float The current time in seconds.
+     */
+    float getTime();
 
-        /**
-         * @brief Get the current time in seconds.
-         * 
-         * @return float The current time in seconds.
-         */
-        float getTime();
+    /**
+     * @brief Get the total frames count since the start.
+     */
+    float getFrameCount();
 
-        /**
-         * @brief Get the total frames count since the start.
-         */
-        float getFrameCount();
-
-        /**
-         * @brief Increment the frames count by one.
-         */
-        void incrementFrameCount();
-    };
-}
+    /**
+     * @brief Increment the frames count by one.
+     */
+    void incrementFrameCount();
+};
+} // namespace RaeptorCogs::Singletons

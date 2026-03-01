@@ -39,8 +39,6 @@
 
 #pragma once
 #include <RaeptorCogs/Graphics/GAPI/Common/Resources/Object.hpp>
-#include <unordered_map>
-#include <typeindex>
 
 namespace RaeptorCogs::GAPI::Vulkan {
 
@@ -50,4 +48,4 @@ namespace RaeptorCogs::GAPI::Vulkan {
  */
 FACTORY_REGISTRY_DECLARATION();
 
-}
+} // namespace RaeptorCogs::GAPI::Vulkan

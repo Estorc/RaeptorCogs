@@ -38,18 +38,18 @@
  ***********************************************************************************/
 
 #pragma once
-#include <RaeptorCogs/Graphics/Renderer.hpp>
 #include <RaeptorCogs/Graphics/GAPI/Common/RendererBackend.hpp>
+#include <RaeptorCogs/Graphics/GAPI/Vulkan/Core/Internal/GraphicCore.hpp>
 #include <RaeptorCogs/Graphics/GAPI/Vulkan/Core/Internal/ImGuiModule.hpp>
 #include <RaeptorCogs/Graphics/GAPI/Vulkan/Core/Internal/RenderPipeline.hpp>
-#include <RaeptorCogs/Graphics/GAPI/Vulkan/Core/Internal/GraphicCore.hpp>
 #include <RaeptorCogs/Graphics/GAPI/Vulkan/Resources/Object.hpp>
+#include <RaeptorCogs/Graphics/Renderer.hpp>
 
 /**
  * @brief RaeptorCogs GAPI Vulkan namespace.
- * 
+ *
  * Contains Vulkan graphics API related classes and functions.
- * 
+ *
  * @note This namespace is used for Vulkan-specific implementations.
  * @see RaeptorCogs::GAPI::Common
  */
@@ -59,176 +59,177 @@ namespace RaeptorCogs::GAPI::Vulkan {
 
 /**
  * @brief Vulkan Renderer backend implementation.
- * 
+ *
  * Provides Vulkan-specific implementations for the renderer backend interface.
  */
 class RendererBackend : public Common::RendererBackend {
-    private:
+  private:
+    // ============================================================================
+    //                               PRIVATE ATTRIBUTES
+    // ============================================================================
 
-        // ============================================================================
-        //                               PRIVATE ATTRIBUTES
-        // ============================================================================
+    /**
+     * @brief Initialization flag.
+     * Indicates whether the renderer backend has been initialized.
+     */
+    bool initialized = false;
 
-        /**
-         * @brief Initialization flag.
-         * Indicates whether the renderer backend has been initialized.
-         */
-        bool initialized = false;
+    // --------------------------------------------
+    //                  Modules
+    // --------------------------------------------
 
-        // --------------------------------------------
-        //                  Modules
-        // --------------------------------------------
+    /**
+     * @brief ImGui implementation for Vulkan.
+     *
+     * Handles ImGui rendering in Vulkan.
+     */
+    ImGuiModule imGui;
 
-        /**
-         * @brief ImGui implementation for Vulkan.
-         * 
-         * Handles ImGui rendering in Vulkan.
-         */
-        ImGuiModule imGui;
+    /**
+     * @brief Graphic core instance.
+     *
+     * Manages Vulkan core functionalities.
+     */
+    GraphicCore graphicCore;
 
-        /**
-         * @brief Graphic core instance.
-         * 
-         * Manages Vulkan core functionalities.
-         */
-        GraphicCore graphicCore;
+    /**
+     * @brief Render pipeline instance.
+     *
+     * Manages the Vulkan rendering pipeline.
+     */
+    RenderPipeline renderPipeline;
 
-        /**
-         * @brief Render pipeline instance.
-         * 
-         * Manages the Vulkan rendering pipeline.
-         */
-        RenderPipeline renderPipeline;
+  protected:
+    // ============================================================================
+    //                             PROTECTED METHODS
+    // ============================================================================
 
-    protected:
+    /**
+     * @brief Create Vulkan instance.
+     */
+    void createInstance();
 
-        // ============================================================================
-        //                             PROTECTED METHODS
-        // ============================================================================
+    /**
+     * @brief Setup Vulkan debug messenger.
+     */
+    void setupDebugMessenger();
 
-        /**
-         * @brief Create Vulkan instance.
-         */
-        void createInstance();
+    /**
+     * @brief Pick suitable physical device (GPU).
+     */
+    void pickPhysicalDevice();
 
-        /**
-         * @brief Setup Vulkan debug messenger.
-         */
-        void setupDebugMessenger();
+    /**
+     * @brief Create Vulkan logical device and queues.
+     */
+    void createQueueAndLogicalDevice();
 
-        /**
-         * @brief Pick suitable physical device (GPU).
-         */
-        void pickPhysicalDevice();
+    /**
+     * @brief Create Vulkan pipeline cache.
+     */
+    void createPipelineCache();
 
-        /**
-         * @brief Create Vulkan logical device and queues.
-         */
-        void createQueueAndLogicalDevice();
+    /**
+     * @brief Create command pool for Vulkan.
+     */
+    void createCommandPool();
 
-        /**
-         * @brief Create Vulkan pipeline cache.
-         */
-        void createPipelineCache();
+    /**
+     * @brief Create descriptor pool.
+     */
+    void createDescriptorPool(); // For ImGui for now
 
-        /**
-         * @brief Create command pool for Vulkan.
-         */
-        void createCommandPool();
+  public:
+    // ============================================================================
+    //                             PUBLIC METHODS
+    // ============================================================================
 
-        /**
-         * @brief Create descriptor pool.
-         */
-        void createDescriptorPool(); // For ImGui for now
+    /**
+     * @brief Constructor for RendererBackend.
+     *
+     * Initializes the Vulkan renderer backend.
+     */
+    RendererBackend() : Common::RendererBackend(), imGui(), graphicCore(*this), renderPipeline(*this) {}
 
-    public:
+    /**
+     * @brief Destructor for RendererBackend.
+     */
+    ~RendererBackend() override;
 
-        // ============================================================================
-        //                             PUBLIC METHODS
-        // ============================================================================
+    /**
+     * @see RaeptorCogs::GAPI::Common::RendererBackend::isInitialized()
+     */
+    bool isInitialized() const override;
 
-        /**
-         * @brief Constructor for RendererBackend.
-         * 
-         * Initializes the Vulkan renderer backend.
-         */
-        RendererBackend() : Common::RendererBackend(),
-            imGui(),
-            graphicCore(*this),
-            renderPipeline(*this) {}
+    /**
+     * @see RaeptorCogs::GAPI::Common::RendererBackend::getBackendType()
+     */
+    GraphicsBackend getBackendType() const override {
+      return GraphicsBackend::Vulkan;
+    }
 
-        /**
-         * @brief Destructor for RendererBackend.
-         */
-        ~RendererBackend() override;
+    /**
+     * @see RaeptorCogs::GAPI::Common::RendererBackend::Create()
+     */
+    Common::ObjectData *Create(std::type_index type) override {
+      auto &map = FactoryRegistry::get();
+      auto it   = map.find(type);
+      if (it == map.end()) throw std::runtime_error("Type not registered");
+      return it->second();
+    }
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::RendererBackend::isInitialized()
-         */
-        bool isInitialized() const override;
+    /**
+     * @see RaeptorCogs::GAPI::Common::RendererBackend::initialize()
+     */
+    void initialize() override;
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::RendererBackend::getBackendType()
-         */
-        GraphicsBackend getBackendType() const override { return GraphicsBackend::Vulkan; }
+    /**
+     * @brief Initialize the rendering pipeline.
+     *
+     * Sets up necessary resources and state for Vulkan rendering.
+     * @note Called during renderer backend lazy initialization.
+     */
+    void initializePipeline();
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::RendererBackend::Create()
-         */
-        Common::ObjectData* Create(std::type_index type) override {
-            auto& map = FactoryRegistry::get();
-            auto it = map.find(type);
-            if (it == map.end())
-                throw std::runtime_error("Type not registered");
-            return it->second();
-        }
+    /**
+     * @see RaeptorCogs::GAPI::Common::RendererBackend::render(Window*, int, int, int, int)
+     */
+    void render(Window *window, int x, int y, int width, int height) override;
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::RendererBackend::initialize()
-         */
-        void initialize() override;
+    /**
+     * @see RaeptorCogs::GAPI::Common::RendererBackend::render(Texture&, int, int, int, int)
+     */
+    void render(Texture &texture, int x, int y, int width, int height) override;
 
-        /**
-         * @brief Initialize the rendering pipeline.
-         * 
-         * Sets up necessary resources and state for Vulkan rendering.
-         * @note Called during renderer backend lazy initialization.
-         */
-        void initializePipeline();
+    /**
+     * @see RaeptorCogs::GAPI::Common::RendererBackend::createWindowContext()
+     */
+    Common::WindowContext *createWindowContext() override;
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::RendererBackend::render(Window*, int, int, int, int)
-         */
-        void render(Window* window, int x, int y, int width, int height) override;
+    // --------------------------------------------
+    //                  Modules
+    // --------------------------------------------
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::RendererBackend::render(Texture&, int, int, int, int)
-         */
-        void render(Texture& texture, int x, int y, int width, int height) override;
+    /**
+     * @see RaeptorCogs::GAPI::Common::RendererBackend::getImGuiModule()
+     */
+    ImGuiModule &getImGuiModule() override {
+      return this->imGui;
+    }
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::RendererBackend::createWindowContext()
-         */
-        Common::WindowContext* createWindowContext() override;
-        
-        // --------------------------------------------
-        //                  Modules
-        // --------------------------------------------
+    /**
+     * @see RaeptorCogs::GAPI::Common::RendererBackend::getGraphicCore()
+     */
+    GraphicCore &getGraphicCore() override {
+      return this->graphicCore;
+    }
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::RendererBackend::getImGuiModule()
-         */
-        ImGuiModule& getImGuiModule() override { return this->imGui; }
-
-        /**
-         * @see RaeptorCogs::GAPI::Common::RendererBackend::getGraphicCore()
-         */
-        GraphicCore& getGraphicCore() override { return this->graphicCore; }
-
-        /**
-         * @see RaeptorCogs::GAPI::Common::RendererBackend::getRenderPipeline()
-         */
-        RenderPipeline& getRenderPipeline() override { return this->renderPipeline; }
+    /**
+     * @see RaeptorCogs::GAPI::Common::RendererBackend::getRenderPipeline()
+     */
+    RenderPipeline &getRenderPipeline() override {
+      return this->renderPipeline;
+    }
 };
 
-}
+} // namespace RaeptorCogs::GAPI::Vulkan

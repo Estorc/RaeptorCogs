@@ -46,30 +46,29 @@ namespace RaeptorCogs::GAPI::WebGL {
 
 /**
  * @brief WebGL Window context implementation.
- * 
+ *
  * Provides WebGL-specific implementations for the window context interface.
  */
 class WindowContext : public GL::WindowContext {
-    public:
+  public:
+    // ============================================================================
+    //                             PUBLIC METHODS
+    // ============================================================================
 
-        // ============================================================================
-        //                             PUBLIC METHODS
-        // ============================================================================
+    /**
+     * @brief Default constructor.
+     */
+    WindowContext(Common::RendererBackend *renderer) : GL::WindowContext(renderer) {}
 
-        /**
-         * @brief Default constructor.
-         */
-        WindowContext(Common::RendererBackend* renderer) : GL::WindowContext(renderer) {}
+    /**
+     * @brief Virtual destructor.
+     */
+    ~WindowContext() override = default;
 
-        /**
-         * @brief Virtual destructor.
-         */
-        ~WindowContext() override = default;
-
-        /**
-         * @see RaeptorCogs::GAPI::Common::WindowContext::initialize()
-         */
-        void initialize(Window* window) override;
+    /**
+     * @see RaeptorCogs::GAPI::Common::WindowContext::initialize()
+     */
+    void initialize(Window *window) override;
 };
 
-}
+} // namespace RaeptorCogs::GAPI::WebGL

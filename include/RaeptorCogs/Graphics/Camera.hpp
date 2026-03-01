@@ -43,167 +43,165 @@
 #include <glm/mat4x4.hpp>
 #include <glm/vec2.hpp>
 
-
 namespace RaeptorCogs {
 
 /**
  * @brief Camera flags enumeration.
- * 
+ *
  * Defines flags for camera state management.
  */
 enum class CameraFlags : uint32_t {
-    /** No flags set. */
-    NONE = 0,
-    /** Indicates the view matrix needs to be rebuilt. */
-    NEEDS_REBUILD_VIEW_MATRIX = 1 << 0,
-    /** Indicates the projection matrix needs to be rebuilt. */
-    NEEDS_REBUILD_PROJECTION_MATRIX = 1 << 1
+  /** No flags set. */
+  NONE = 0,
+  /** Indicates the view matrix needs to be rebuilt. */
+  NEEDS_REBUILD_VIEW_MATRIX = 1 << 0,
+  /** Indicates the projection matrix needs to be rebuilt. */
+  NEEDS_REBUILD_PROJECTION_MATRIX = 1 << 1
 };
 
 /**
  * @brief Base Camera class.
- * 
+ *
  * Provides an interface for 2D and 3D camera implementations.
  */
 class Camera {
-    protected:
+  protected:
+    // ============================================================================
+    //                               PROTECTED ATTRIBUTES
+    // ============================================================================
 
-        // ============================================================================
-        //                               PROTECTED ATTRIBUTES
-        // ============================================================================
+    /**
+     * @brief View matrix of the camera.
+     */
+    glm::mat4 viewMatrix = glm::mat4(1.0f);
 
-        /** 
-         * @brief View matrix of the camera.
-         */
-        glm::mat4 viewMatrix = glm::mat4(1.0f);
+    /**
+     * @brief Projection matrix of the camera.
+     */
+    glm::mat4 projectionMatrix = glm::mat4(1.0f);
 
-        /**
-         * @brief Projection matrix of the camera.
-         */
-        glm::mat4 projectionMatrix = glm::mat4(1.0f);
+    /**
+     * @brief Flags indicating the state of the camera.
+     */
+    CameraFlags flags =
+        CameraFlags::NEEDS_REBUILD_VIEW_MATRIX |
+        CameraFlags::NEEDS_REBUILD_PROJECTION_MATRIX;
 
-        /**
-         * @brief Flags indicating the state of the camera.
-         */
-        CameraFlags flags = CameraFlags::NEEDS_REBUILD_VIEW_MATRIX | CameraFlags::NEEDS_REBUILD_PROJECTION_MATRIX;
-    public:
+  public:
+    // ============================================================================
+    //                               PUBLIC METHODS
+    // ============================================================================
 
-        // ============================================================================
-        //                               PUBLIC METHODS
-        // ============================================================================
+    /**
+     * @brief Virtual destructor for Camera.
+     */
+    virtual ~Camera() = default;
 
-        /**
-         * @brief Virtual destructor for Camera.
-         */
-        virtual ~Camera() = default;
+    /**
+     * @brief Get the view matrix of the camera.
+     */
+    virtual glm::mat4 getViewMatrix() = 0;
 
-        /**
-         * @brief Get the view matrix of the camera.
-         */
-        virtual glm::mat4 getViewMatrix() = 0;
-
-        /**
-         * @brief Get the projection matrix of the camera.
-         */
-        virtual glm::mat4 getProjectionMatrix() = 0;
+    /**
+     * @brief Get the projection matrix of the camera.
+     */
+    virtual glm::mat4 getProjectionMatrix() = 0;
 };
 
 /**
  * @brief 2D Camera class.
- * 
+ *
  * Implements a simple 2D camera with position and zoom.
  */
 class Camera2D : public Camera, public Component2D {
-    private:
+  private:
+    // ============================================================================
+    //                               PRIVATE ATTRIBUTES
+    // ============================================================================
 
-        // ============================================================================
-        //                               PRIVATE ATTRIBUTES
-        // ============================================================================
+    /**
+     * @brief Position of the camera in 2D space.
+     */
+    glm::vec2 position = glm::vec2(0.0f, 0.0f);
 
-        /**
-         * @brief Position of the camera in 2D space.
-         */
-        glm::vec2 position = glm::vec2(0.0f, 0.0f);
+    /**
+     * @brief Zoom level of the camera.
+     */
+    float zoom = 1.0f;
 
-        /**
-         * @brief Zoom level of the camera.
-         */
-        float zoom = 1.0f;
+    // ============================================================================
+    //                               PRIVATE METHODS
+    // ============================================================================
 
-        // ============================================================================
-        //                               PRIVATE METHODS
-        // ============================================================================
+    /**
+     * @brief Rebuild the view matrix based on position and zoom.
+     */
+    void rebuildViewMatrix();
 
-        /**
-         * @brief Rebuild the view matrix based on position and zoom.
-         */
-        void rebuildViewMatrix();
+    /**
+     * @brief Rebuild the projection matrix based on zoom.
+     */
+    void rebuildProjectionMatrix();
 
-        /**
-         * @brief Rebuild the projection matrix based on zoom.
-         */
-        void rebuildProjectionMatrix();
+  public:
+    // ============================================================================
+    //                               PUBLIC METHODS
+    // ============================================================================
 
-    public:
+    /**
+     * @brief Constructor for Camera2D.
+     */
+    Camera2D();
 
-        // ============================================================================
-        //                               PUBLIC METHODS
-        // ============================================================================
+    /**
+     * @brief Destructor for Camera2D.
+     */
+    ~Camera2D();
 
-        /**
-         * @brief Constructor for Camera2D.
-         */
-        Camera2D();
+    /**
+     * @brief Get the view matrix of the camera.
+     */
+    glm::mat4 getViewMatrix() override;
 
-        /**
-         * @brief Destructor for Camera2D.
-         */
-        ~Camera2D();
+    /**
+     * @brief Get the projection matrix of the camera.
+     */
+    glm::mat4 getProjectionMatrix() override;
 
-        /**
-         * @brief Get the view matrix of the camera.
-         */
-        glm::mat4 getViewMatrix() override;
+    /**
+     * @brief Set the position of the camera.
+     */
+    void setPosition(const glm::vec2 &pos);
 
-        /**
-         * @brief Get the projection matrix of the camera.
-         */
-        glm::mat4 getProjectionMatrix() override;
+    /**
+     * @brief Set the zoom level of the camera.
+     */
+    void setZoom(float z);
 
-        /**
-         * @brief Set the position of the camera.
-         */
-        void setPosition(const glm::vec2 &pos);
+    /**
+     * @brief Get the X position of the camera.
+     */
+    float getPositionX() const;
 
-        /**
-         * @brief Set the zoom level of the camera.
-         */
-        void setZoom(float z);
+    /**
+     * @brief Get the Y position of the camera.
+     */
+    float getPositionY() const;
 
-        /**
-         * @brief Get the X position of the camera.
-         */
-        float getPositionX() const;
+    /**
+     * @brief Get the position of the camera as a vector.
+     */
+    glm::vec2 getPosition() const;
 
-        /**
-         * @brief Get the Y position of the camera.
-         */
-        float getPositionY() const;
+    /**
+     * @brief Get the zoom level of the camera.
+     */
+    float getZoom() const;
 
-        /**
-         * @brief Get the position of the camera as a vector.
-         */
-        glm::vec2 getPosition() const;
-
-        /**
-         * @brief Get the zoom level of the camera.
-         */
-        float getZoom() const;
-
-        /**
-         * @brief Update the camera component.
-         */
-        void update(GAPI::Common::RenderPipeline& pipeline) override;
+    /**
+     * @brief Update the camera component.
+     */
+    void update(GAPI::Common::RenderPipeline &pipeline) override;
 };
 
-}
+} // namespace RaeptorCogs

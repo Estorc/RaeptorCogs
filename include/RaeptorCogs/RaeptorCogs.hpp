@@ -39,246 +39,246 @@
  ***********************************************************************************/
 
 #pragma once
-#include <RaeptorCogs/Graphics/Renderer.hpp>
 #include <RaeptorCogs/Core/Memory.hpp>
-#include <RaeptorCogs/IO/Texture.hpp>
-#include <RaeptorCogs/Core/Worker.hpp>
-#include <RaeptorCogs/IO/Input.hpp>
-#include <RaeptorCogs/Core/Time.hpp>
-#include <RaeptorCogs/Core/Random.hpp>
 #include <RaeptorCogs/Core/Platform.hpp>
+#include <RaeptorCogs/Core/Random.hpp>
 #include <RaeptorCogs/Core/Singleton.hpp>
+#include <RaeptorCogs/Core/Time.hpp>
+#include <RaeptorCogs/Core/Worker.hpp>
+#include <RaeptorCogs/Graphics/Renderer.hpp>
+#include <RaeptorCogs/IO/Input.hpp>
+#include <RaeptorCogs/IO/Texture.hpp>
 #include <functional>
+
 
 /**
  * @namespace RaeptorCogs
  * @brief Main namespace for the RaeptorCogs library.
- * 
+ *
  * Contains everything related to the RaeptorCogs engine, including
  * rendering, resource management, input handling, timing, and more.
- * 
+ *
  * @code{.cpp}
  * #include <RaeptorCogs/RaeptorCogs.hpp>
  * // Use RaeptorCogs functionalities here
  * @endcode
  */
-namespace RaeptorCogs{};
+namespace RaeptorCogs {};
 
 /**
  * @namespace std
  * @brief Standard C++ library namespace.
- * 
+ *
  * This namespace contains all the standard C++ library features.
- * 
+ *
  * @note This declaration is necessary for certain template specializations
  *       used within the RaeptorCogs library.
  */
-namespace std{};
+namespace std {};
 
 namespace RaeptorCogs {
 
-    // ============================================================================
-    //                               API FUNCTIONS
-    // ============================================================================
+// ============================================================================
+//                               API FUNCTIONS
+// ============================================================================
 
-    /**
-     * @brief Initialize the RaeptorCogs engine.
-     * 
-     * Sets up necessary subsystems and prepares the engine for use.
-     * 
-     * @code{.cpp}
-     * RaeptorCogs::Initialize();
-     * @endcode
-     */
-    void Initialize();
+/**
+ * @brief Initialize the RaeptorCogs engine.
+ *
+ * Sets up necessary subsystems and prepares the engine for use.
+ *
+ * @code{.cpp}
+ * RaeptorCogs::Initialize();
+ * @endcode
+ */
+void Initialize();
 
-    /**
-     * @brief Main application loop.
-     * 
-     * Continuously calls the provided update function, processes input, and renders frames until the application exits.
-     * 
-     * @param updateFunction Function to be called each frame for updates.
-     * @param window Pointer to the main application window.
-     */
-    void MainLoop(std::function<void(Window&)> updateFunction, Window &window);
+/**
+ * @brief Main application loop.
+ *
+ * Continuously calls the provided update function, processes input, and renders frames until the application exits.
+ *
+ * @param updateFunction Function to be called each frame for updates.
+ * @param window Pointer to the main application window.
+ */
+void MainLoop(std::function<void(Window &)> updateFunction, Window &window);
 
-    /**
-     * @brief Start the main application loop.
-     * 
-     * @param updateFunction Function to be called each frame for updates.
-     * @param window Reference to the main application window.
-     * 
-     * @code{.cpp}
-     * RaeptorCogs::StartLoop([](RaeptorCogs::Window* mainWindow) {
-     *     // Update logic here
-     * }, mainWindow);
-     * @endcode
-     */
-    void StartLoop(std::function<void(Window&)> updateFunction, Window &window);
+/**
+ * @brief Start the main application loop.
+ *
+ * @param updateFunction Function to be called each frame for updates.
+ * @param window Reference to the main application window.
+ *
+ * @code{.cpp}
+ * RaeptorCogs::StartLoop([](RaeptorCogs::Window* mainWindow) {
+ *     // Update logic here
+ * }, mainWindow);
+ * @endcode
+ */
+void StartLoop(std::function<void(Window &)> updateFunction, Window &window);
 
-    /**
-     * @brief Destroy the RaeptorCogs engine and clean up resources.
-     * 
-     * @code{.cpp}
-     * RaeptorCogs::Destroy();
-     * @endcode
-     */
-    void Destroy();
+/**
+ * @brief Destroy the RaeptorCogs engine and clean up resources.
+ *
+ * @code{.cpp}
+ * RaeptorCogs::Destroy();
+ * @endcode
+ */
+void Destroy();
 
-    /**
-     * @brief Check if the application is exiting.
-     * 
-     * @return true if the application is in the process of exiting, false otherwise.
-     * 
-     * @code{.cpp}
-     * if (RaeptorCogs::IsExiting()) {
-     *     // Handle exiting logic
-     * }
-     * @endcode
-     */
-    bool IsExiting();
+/**
+ * @brief Check if the application is exiting.
+ *
+ * @return true if the application is in the process of exiting, false otherwise.
+ *
+ * @code{.cpp}
+ * if (RaeptorCogs::IsExiting()) {
+ *     // Handle exiting logic
+ * }
+ * @endcode
+ */
+bool IsExiting();
 
-    /**
-     * @brief Get the current screen width.
-     * 
-     * @return Current screen width in pixels.
-     * 
-     * @code{.cpp}
-     * double width = RaeptorCogs::GetScreenWidth();
-     * @endcode
-     */
-    double GetScreenWidth();
-    
-    /**
-     * @brief Get the current screen height.
-     * 
-     * @return Current screen height in pixels.
-     * 
-     * @code{.cpp}
-     * double height = RaeptorCogs::GetScreenHeight();
-     * @endcode
-     */
-    double GetScreenHeight();
+/**
+ * @brief Get the current screen width.
+ *
+ * @return Current screen width in pixels.
+ *
+ * @code{.cpp}
+ * double width = RaeptorCogs::GetScreenWidth();
+ * @endcode
+ */
+double GetScreenWidth();
 
-    // ============================================================================
-    //                               SINGLETON ACCESSORS
-    // ============================================================================
+/**
+ * @brief Get the current screen height.
+ *
+ * @return Current screen height in pixels.
+ *
+ * @code{.cpp}
+ * double height = RaeptorCogs::GetScreenHeight();
+ * @endcode
+ */
+double GetScreenHeight();
 
+// ============================================================================
+//                               SINGLETON ACCESSORS
+// ============================================================================
 
-    /**
-     * @brief Access the global Renderer singleton.
-     * 
-     * @return Reference to the Renderer singleton.
-     * 
-     * @code{.cpp}
-     * auto &renderer = RaeptorCogs::Renderer();
-     * renderer.render(window);
-     * @endcode
-     */
-    Singletons::Renderer& Renderer();
+/**
+ * @brief Access the global Renderer singleton.
+ *
+ * @return Reference to the Renderer singleton.
+ *
+ * @code{.cpp}
+ * auto &renderer = RaeptorCogs::Renderer();
+ * renderer.render(window);
+ * @endcode
+ */
+Singletons::Renderer &Renderer();
 
-    /**
-     * @brief Access the global Input singleton.
-     * 
-     * @return Reference to the Input singleton.
-     * 
-     * @code{.cpp}
-     * if (RaeptorCogs::Input().isKeyPressed(RaeptorCogs::Key::A)) {
-     *     // 'A' key is currently pressed
-     * }
-     * @endcode
-     */
-    Singletons::Input& Input();
+/**
+ * @brief Access the global Input singleton.
+ *
+ * @return Reference to the Input singleton.
+ *
+ * @code{.cpp}
+ * if (RaeptorCogs::Input().isKeyPressed(RaeptorCogs::Key::A)) {
+ *     // 'A' key is currently pressed
+ * }
+ * @endcode
+ */
+Singletons::Input &Input();
 
-    /**
-     * @brief Access the global Mouse singleton.
-     * 
-     * @return Reference to the Mouse singleton.
-     * 
-     * @code{.cpp}
-     * if (RaeptorCogs::Mouse().isButtonPressed(RaeptorCogs::MouseButton::LEFT)) {
-     *     // Left mouse button is currently pressed
-     * }
-     * @endcode
-     */
-    Singletons::Mouse& Mouse();
+/**
+ * @brief Access the global Mouse singleton.
+ *
+ * @return Reference to the Mouse singleton.
+ *
+ * @code{.cpp}
+ * if (RaeptorCogs::Mouse().isButtonPressed(RaeptorCogs::MouseButton::LEFT)) {
+ *     // Left mouse button is currently pressed
+ * }
+ * @endcode
+ */
+Singletons::Mouse &Mouse();
 
-    /**
-     * @brief Access the global Time singleton.
-     * 
-     * @return Reference to the Time singleton.
-     * 
-     * @code{.cpp}
-     * double deltaTime = RaeptorCogs::Time().getDeltaTime();
-     * @endcode
-     */
-    Singletons::Time& Time();
-    
-    /**
-     * @brief Access the global Random singleton.
-     * 
-     * @return Reference to the Random singleton.
-     * 
-     * @code{.cpp}
-     * int randInt = RaeptorCogs::Random().getInt(1, 10);
-     * @endcode
-     */
-    Singletons::Random& Random();
+/**
+ * @brief Access the global Time singleton.
+ *
+ * @return Reference to the Time singleton.
+ *
+ * @code{.cpp}
+ * double deltaTime = RaeptorCogs::Time().getDeltaTime();
+ * @endcode
+ */
+Singletons::Time &Time();
 
-    /**
-     * @brief Access the global Platform singleton.
-     * 
-     * @return Reference to the Platform singleton.
-     * 
-     * @code{.cpp}
-     * RaeptorCogs::Window* window = RaeptorCogs::Platform().createWindow(800, 600, "My Window");
-     * @endcode
-     */
-    Singletons::Platform& Platform();
+/**
+ * @brief Access the global Random singleton.
+ *
+ * @return Reference to the Random singleton.
+ *
+ * @code{.cpp}
+ * int randInt = RaeptorCogs::Random().getInt(1, 10);
+ * @endcode
+ */
+Singletons::Random &Random();
 
-    /**
-     * @brief Access the global ResourceManager singleton for a specific resource type.
-     * 
-     * @tparam T The type of resource managed by the ResourceManager.
-     * @return Reference to the ResourceManager singleton for the specified resource type.
-     * 
-     * @code{.cpp}
-     * auto &textureManager = RaeptorCogs::ResourceManager<RaeptorCogs::Texture>();
-     * Texture &tex = textureManager.get_or_create("path/to/texture.png");
-     * @endcode
-     */
-    template<typename T>
-    Singletons::ResourceManager<T>& ResourceManager() {
-        return RaeptorCogs::SingletonAccessor<Singletons::ResourceManager<T>>::get();
-    }
+/**
+ * @brief Access the global Platform singleton.
+ *
+ * @return Reference to the Platform singleton.
+ *
+ * @code{.cpp}
+ * RaeptorCogs::Window* window = RaeptorCogs::Platform().createWindow(800, 600, "My Window");
+ * @endcode
+ */
+Singletons::Platform &Platform();
 
-    // ============================================================================
-    //                               WORKER ACCESSORS
-    // ============================================================================
-
-    /**
-     * @brief Access the global MainWorker singleton.
-     * 
-     * @return Reference to the MainWorker singleton (Main thread).
-     * 
-     * @code{.cpp}
-     * RaeptorCogs::MainWorker().addJob([](){
-     *     // Job logic here
-     * });
-     * @endcode
-     */
-    Singletons::MainWorker& MainWorker();
-
-    /**
-     * @brief Access the global ResourceWorker singleton.
-     * 
-     * @return Reference to the ResourceWorker singleton (Parallel thread).
-     * 
-     * @code{.cpp}
-     * RaeptorCogs::ResourceWorker().addJob([](){
-     *     // Job logic here
-     * });
-     * @endcode
-     */
-    Worker& ResourceWorker();
+/**
+ * @brief Access the global ResourceManager singleton for a specific resource type.
+ *
+ * @tparam T The type of resource managed by the ResourceManager.
+ * @return Reference to the ResourceManager singleton for the specified resource type.
+ *
+ * @code{.cpp}
+ * auto &textureManager = RaeptorCogs::ResourceManager<RaeptorCogs::Texture>();
+ * Texture &tex = textureManager.get_or_create("path/to/texture.png");
+ * @endcode
+ */
+template <typename T>
+Singletons::ResourceManager<T> &ResourceManager() {
+  return RaeptorCogs::SingletonAccessor<Singletons::ResourceManager<T>>::get();
 }
+
+// ============================================================================
+//                               WORKER ACCESSORS
+// ============================================================================
+
+/**
+ * @brief Access the global MainWorker singleton.
+ *
+ * @return Reference to the MainWorker singleton (Main thread).
+ *
+ * @code{.cpp}
+ * RaeptorCogs::MainWorker().addJob([](){
+ *     // Job logic here
+ * });
+ * @endcode
+ */
+Singletons::MainWorker &MainWorker();
+
+/**
+ * @brief Access the global ResourceWorker singleton.
+ *
+ * @return Reference to the ResourceWorker singleton (Parallel thread).
+ *
+ * @code{.cpp}
+ * RaeptorCogs::ResourceWorker().addJob([](){
+ *     // Job logic here
+ * });
+ * @endcode
+ */
+Worker &ResourceWorker();
+} // namespace RaeptorCogs

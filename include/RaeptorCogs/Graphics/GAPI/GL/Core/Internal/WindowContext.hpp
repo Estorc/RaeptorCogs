@@ -46,62 +46,60 @@ namespace RaeptorCogs::GAPI::GL {
 
 /**
  * @brief OpenGL Window context implementation.
- * 
+ *
  * Provides OpenGL-specific implementations for the window context interface.
  */
 class WindowContext : public Common::WindowContext {
-    private:
+  private:
+    // ============================================================================
+    //                             PRIVATE MEMBERS
+    // ============================================================================
 
-        // ============================================================================
-        //                             PRIVATE MEMBERS
-        // ============================================================================
+    /**
+     * @brief Vertex array for rendering a quad.
+     *
+     * Used for rendering operations involving a simple quad.
+     */
+    GAPI::ObjectHandler<GAPI::Common::VertexArray> quadVertexArray;
 
-        /**
-         * @brief Vertex array for rendering a quad.
-         * 
-         * Used for rendering operations involving a simple quad.
-         */
-        GAPI::ObjectHandler<GAPI::Common::VertexArray> quadVertexArray;
+  public:
+    // ============================================================================
+    //                             PUBLIC METHODS
+    // ============================================================================
 
-    public:
+    /**
+     * @brief Default constructor.
+     */
+    WindowContext(Common::RendererBackend *renderer) : Common::WindowContext(renderer) {}
 
-        // ============================================================================
-        //                             PUBLIC METHODS
-        // ============================================================================
+    /**
+     * @brief Virtual destructor.
+     */
+    ~WindowContext() override = default;
 
-        /**
-         * @brief Default constructor.
-         */
-        WindowContext(Common::RendererBackend* renderer) : Common::WindowContext(renderer) {}
+    /**
+     * @see RaeptorCogs::GAPI::Common::WindowContext::initialize()
+     */
+    void initialize(Window *window) override;
 
-        /**
-         * @brief Virtual destructor.
-         */
-        ~WindowContext() override = default;
+    /**
+     * @brief Build Vertex Array Object (VAO).
+     *
+     * @note Sets up the VAO for rendering.
+     */
+    void buildVAO();
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::WindowContext::initialize()
-         */
-        void initialize(Window* window) override;
+    /**
+     * @brief Get the quad vertex array for rendering.
+     *
+     * @return Pointer to the VertexArray object for the quad.
+     */
+    GAPI::ObjectHandler<GAPI::Common::VertexArray> *getQuadVertexArray();
 
-        /**
-         * @brief Build Vertex Array Object (VAO).
-         * 
-         * @note Sets up the VAO for rendering.
-         */
-        void buildVAO();
-
-        /**
-         * @brief Get the quad vertex array for rendering.
-         * 
-         * @return Pointer to the VertexArray object for the quad.
-         */
-        GAPI::ObjectHandler<GAPI::Common::VertexArray>* getQuadVertexArray();
-
-        /**
-         * @brief Bind the window context for rendering.
-         */
-        void bind() override;
+    /**
+     * @brief Bind the window context for rendering.
+     */
+    void bind() override;
 };
 
-}
+} // namespace RaeptorCogs::GAPI::GL

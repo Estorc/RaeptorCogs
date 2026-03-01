@@ -1,0 +1,23 @@
+# clang-format
+
+BasedOnStyle: LLVM
+IndentWidth: 2
+ColumnLimit: 90
+UseTab: Never
+BraceWrapping:
+  AfterFunction: false
+  AfterClass: false
+  AfterControlStatement: false
+  AfterStruct: false
+AccessModifierOffset: -2
+IndentAccessModifiers: true
+AlignArrayOfStructures: Left
+SpaceBeforeCpp11BracedList: true
+AlignConsecutiveAssignments: true
+Cpp11BracedListStyle: false
+PenaltyIndentedWhitespace: 1000
+BinPackArguments: false
+AllowShortFunctionsOnASingleLine: Empty
+AllowShortIfStatementsOnASingleLine: true
+AllowShortEnumsOnASingleLine: false
+BreakTemplateDeclarations: Yes

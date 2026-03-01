@@ -38,8 +38,9 @@
  ***********************************************************************************/
 
 #pragma once
-#include <RaeptorCogs/Graphics/GAPI/GL/Resources/Object.hpp>
 #include <RaeptorCogs/Graphics/GAPI/Common/Resources/TextureData.hpp>
+#include <RaeptorCogs/Graphics/GAPI/GL/Resources/Object.hpp>
+
 
 namespace RaeptorCogs::GAPI::GL {
 
@@ -47,42 +48,44 @@ namespace RaeptorCogs::GAPI::GL {
  * @see RaeptorCogs::GAPI::Common::TextureData
  */
 class TextureData : public ObjectMixin<Common::TextureData> {
-    public:
-        /**
-         * @brief Constructor for TextureData.
-         */
-        TextureData();
+  public:
+    /**
+     * @brief Constructor for TextureData.
+     */
+    TextureData();
 
-        /**
-         * @brief Destructor for TextureData.
-         */
-        ~TextureData() override;
+    /**
+     * @brief Destructor for TextureData.
+     */
+    ~TextureData() override;
 
-        /**
-         * @brief Bind the texture for use.
-         *
-         * Binds the OpenGL texture object.
-         *
-         * @note Overrides the pure virtual method from the base class.
-         */
-        void bind() override;
+    /**
+     * @brief Bind the texture for use.
+     *
+     * Binds the OpenGL texture object.
+     *
+     * @note Overrides the pure virtual method from the base class.
+     */
+    void bind() override;
 
-        /**
-         * @brief Unbind the texture.
-         * 
-         * Unbinds the OpenGL texture object.
-         * 
-         * @note Overrides the pure virtual method from the base class.
-         */
-        void unbind() const override;
+    /**
+     * @brief Unbind the texture.
+     *
+     * Unbinds the OpenGL texture object.
+     *
+     * @note Overrides the pure virtual method from the base class.
+     */
+    void unbind() const override;
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::TextureData::build()
-         */
-        void build(int width, int height, void * data, GLenum minFilter = GL_LINEAR_MIPMAP_NEAREST, GLenum magFilter = GL_LINEAR) override;
+    /**
+     * @see RaeptorCogs::GAPI::Common::TextureData::build()
+     */
+    void
+    build(int width, int height, void *data, GLenum minFilter = GL_LINEAR_MIPMAP_NEAREST, GLenum magFilter = GL_LINEAR)
+        override;
 };
 
 /** @brief Register TextureData with the FactoryRegistry.*/
 REGISTER(Common::TextureData, TextureData);
 
-}
+} // namespace RaeptorCogs::GAPI::GL

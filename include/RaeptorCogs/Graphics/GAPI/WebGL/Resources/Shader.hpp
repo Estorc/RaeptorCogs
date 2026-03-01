@@ -38,8 +38,9 @@
  ***********************************************************************************/
 
 #pragma once
-#include <RaeptorCogs/Graphics/GAPI/WebGL/Resources/Object.hpp>
 #include <RaeptorCogs/Graphics/GAPI/GL/Resources/Shader.hpp>
+#include <RaeptorCogs/Graphics/GAPI/WebGL/Resources/Object.hpp>
+
 
 namespace RaeptorCogs::GAPI::WebGL {
 
@@ -51,4 +52,4 @@ class Shader : public GL::Shader {};
 /** @brief Register Shader with the FactoryRegistry.*/
 REGISTER(Common::Shader, Shader);
 
-}
+} // namespace RaeptorCogs::GAPI::WebGL

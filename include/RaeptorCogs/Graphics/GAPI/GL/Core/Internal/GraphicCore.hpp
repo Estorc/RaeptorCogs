@@ -40,197 +40,196 @@
 #pragma once
 #include <RaeptorCogs/Graphics/GAPI/Common/Core/Internal/GraphicCore.hpp>
 #include <RaeptorCogs/Graphics/GAPI/GL/Resources/Buffer.hpp>
-#include <RaeptorCogs/Graphics/GAPI/GL/Resources/TextureData.hpp>
 #include <RaeptorCogs/Graphics/GAPI/GL/Resources/Shader.hpp>
+#include <RaeptorCogs/Graphics/GAPI/GL/Resources/TextureData.hpp>
 #include <RaeptorCogs/Graphics/GAPI/GL/Resources/VertexArray.hpp>
+
 
 namespace RaeptorCogs::GAPI::GL {
 
 class GraphicCore : public Common::GraphicCore {
-    private:
+  private:
+    // ============================================================================
+    //                             PRIVATE MEMBERS
+    // ============================================================================
 
-        // ============================================================================
-        //                             PRIVATE MEMBERS
-        // ============================================================================
+    /**
+     * @brief Shader Storage Buffer Object (SSBO) for static instance data.
+     *
+     * Holds the SSBO for static instance data.
+     */
+    std::pair<ObjectHandler<Common::FBO>, ObjectHandler<Common::FBO>> pingPongFramebuffer;
 
-        /**
-         * @brief Shader Storage Buffer Object (SSBO) for static instance data.
-         * 
-         * Holds the SSBO for static instance data.
-         */
-        std::pair<ObjectHandler<Common::FBO>, ObjectHandler<Common::FBO>> pingPongFramebuffer;
+    /**
+     * @brief Shader Storage Buffer Object (SSBO) for dynamic instance data.
+     *
+     * Holds the SSBO for dynamic instance data.
+     */
+    ObjectHandler<Common::FBO> textureFramebuffer;
 
-        /**
-         * @brief Shader Storage Buffer Object (SSBO) for dynamic instance data.
-         * 
-         * Holds the SSBO for dynamic instance data.
-         */
-        ObjectHandler<Common::FBO> textureFramebuffer;
+    /**
+     * @brief Ping-pong framebuffers for mask rendering.
+     *
+     * Holds the pair of framebuffers used for ping-pong rendering of masks.
+     */
+    std::pair<ObjectHandler<Common::FBO>, ObjectHandler<Common::FBO>> pingPongMaskFramebuffer;
 
-        /**
-         * @brief Ping-pong framebuffers for mask rendering.
-         * 
-         * Holds the pair of framebuffers used for ping-pong rendering of masks.
-         */
-        std::pair<ObjectHandler<Common::FBO>, ObjectHandler<Common::FBO>> pingPongMaskFramebuffer;
+    /**
+     * @brief Mask textures for ping-pong rendering.
+     *
+     * Holds the pair of textures used for ping-pong rendering of masks.
+     */
+    std::pair<ObjectHandler<Common::TextureData>, ObjectHandler<Common::TextureData>> maskTextures;
 
-        /**
-         * @brief Mask textures for ping-pong rendering.
-         * 
-         * Holds the pair of textures used for ping-pong rendering of masks.
-         */
-        std::pair<ObjectHandler<Common::TextureData>, ObjectHandler<Common::TextureData>> maskTextures;
+    /**
+     * @brief Renderbuffer for offscreen rendering.
+     *
+     * Holds the renderbuffer used for offscreen rendering.
+     */
+    ObjectHandler<Common::RBO> renderbuffer;
 
-        /**
-         * @brief Renderbuffer for offscreen rendering.
-         * 
-         * Holds the renderbuffer used for offscreen rendering.
-         */
-        ObjectHandler<Common::RBO> renderbuffer;
+  public:
+    // ============================================================================
+    //                             PUBLIC METHODS
+    // ============================================================================
 
-    public:
+    /**
+     * @brief Constructor for GraphicCore.
+     *
+     * Initializes the GraphicCore with a reference to the renderer backend.
+     *
+     * @param renderer Reference to the renderer backend.
+     */
+    GraphicCore(Common::RendererBackend &renderer) : Common::GraphicCore(renderer) {}
 
-        // ============================================================================
-        //                             PUBLIC METHODS
-        // ============================================================================
+    /**
+     * @brief Initialize graphics resources.
+     *
+     * Sets up graphics resources such as shaders, buffers, and framebuffers.
+     *
+     * @note Called during renderer backend initialization.
+     */
+    virtual void initGraphics();
 
-        /**
-         * @brief Constructor for GraphicCore.
-         * 
-         * Initializes the GraphicCore with a reference to the renderer backend.
-         * 
-         * @param renderer Reference to the renderer backend.
-         */
-        GraphicCore(Common::RendererBackend& renderer) : Common::GraphicCore(renderer) {}
+    /**
+     * @brief Build necessary shaders.
+     *
+     * Compiles and links shader programs used for rendering.
+     *
+     * @note Called during renderer backend initialization.
+     */
+    virtual void buildShaders();
 
-        /**
-         * @brief Initialize graphics resources.
-         * 
-         * Sets up graphics resources such as shaders, buffers, and framebuffers.
-         * 
-         * @note Called during renderer backend initialization.
-         */
-        virtual void initGraphics();
+    /**
+     * @brief Build necessary buffers.
+     *
+     * Sets up vertex buffers and attribute pointers.
+     *
+     * @note Called during renderer backend initialization.
+     */
+    void buildBuffers();
 
-        /**
-         * @brief Build necessary shaders.
-         * 
-         * Compiles and links shader programs used for rendering.
-         * 
-         * @note Called during renderer backend initialization.
-         */
-        virtual void buildShaders();
+    /**
+     * @brief Get the maximum number of texture units supported by the GPU.
+     *
+     * @return Maximum number of texture units.
+     *
+     * @note Useful for managing texture bindings.
+     */
+    GLuint getMaxTextureUnits() const;
 
-        /**
-         * @brief Build necessary buffers.
-         * 
-         * Sets up vertex buffers and attribute pointers.
-         * 
-         * @note Called during renderer backend initialization.
-         */
-        void buildBuffers();
+    /**
+     * @brief Get the mask textures used for ping-pong rendering.
+     */
+    std::pair<ObjectHandler<Common::TextureData>, ObjectHandler<Common::TextureData>> &getMaskTextures() {
+      return this->maskTextures;
+    }
 
-        /**
-         * @brief Get the maximum number of texture units supported by the GPU.
-         * 
-         * @return Maximum number of texture units.
-         * 
-         * @note Useful for managing texture bindings.
-         */
-        GLuint getMaxTextureUnits() const;
+    /**
+     * @brief Get the renderbuffer used for offscreen rendering.
+     */
+    ObjectHandler<Common::RBO> &getRenderbuffer() {
+      return this->renderbuffer;
+    }
 
-        /**
-         * @brief Get the mask textures used for ping-pong rendering.
-         */
-        std::pair<ObjectHandler<Common::TextureData>, ObjectHandler<Common::TextureData>>& getMaskTextures() {
-            return this->maskTextures;
-        }
+    /**
+     * @brief Get the ping-pong framebuffers used for mask rendering.
+     */
+    std::pair<ObjectHandler<Common::FBO>, ObjectHandler<Common::FBO>> &getPingPongMaskFramebuffer() {
+      return this->pingPongMaskFramebuffer;
+    }
 
-        /**
-         * @brief Get the renderbuffer used for offscreen rendering.
-         */
-        ObjectHandler<Common::RBO>& getRenderbuffer() {
-            return this->renderbuffer;
-        }
+    /**
+     * @brief Get the texture framebuffer used for rendering to textures.
+     */
+    ObjectHandler<Common::FBO> &getTextureFramebuffer() {
+      return this->textureFramebuffer;
+    }
 
-        /**
-         * @brief Get the ping-pong framebuffers used for mask rendering.
-         */
-        std::pair<ObjectHandler<Common::FBO>, ObjectHandler<Common::FBO>>& getPingPongMaskFramebuffer() {
-            return this->pingPongMaskFramebuffer;
-        }
+    // ------------------------------------------------------------------------
+    //                      State machine methods
+    // ------------------------------------------------------------------------
 
-        /**
-         * @brief Get the texture framebuffer used for rendering to textures.
-         */
-        ObjectHandler<Common::FBO>& getTextureFramebuffer() {
-            return this->textureFramebuffer;
-        }
+    /**
+     * @see Common::GraphicCore::setViewport
+     */
+    void setViewport(int x, int y, int width, int height) override;
 
-        // ------------------------------------------------------------------------
-        //                      State machine methods
-        // ------------------------------------------------------------------------
-        
-        /**
-         * @see Common::GraphicCore::setViewport
-         */
-        void setViewport(int x, int y, int width, int height) override;
+    /**
+     * @see Common::GraphicCore::clearSwapchainBuffers
+     */
+    void clearSwapchainBuffers() override;
 
-        /**
-         * @see Common::GraphicCore::clearSwapchainBuffers
-         */
-        void clearSwapchainBuffers() override;
+    /**
+     * @see Common::GraphicCore::useBlend
+     */
+    void useBlend() override;
 
-        /**
-         * @see Common::GraphicCore::useBlend
-         */
-        void useBlend() override;
+    /**
+     * @see Common::GraphicCore::bindMaskTexture
+     */
+    void bindMaskTexture() override;
 
-        /**
-         * @see Common::GraphicCore::bindMaskTexture
-         */
-        void bindMaskTexture() override;
+    /**
+     * @see Common::GraphicCore::setTextureUniform
+     */
+    void setTextureUniform(ObjectHandler<Common::Shader> shader) override;
 
-        /**
-         * @see Common::GraphicCore::setTextureUniform
-         */
-        void setTextureUniform(ObjectHandler<Common::Shader> shader) override;
+    /**
+     * @see Common::GraphicCore::setMaskTextureUniform
+     */
+    void setMaskTextureUniform(ObjectHandler<Common::Shader> shader) override;
 
-        /**
-         * @see Common::GraphicCore::setMaskTextureUniform
-         */
-        void setMaskTextureUniform(ObjectHandler<Common::Shader> shader) override;
+    /**
+     * @see Common::GraphicCore::drawElementsInstancedBaseVertexBaseInstance
+     */
+    void drawElementsInstancedBaseVertexBaseInstance(
+        size_t count, size_t instanceCount, size_t first, int baseVertex, unsigned int baseInstance) override;
 
-        /**
-         * @see Common::GraphicCore::drawElementsInstancedBaseVertexBaseInstance
-         */
-        void drawElementsInstancedBaseVertexBaseInstance(size_t count, size_t instanceCount, size_t first, int baseVertex, unsigned int baseInstance) override;
-        
-        /**
-         * @see Common::GraphicCore::bindGraphicTexture
-         */
-        void bindGraphicTexture(Graphic2D& graphic) override;
-        
-        /**
-         * @see Common::GraphicCore::enableStencilGuarding
-         */
-        void enableStencilGuarding() override;
+    /**
+     * @see Common::GraphicCore::bindGraphicTexture
+     */
+    void bindGraphicTexture(Graphic2D &graphic) override;
 
-        /**
-         * @see Common::GraphicCore::setRenderTarget
-         */
-        void setRenderTarget(Window* window, int x, int y, int width, int height) override;
+    /**
+     * @see Common::GraphicCore::enableStencilGuarding
+     */
+    void enableStencilGuarding() override;
 
-        /**
-         * @see Common::GraphicCore::setRenderTarget
-         */
-        void setRenderTarget(Texture texture, int x, int y, int width, int height) override;
+    /**
+     * @see Common::GraphicCore::setRenderTarget
+     */
+    void setRenderTarget(Window *window, int x, int y, int width, int height) override;
 
-        /**
-         * @see Common::GraphicCore::clearColorBuffer
-         */
-        void clearColorBuffer(float r, float g, float b, float a) override;
+    /**
+     * @see Common::GraphicCore::setRenderTarget
+     */
+    void setRenderTarget(Texture texture, int x, int y, int width, int height) override;
 
+    /**
+     * @see Common::GraphicCore::clearColorBuffer
+     */
+    void clearColorBuffer(float r, float g, float b, float a) override;
 };
 
-}
+} // namespace RaeptorCogs::GAPI::GL

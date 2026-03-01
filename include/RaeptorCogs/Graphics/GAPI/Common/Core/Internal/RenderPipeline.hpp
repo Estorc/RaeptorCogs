@@ -38,297 +38,303 @@
  ***********************************************************************************/
 
 #pragma once
-#include <RaeptorCogs/Graphics/GAPI/Common/Core/Internal/FrameData.hpp>
 #include <RaeptorCogs/Graphics/GAPI/Common/Core/GraphicHandler.hpp>
+#include <RaeptorCogs/Graphics/GAPI/Common/Core/Internal/FrameData.hpp>
 #include <RaeptorCogs/Graphics/GAPI/Common/Core/RenderList.hpp>
 #include <RaeptorCogs/Graphics/GAPI/Common/Resources/Object.hpp>
 #include <RaeptorCogs/Graphics/GAPI/Common/Resources/Shader.hpp>
 #include <functional>
 
-
 namespace RaeptorCogs {
-    class Component;
-    class Window;
+class Component;
+class Window;
 
-    void MainLoop(std::function<void(Window&)> updateFunction, Window &window);
-}
+void MainLoop(std::function<void(Window &)> updateFunction, Window &window);
+} // namespace RaeptorCogs
 
 namespace RaeptorCogs::GAPI::Common {
 
 /**
  * @brief Component buffer type.
- * 
+ *
  * Holds pointers to components used in rendering.
  */
-using ComponentBuffer = std::vector<Component*>;
+using ComponentBuffer = std::vector<Component *>;
 
 /**
  * @brief Private render list identifiers.
- * 
+ *
  * Defines reserved identifiers for internal render lists.
  */
 enum class PrivateRenderListID : int {
-    /** Reserved for internal draw calls */
-    DRAW = std::numeric_limits<int>::max(),
+  /** Reserved for internal draw calls */
+  DRAW = std::numeric_limits<int>::max(),
 };
 
 class RendererBackend;
 /**
  * @brief Render pipeline interface.
- * 
+ *
  * Provides an interface for render pipeline implementations.
  */
 class RenderPipeline {
-    private:
+  private:
+    // ============================================================================
+    //                             PRIVATE MEMBERS
+    // ============================================================================
 
-        // ============================================================================
-        //                             PRIVATE MEMBERS
-        // ============================================================================
+    /**
+     * @brief Reference to the renderer backend.
+     *
+     * Holds a reference to the renderer backend singleton.
+     */
+    RendererBackend &renderer;
 
-        /**
-         * @brief Reference to the renderer backend.
-         * 
-         * Holds a reference to the renderer backend singleton.
-         */
-        RendererBackend& renderer;
+    /**
+     * @brief Batch buffer.
+     *
+     * Holds batch handlers for rendering.
+     */
+    BatchBuffer batch;
 
-        /**
-         * @brief Batch buffer.
-         * 
-         * Holds batch handlers for rendering.
-         */
-        BatchBuffer batch;
+    /**
+     * @brief Component buffer.
+     *
+     * Holds component data for rendering.
+     */
+    ComponentBuffer componentBuffer;
 
-        /**
-         * @brief Component buffer.
-         * 
-         * Holds component data for rendering.
-         */
-        ComponentBuffer componentBuffer;
+    /**
+     * @brief Render list buffer.
+     *
+     * Holds render lists indexed by their IDs.
+     */
+    RenderListBuffer renderLists;
 
-        /**
-         * @brief Render list buffer.
-         * 
-         * Holds render lists indexed by their IDs.
-         */
-        RenderListBuffer renderLists;
+    /**
+     * @brief Frame data.
+     *
+     * Holds data relevant to the current frame.
+     */
+    FrameData frameData;
 
-        /**
-         * @brief Frame data.
-         * 
-         * Holds data relevant to the current frame.
-         */
-        FrameData frameData;
+    /**
+     * @brief Current batch index.
+     *
+     * Indicates the active batch for rendering.
+     */
+    int currentBatchIndex = 0;
 
-        /**
-         * @brief Current batch index.
-         * 
-         * Indicates the active batch for rendering.
-         */
-        int currentBatchIndex = 0;
+    // ============================================================================
+    //                             PRIVATE METHODS
+    // ============================================================================
 
-        // ============================================================================
-        //                             PRIVATE METHODS
-        // ============================================================================
+    friend void RaeptorCogs::MainLoop(const std::function<void(Window &)> updateFunction, Window &window);
 
-        friend void RaeptorCogs::MainLoop(const std::function<void(Window&)> updateFunction, Window &window);
+  protected:
+    // ============================================================================
+    //                             PROTECTED METHODS
+    // ============================================================================
 
-    protected:
+    /**
+     * @brief Begin frame operations.
+     *
+     * Called at the start of each frame.
+     */
+    virtual void beginFrame() = 0;
 
-        // ============================================================================
-        //                             PROTECTED METHODS
-        // ============================================================================
+    /**
+     * @brief End frame operations.
+     *
+     * Called at the end of each frame.
+     */
+    virtual void endFrame() = 0;
 
-        /**
-         * @brief Begin frame operations.
-         * 
-         * Called at the start of each frame.
-         */
-        virtual void beginFrame() = 0;
+    /**
+     * @brief Get the renderer pointer.
+     *
+     * @return Pointer to the renderer backend singleton.
+     */
+    RendererBackend &getRenderer() const {
+      return this->renderer;
+    }
 
-        /**
-         * @brief End frame operations.
-         * 
-         * Called at the end of each frame.
-         */
-        virtual void endFrame() = 0;
+    /**
+     * @brief Get the render lists.
+     *
+     * @return Reference to the render list buffer.
+     */
+    RenderListBuffer &getRenderLists() {
+      return this->renderLists;
+    }
 
-        /**
-         * @brief Get the renderer pointer.
-         * 
-         * @return Pointer to the renderer backend singleton.
-         */
-        RendererBackend& getRenderer() const {
-            return this->renderer;
-        }
+    /**
+     * @brief Use the mask render list.
+     *
+     * Sets the current render list to the mask render list.
+     */
+    void useMaskRenderList();
 
-        /**
-         * @brief Get the render lists.
-         * 
-         * @return Reference to the render list buffer.
-         */
-        RenderListBuffer& getRenderLists() { return this->renderLists; }
+    /**
+     * @brief Use the normal render list.
+     *
+     * Sets the current render list to the normal render list.
+     */
+    void useNormalRenderList();
 
-        /**
-         * @brief Use the mask render list.
-         * 
-         * Sets the current render list to the mask render list.
-         */
-        void useMaskRenderList();
+  public:
+    // ============================================================================
+    //                               PUBLIC METHODS
+    // ============================================================================
 
-        /**
-         * @brief Use the normal render list.
-         * 
-         * Sets the current render list to the normal render list.
-         */
-        void useNormalRenderList();
+    /**
+     * @brief Constructor.
+     *
+     * @param renderer Reference to the renderer backend singleton.
+     */
+    RenderPipeline(RendererBackend &renderer)
+        : renderer(renderer), renderLists {
+            { 0, RenderList(this->batch) }
+    } {}
 
-    public:
+    /**
+     * @brief Virtual destructor.
+     */
+    virtual ~RenderPipeline() = default;
 
-        // ============================================================================
-        //                               PUBLIC METHODS
-        // ============================================================================
+    /**
+     * @brief Check if two batches are compatible for merging.
+     *
+     * @param a Pointer to the first GraphicBatchHandler.
+     * @param b Pointer to the second GraphicBatchHandler.
+     * @return True if the batches are compatible, false otherwise.
+     *
+     * @note Batches are compatible if they share the same rendering parameters.
+     */
+    bool compatibleBatches(GraphicBatchHandler *a, GraphicBatchHandler *b);
 
-        /**
-         * @brief Constructor.
-         * 
-         * @param renderer Reference to the renderer backend singleton.
-         */
-        RenderPipeline(RendererBackend& renderer) : renderer(renderer), renderLists{{0, RenderList(this->batch)}} {}
+    /**
+     * @brief Begin a new batch for rendering.
+     *
+     * @param x X coordinate of the batch viewport.
+     * @param y Y coordinate of the batch viewport.
+     * @param width Width of the batch viewport.
+     * @param height Height of the batch viewport.
+     * @param shader Shader to be used for the batch.
+     *
+     * @note Sets up the rendering state for the new batch.
+     */
+    void beginBatch(int x, int y, int width, int height, ObjectHandler<Shader> &shader);
 
-        /**
-         * @brief Virtual destructor.
-         */
-        virtual ~RenderPipeline() = default;
-    
-        /**
-         * @brief Check if two batches are compatible for merging.
-         * 
-         * @param a Pointer to the first GraphicBatchHandler.
-         * @param b Pointer to the second GraphicBatchHandler.
-         * @return True if the batches are compatible, false otherwise.
-         * 
-         * @note Batches are compatible if they share the same rendering parameters.
-         */
-        bool compatibleBatches(GraphicBatchHandler* a, GraphicBatchHandler* b);
+    /**
+     * @brief Process the current batch for rendering.
+     *
+     * @param postDrawCallback Optional callback to be executed after drawing.
+     *
+     * @code{.cpp}
+     * RaeptorCogs::Renderer().processBatch([]() {
+     *    // Custom operations after drawing
+     * });
+     * @endcode
+     * @note Uploads instance data and issues draw calls for the batch.
+     */
+    void processBatch(std::function<void()> postDrawCallback = nullptr);
 
-        /**
-         * @brief Begin a new batch for rendering.
-         * 
-         * @param x X coordinate of the batch viewport.
-         * @param y Y coordinate of the batch viewport.
-         * @param width Width of the batch viewport.
-         * @param height Height of the batch viewport.
-         * @param shader Shader to be used for the batch.
-         * 
-         * @note Sets up the rendering state for the new batch.
-         */
-        void beginBatch(int x, int y, int width, int height, ObjectHandler<Shader>& shader);
+    /**
+     * @brief Draw a batch of instances.
+     *
+     * @param firstHandler Pointer to the first GraphicBatchHandler in the batch.
+     * @param instanceOffset Offset of the first instance to draw.
+     * @param instanceCount Number of instances to draw.
+     * @param postDrawCallback Optional callback to be executed after drawing.
+     *
+     * @note Issues the draw call for the specified batch of instances.
+     */
+    void drawBatch(
+        GraphicBatchHandler *firstHandler, size_t instanceOffset, size_t instanceCount,
+        std::function<void()> postDrawCallback = nullptr);
 
-        /**
-         * @brief Process the current batch for rendering.
-         * 
-         * @param postDrawCallback Optional callback to be executed after drawing.
-         * 
-         * @code{.cpp}
-         * RaeptorCogs::Renderer().processBatch([]() {
-         *    // Custom operations after drawing
-         * });
-         * @endcode
-         * @note Uploads instance data and issues draw calls for the batch.
-         */
-        void processBatch(std::function<void()> postDrawCallback = nullptr);
+    /**
+     * @brief Flush the current batch.
+     *
+     * Completes the current batch and prepares for the next one.
+     */
+    void flushBatch();
 
-        /**
-         * @brief Draw a batch of instances.
-         * 
-         * @param firstHandler Pointer to the first GraphicBatchHandler in the batch.
-         * @param instanceOffset Offset of the first instance to draw.
-         * @param instanceCount Number of instances to draw.
-         * @param postDrawCallback Optional callback to be executed after drawing.
-         * 
-         * @note Issues the draw call for the specified batch of instances.
-         */
-        void drawBatch(GraphicBatchHandler* firstHandler, size_t instanceOffset, size_t instanceCount, std::function<void()> postDrawCallback = nullptr);
-        
-        /**
-         * @brief Flush the current batch.
-         * 
-         * Completes the current batch and prepares for the next one.
-         */
-        void flushBatch();
+    /**
+     * @see Renderer::setRenderListID
+     */
+    void setRenderListID(int index);
 
-        /**
-         * @see Renderer::setRenderListID
-         */
-        void setRenderListID(int index);
+    /**
+     * @brief Get the current render list.
+     *
+     * @return Reference to the current render list.
+     */
+    RenderList &getRenderList();
 
-        /**
-         * @brief Get the current render list.
-         * 
-         * @return Reference to the current render list.
-         */
-        RenderList& getRenderList();
+    /**
+     * @brief Get the mask render list of the current render list.
+     *
+     * @return Reference to the mask render list.
+     */
+    RenderList &getMaskRenderList();
 
-        /**
-         * @brief Get the mask render list of the current render list.
-         * 
-         * @return Reference to the mask render list.
-         */
-        RenderList& getMaskRenderList();
+    /**
+     * @brief Clear the render lists.
+     *
+     * @note Removes all graphics from all render lists.
+     * @warning Use with caution as this will clear all pending graphics to be rendered.
+     */
+    void clearRenderLists();
 
-        /**
-         * @brief Clear the render lists.
-         * 
-         * @note Removes all graphics from all render lists.
-         * @warning Use with caution as this will clear all pending graphics to be rendered.
-         */
-        void clearRenderLists();
+    /**
+     * @brief Get the component buffer.
+     *
+     * @return Reference to the component buffer.
+     */
+    ComponentBuffer &getComponentBuffer() {
+      return this->componentBuffer;
+    }
 
-        /**
-         * @brief Get the component buffer.
-         * 
-         * @return Reference to the component buffer.
-         */
-        ComponentBuffer &getComponentBuffer() { return this->componentBuffer; }
+    /**
+     * @brief Get the batch handler at the specified index.
+     *
+     * @param index Index of the batch handler.
+     * @return Reference to the GraphicBatchHandler.
+     *
+     * @note Used for accessing batch handlers directly.
+     */
+    GraphicBatchHandler &getBatchHandlerAt(size_t index);
 
-        /**
-         * @brief Get the batch handler at the specified index.
-         * 
-         * @param index Index of the batch handler.
-         * @return Reference to the GraphicBatchHandler.
-         * 
-         * @note Used for accessing batch handlers directly.
-         */
-        GraphicBatchHandler &getBatchHandlerAt(size_t index);
+    /**
+     * @brief Get the frame data.
+     *
+     * @return Reference to the FrameData structure.
+     */
+    FrameData &getFrameData() {
+      return this->frameData;
+    }
 
-        /**
-         * @brief Get the frame data.
-         * 
-         * @return Reference to the FrameData structure.
-         */
-        FrameData& getFrameData() { return this->frameData; }
+    /**
+     * @brief Render pass for offscreen rendering.
+     *
+     * Holds the render pass used for offscreen rendering.
+     */
+    virtual void renderPass(int x, int y, int width, int height) = 0;
 
-        /**
-         * @brief Render pass for offscreen rendering.
-         * 
-         * Holds the render pass used for offscreen rendering.
-         */
-        virtual void renderPass(int x, int y, int width, int height) = 0;
-
-        /**
-         * @brief Render mask to the window.
-         * 
-         * @param window Pointer to the window where the mask will be rendered.
-         * @param x X coordinate of the render area.
-         * @param y Y coordinate of the render area.
-         * @param width Width of the render area.
-         * @param height Height of the render area.
-         * 
-         * @note Renders the mask using ping-pong framebuffers.
-         */
-        virtual void renderMask(Window* window, int x, int y, int width, int height) = 0;
-
+    /**
+     * @brief Render mask to the window.
+     *
+     * @param window Pointer to the window where the mask will be rendered.
+     * @param x X coordinate of the render area.
+     * @param y Y coordinate of the render area.
+     * @param width Width of the render area.
+     * @param height Height of the render area.
+     *
+     * @note Renders the mask using ping-pong framebuffers.
+     */
+    virtual void renderMask(Window *window, int x, int y, int width, int height) = 0;
 };
 
 } // namespace RaeptorCogs::GAPI::Common

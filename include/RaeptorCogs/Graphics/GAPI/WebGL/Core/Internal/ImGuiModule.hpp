@@ -44,9 +44,9 @@ namespace RaeptorCogs::GAPI::WebGL {
 
 /**
  * @brief WebGL ImGui implementation.
- * 
+ *
  * Provides WebGL-specific implementations for the ImGui backend interface.
  */
 class ImGuiModule : public GL::ImGuiModule {};
 
-}
+} // namespace RaeptorCogs::GAPI::WebGL

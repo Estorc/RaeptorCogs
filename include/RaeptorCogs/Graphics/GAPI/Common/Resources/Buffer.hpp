@@ -44,9 +44,9 @@ namespace RaeptorCogs::GAPI::Common {
 
 /**
  * @brief Buffer interface.
- * 
+ *
  * Provides a common interface for different buffer types.
- * 
+ *
  * @note This is an abstract base class and should be inherited by specific buffer implementations.
  */
 class Buffer : public ObjectData {
@@ -59,10 +59,10 @@ class Buffer : public ObjectData {
 
 /**
  * @brief Framebuffer class.
- * 
+ *
  * Represents a framebuffer object and provides utilities for handling it.
- * 
- * @note This is a derived class from Buffer. This is an abstract representation; 
+ *
+ * @note This is a derived class from Buffer. This is an abstract representation;
  *       specific implementations should provide concrete functionality.
  */
 class Framebuffer : public Buffer {
@@ -71,7 +71,7 @@ class Framebuffer : public Buffer {
 
 /**
  * @brief Type aliases for common buffer types.
- * 
+ *
  * These aliases provide convenient names for commonly used buffer types.
  */
 using FBO = Framebuffer;
@@ -82,10 +82,10 @@ using FBO = Framebuffer;
 
 /**
  * @brief Renderbuffer class.
- * 
+ *
  * Represents a renderbuffer object and provides utilities for handling it.
- * 
- * @note This is a derived class from Buffer. This is an abstract representation; 
+ *
+ * @note This is a derived class from Buffer. This is an abstract representation;
  *       specific implementations should provide concrete functionality.
  */
 class Renderbuffer : public Buffer {
@@ -94,7 +94,7 @@ class Renderbuffer : public Buffer {
 
 /**
  * @brief Type alias for Renderbuffer.
- * 
+ *
  * Provides a convenient name for the Renderbuffer type.
  */
 using RBO = Renderbuffer;
@@ -105,25 +105,25 @@ using RBO = Renderbuffer;
 
 /**
  * @brief Vertexbuffer class.
- * 
+ *
  * Represents a vertex buffer object and provides utilities for handling it.
- * 
- * @note This is a derived class from Buffer. This is an abstract representation; 
+ *
+ * @note This is a derived class from Buffer. This is an abstract representation;
  *       specific implementations should provide concrete functionality.
  */
 class Vertexbuffer : public Buffer {
-    public:
-        /**
-         * @brief Build the vertex buffer.
-         * 
-         * @note This is a pure virtual method and must be implemented by derived classes.
-         */
-        virtual void build(const void* data, size_t size) = 0;
+  public:
+    /**
+     * @brief Build the vertex buffer.
+     *
+     * @note This is a pure virtual method and must be implemented by derived classes.
+     */
+    virtual void build(const void *data, size_t size) = 0;
 };
 
 /**
  * @brief Type alias for Vertexbuffer.
- * 
+ *
  * Provides a convenient name for the Vertexbuffer type.
  */
 using VBO = Vertexbuffer;
@@ -134,25 +134,25 @@ using VBO = Vertexbuffer;
 
 /**
  * @brief Elementbuffer class.
- * 
+ *
  * Represents an element buffer object and provides utilities for handling it.
- * 
- * @note This is a derived class from Buffer. This is an abstract representation; 
+ *
+ * @note This is a derived class from Buffer. This is an abstract representation;
  *       specific implementations should provide concrete functionality.
  */
 class Elementbuffer : public Buffer {
-    public:
-        /**
-         * @brief Build the element buffer.
-         * 
-         * @note This is a pure virtual method and must be implemented by derived classes.
-         */
-        virtual void build(const void* data, size_t size) = 0;
+  public:
+    /**
+     * @brief Build the element buffer.
+     *
+     * @note This is a pure virtual method and must be implemented by derived classes.
+     */
+    virtual void build(const void *data, size_t size) = 0;
 };
 
 /**
  * @brief Type alias for Elementbuffer.
- * 
+ *
  * Provides a convenient name for the Elementbuffer type.
  */
 using EBO = Elementbuffer;
@@ -163,49 +163,49 @@ using EBO = Elementbuffer;
 
 /**
  * @brief ShaderStorageBuffer class.
- * 
+ *
  * Represents a shader storage buffer object and provides utilities for handling it.
- * 
- * @note This is a derived class from Buffer. This is an abstract representation; 
+ *
+ * @note This is a derived class from Buffer. This is an abstract representation;
  *       specific implementations should provide concrete functionality.
  */
 class ShaderStorageBuffer : public Buffer {
-    public:
-        /**
-         * @brief Allocate memory for the buffer.
-         * 
-         * @param size Size of the buffer to allocate in bytes.
-         * 
-         * @note This is a pure virtual method and must be implemented by derived classes.
-         */
-        virtual void allocate(size_t size) = 0;
+  public:
+    /**
+     * @brief Allocate memory for the buffer.
+     *
+     * @param size Size of the buffer to allocate in bytes.
+     *
+     * @note This is a pure virtual method and must be implemented by derived classes.
+     */
+    virtual void allocate(size_t size) = 0;
 
-        /**
-         * @brief Set the binding point for the buffer.
-         * 
-         * @param bindingPoint The binding point index.
-         * 
-         * @note This is a pure virtual method and must be implemented by derived classes.
-         */
-        virtual void setBindingPoint(unsigned int bindingPoint) = 0;
+    /**
+     * @brief Set the binding point for the buffer.
+     *
+     * @param bindingPoint The binding point index.
+     *
+     * @note This is a pure virtual method and must be implemented by derived classes.
+     */
+    virtual void setBindingPoint(unsigned int bindingPoint) = 0;
 
-        /**
-         * @brief Upload data to the buffer.
-         * 
-         * @param data Pointer to the data to upload.
-         * @param size Size of the data in bytes.
-         * @param offset Offset in the buffer to start uploading data.
-         * 
-         * @note This is a pure virtual method and must be implemented by derived classes.
-         */
-        virtual void upload(const void* data, size_t size, size_t offset = 0) = 0;
+    /**
+     * @brief Upload data to the buffer.
+     *
+     * @param data Pointer to the data to upload.
+     * @param size Size of the data in bytes.
+     * @param offset Offset in the buffer to start uploading data.
+     *
+     * @note This is a pure virtual method and must be implemented by derived classes.
+     */
+    virtual void upload(const void *data, size_t size, size_t offset = 0) = 0;
 };
 
 /**
  * @brief Type alias for ShaderStorageBuffer.
- * 
+ *
  * Provides a convenient name for the ShaderStorageBuffer type.
  */
 using SSBO = ShaderStorageBuffer;
 
-}
+} // namespace RaeptorCogs::GAPI::Common

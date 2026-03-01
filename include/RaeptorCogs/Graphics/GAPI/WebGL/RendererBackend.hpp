@@ -38,20 +38,19 @@
  ***********************************************************************************/
 
 #pragma once
-#include <RaeptorCogs/Graphics/Renderer.hpp>
+#include <RaeptorCogs/Graphics/GAPI/Common/Resources/Object.hpp>
 #include <RaeptorCogs/Graphics/GAPI/GL/RendererBackend.hpp>
+#include <RaeptorCogs/Graphics/GAPI/WebGL/Constants.hpp>
+#include <RaeptorCogs/Graphics/GAPI/WebGL/Core/Internal/GraphicCore.hpp>
 #include <RaeptorCogs/Graphics/GAPI/WebGL/Core/Internal/ImGuiModule.hpp>
 #include <RaeptorCogs/Graphics/GAPI/WebGL/Core/Internal/RenderPipeline.hpp>
-#include <RaeptorCogs/Graphics/GAPI/WebGL/Core/Internal/GraphicCore.hpp>
-#include <RaeptorCogs/Graphics/GAPI/Common/Resources/Object.hpp>
-#include <RaeptorCogs/Graphics/GAPI/WebGL/Constants.hpp>
-
+#include <RaeptorCogs/Graphics/Renderer.hpp>
 
 /**
  * @brief RaeptorCogs GAPI WebGL namespace.
- * 
+ *
  * Contains WebGL graphics API related classes and functions.
- * 
+ *
  * @note This namespace is used for WebGL-specific implementations.
  * @see RaeptorCogs::GAPI::Common
  */
@@ -61,94 +60,94 @@ namespace RaeptorCogs::GAPI::WebGL {
 
 /**
  * @brief WebGL Renderer backend implementation.
- * 
+ *
  * Provides WebGL-specific implementations for the renderer backend interface.
- * 
+ *
  * @note This class inherits from the common RendererBackend interface.
  * @see RaeptorCogs::GAPI::GL::RendererBackend
  */
 class RendererBackend : public GL::RendererBackend {
-    private:
+  private:
+    // ============================================================================
+    //                             PRIVATE ATTRIBUTES
+    // ============================================================================
 
-        // ============================================================================
-        //                             PRIVATE ATTRIBUTES
-        // ============================================================================
+    // --------------------------------------------
+    //                  Modules
+    // --------------------------------------------
 
-        // --------------------------------------------
-        //                  Modules
-        // --------------------------------------------
+    /**
+     * @brief ImGui implementation instance.
+     *
+     * Holds the WebGL-specific ImGui implementation.
+     */
+    ImGuiModule imGui;
 
-        /**
-         * @brief ImGui implementation instance.
-         * 
-         * Holds the WebGL-specific ImGui implementation.
-         */
-        ImGuiModule imGui;
+    /**
+     * @brief Graphic core implementation.
+     *
+     * Manages WebGL core functionalities.
+     */
+    GraphicCore graphicCore;
 
-        /**
-         * @brief Graphic core implementation.
-         * 
-         * Manages WebGL core functionalities.
-         */
-        GraphicCore graphicCore;
+    /**
+     * @brief Render pipeline implementation.
+     *
+     * Manages the WebGL rendering pipeline.
+     */
+    RenderPipeline renderPipeline;
 
-        /**
-         * @brief Render pipeline implementation.
-         * 
-         * Manages the WebGL rendering pipeline.
-         */
-        RenderPipeline renderPipeline;
+  public:
+    // ============================================================================
+    //                             PUBLIC METHODS
+    // ============================================================================
 
-    public:
+    /**
+     * @brief Constructor for RendererBackend.
+     */
+    RendererBackend() : GL::RendererBackend(), imGui(), graphicCore(*this), renderPipeline(*this) {}
 
-        // ============================================================================
-        //                             PUBLIC METHODS
-        // ============================================================================
+    /**
+     * @brief Destructor for RendererBackend.
+     *
+     * Cleans up resources used by the RendererBackend.
+     */
+    ~RendererBackend() override = default;
 
-        /**
-         * @brief Constructor for RendererBackend.
-         */
-        RendererBackend() : GL::RendererBackend(),
-            imGui(),
-            graphicCore(*this),
-            renderPipeline(*this) {}
+    /**
+     * @see RaeptorCogs::GAPI::Common::RendererBackend::Create()
+     */
+    Common::ObjectData *Create(std::type_index type) override {
+      auto &map = FactoryRegistry::get();
+      auto it   = map.find(type);
+      if (it == map.end()) throw std::runtime_error("Type not registered");
+      return it->second();
+    }
 
-        /**
-         * @brief Destructor for RendererBackend.
-         * 
-         * Cleans up resources used by the RendererBackend.
-         */
-        ~RendererBackend() override = default;
+    // --------------------------------------------
+    //                  Modules
+    // --------------------------------------------
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::RendererBackend::Create()
-         */
-         Common::ObjectData* Create(std::type_index type) override {
-            auto& map = FactoryRegistry::get();
-            auto it = map.find(type);
-            if (it == map.end())
-                throw std::runtime_error("Type not registered");
-            return it->second();
-        }
+    /**
+     * @see RaeptorCogs::GAPI::GL::RendererBackend::getImGuiModule()
+     */
+    ImGuiModule &getImGuiModule() override {
+      return this->imGui;
+    }
 
-        // --------------------------------------------
-        //                  Modules
-        // --------------------------------------------
+    /**
+     * @see RaeptorCogs::GAPI::GL::RendererBackend::getGraphicCore()
+     */
+    GraphicCore &getGraphicCore() override {
+      return this->graphicCore;
+    }
 
-        /**
-         * @see RaeptorCogs::GAPI::GL::RendererBackend::getImGuiModule()
-         */
-        ImGuiModule& getImGuiModule() override { return this->imGui; }
-
-        /**
-         * @see RaeptorCogs::GAPI::GL::RendererBackend::getGraphicCore()
-         */
-        GraphicCore& getGraphicCore() override { return this->graphicCore; }
-
-        /**
-         * @see RaeptorCogs::GAPI::GL::RendererBackend::getRenderPipeline()
-         */
-        RenderPipeline& getRenderPipeline() override { return this->renderPipeline; }
+    /**
+     * @see RaeptorCogs::GAPI::GL::RendererBackend::getRenderPipeline()
+     */
+    RenderPipeline &getRenderPipeline() override {
+      return this->renderPipeline;
+    }
 };
 
-}
+} // namespace RaeptorCogs::GAPI::WebGL

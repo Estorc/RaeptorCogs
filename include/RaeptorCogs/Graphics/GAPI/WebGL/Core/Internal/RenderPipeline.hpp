@@ -43,48 +43,45 @@
 namespace RaeptorCogs::GAPI::WebGL {
 
 class RenderPipeline : public GL::RenderPipeline {
-    protected:
+  protected:
+    // ============================================================================
+    //                             PROTECTED METHODS
+    // ============================================================================
 
-        // ============================================================================
-        //                             PROTECTED METHODS
-        // ============================================================================
+    /**
+     * @see RaeptorCogs::GAPI::Common::RendererBackend::beginFrame()
+     */
+    void beginFrame() override;
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::RendererBackend::beginFrame()
-         */
-        void beginFrame() override;
+    /**
+     * @see RaeptorCogs::GAPI::Common::RendererBackend::endFrame()
+     */
+    void endFrame() override;
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::RendererBackend::endFrame()
-         */
-        void endFrame() override;
+  public:
+    // ============================================================================
+    //                             PUBLIC METHODS
+    // ============================================================================
 
-    public:
+    /**
+     * @brief Default constructor for RenderPipeline.
+     */
+    RenderPipeline(Common::RendererBackend &renderer) : GL::RenderPipeline(renderer) {}
 
-        // ============================================================================
-        //                             PUBLIC METHODS
-        // ============================================================================
+    /**
+     * @brief Destructor for RenderPipeline.
+     */
+    ~RenderPipeline() = default;
 
-        /**
-         * @brief Default constructor for RenderPipeline.
-         */
-        RenderPipeline(Common::RendererBackend& renderer) : GL::RenderPipeline(renderer) {}
+    /**
+     * @see RaeptorCogs::GAPI::Common::RendererBackend::renderPass()
+     */
+    void renderPass(int x, int y, int width, int height) override;
 
-        /**
-         * @brief Destructor for RenderPipeline.
-         */
-        ~RenderPipeline() = default;
-
-        /**
-         * @see RaeptorCogs::GAPI::Common::RendererBackend::renderPass()
-         */
-        void renderPass(int x, int y, int width, int height) override;
-
-        /**
-         * @see RaeptorCogs::GAPI::Common::RendererBackend::renderMask()
-         */
-        void renderMask(Window* window, int x, int y, int width, int height) override;
-
+    /**
+     * @see RaeptorCogs::GAPI::Common::RendererBackend::renderMask()
+     */
+    void renderMask(Window *window, int x, int y, int width, int height) override;
 };
 
 } // namespace RaeptorCogs::GAPI::WebGL

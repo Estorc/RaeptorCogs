@@ -43,14 +43,14 @@ namespace RaeptorCogs {
 
 /**
  * @brief Calculate the next power of 2 greater than or equal to n.
- * 
+ *
  * @param n Input number.
  * @return The next power of 2 greater than or equal to n.
- * 
+ *
  * @code{.cpp}
  * uint64_t result = RaeptorCogs::NextPowerOf2(300); // result = 512
  * @endcode
  */
 uint64_t NextPowerOf2(uint64_t n);
 
-}
+} // namespace RaeptorCogs

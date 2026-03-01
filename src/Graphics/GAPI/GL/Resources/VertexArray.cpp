@@ -1,28 +1,28 @@
-#include <RaeptorCogs/RaeptorCogs.hpp>
-#include <RaeptorCogs/Graphics/GAPI/GL/Resources/VertexArray.hpp>
 #include <RaeptorCogs/External/glad/glad.hpp>
+#include <RaeptorCogs/Graphics/GAPI/GL/Resources/VertexArray.hpp>
+#include <RaeptorCogs/RaeptorCogs.hpp>
 
 namespace RaeptorCogs::GAPI::GL {
 
 VertexArray::VertexArray() {
-    GLuint newID = 0;
-    glGenVertexArrays(1, &newID);
-    this->glObjectID = newID;
+  GLuint newID = 0;
+  glGenVertexArrays(1, &newID);
+  this->glObjectID = newID;
 }
 
 VertexArray::~VertexArray() {
-    if (this->isValid()) {
-        glDeleteVertexArrays(1, &this->glObjectID);
-        this->glObjectID = 0;
-    }
+  if (this->isValid()) {
+    glDeleteVertexArrays(1, &this->glObjectID);
+    this->glObjectID = 0;
+  }
 }
 
 void VertexArray::bind() {
-    glBindVertexArray(this->getID());
+  glBindVertexArray(this->getID());
 }
 
 void VertexArray::unbind() const {
-    glBindVertexArray(0);
+  glBindVertexArray(0);
 }
 
-}
+} // namespace RaeptorCogs::GAPI::GL

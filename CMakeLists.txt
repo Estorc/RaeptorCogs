@@ -23,7 +23,7 @@ message(STATUS "CXX compiler version: ${CMAKE_CXX_COMPILER_VERSION}")
 # CMAKE MODULES
 #========================================================================#
 
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 include(FileIOUtils)
 
 include(FetchContent)
@@ -63,13 +63,13 @@ find_package(Doxygen)
 if (DOXYGEN_FOUND)
     message(STATUS "Doxygen found: ${DOXYGEN_EXECUTABLE}")
 
-    set(DOXYGEN_IN ${CMAKE_SOURCE_DIR}/docs/Doxyfile.in)
+    set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/docs/Doxyfile.in)
     set(DOXYGEN_OUT ${CMAKE_BINARY_DIR}/docs/doxygen/Doxyfile)
 
     doxygen_add_docs(
         docs-doxygen
-        ${CMAKE_SOURCE_DIR}/src
-        ${CMAKE_SOURCE_DIR}/include
+        ${CMAKE_CURRENT_SOURCE_DIR}/src
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
     )
 
     # configure Doxyfile to point to the right paths
@@ -126,7 +126,7 @@ if (DOXYGEN_FOUND)
         set(SPHINX_SOURCE ${CMAKE_BINARY_DIR}/docs/sphinx)
         set(SPHINX_BUILD  ${CMAKE_BINARY_DIR}/docs/html)
 
-        set(SPHINX_IN ${CMAKE_SOURCE_DIR}/docs/sphinx/conf.py.in)
+        set(SPHINX_IN ${CMAKE_CURRENT_SOURCE_DIR}/docs/sphinx/conf.py.in)
         set(SPHINX_OUT ${CMAKE_BINARY_DIR}/docs/sphinx/conf.py)
         set(DOXYGEN_XML_DIR "${CMAKE_BINARY_DIR}/docs/doxygen/xml")
 
@@ -136,13 +136,13 @@ if (DOXYGEN_FOUND)
 
         # Copy rts files to build directory
         copy_folder_if_changed(
-            "${CMAKE_SOURCE_DIR}/docs/sphinx/"
+            "${CMAKE_CURRENT_SOURCE_DIR}/docs/sphinx/"
             "${CMAKE_BINARY_DIR}/docs/"
             "copy_sphinx"
         )
 
         copy_folder_if_changed(
-            "${CMAKE_SOURCE_DIR}/examples/demo/"
+            "${CMAKE_CURRENT_SOURCE_DIR}/examples/demo/"
             "${CMAKE_BINARY_DIR}/docs/sphinx/_static/"
             "copy_demo_in_sphinx"
         )
@@ -157,7 +157,7 @@ if (DOXYGEN_FOUND)
 
         add_custom_target(RaeptorCogs_docs-sphinx
             COMMAND ${SPHINX_BUILD_EXECUTABLE} ${SPHINX_OPTIONS} -b html ${SPHINX_SOURCE} ${SPHINX_BUILD}
-            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
             COMMENT "Building Sphinx HTML documentation"
             DEPENDS copy_sphinx copy_demo_in_sphinx
             VERBATIM
@@ -406,6 +406,9 @@ list(FILTER NORMAL_SHADER_SOURCES EXCLUDE REGEX "${SHADER_DIR}/.*spir-v/.*") # E
 
 list(FILTER SPIRV_SHADER_SOURCES INCLUDE REGEX "${SHADER_DIR}/.*spir-v/.*") # Only include spir-v shaders
 
+# Make output dir for embedded shader headers
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/include/RaeptorCogs)
+
 set(EMBEDDED_NORMAL_SHADER_HEADER ${CMAKE_CURRENT_BINARY_DIR}/include/RaeptorCogs/EmbedShaders.hpp)
 set(EMBEDDED_SPIRV_SHADER_HEADER ${CMAKE_CURRENT_BINARY_DIR}/include/RaeptorCogs/EmbedSPIRVShaders.hpp)
 
@@ -637,7 +640,7 @@ function(add_example NAME)
         #target_link_options(${NAME} PRIVATE -mwindows)
         # Windows icon via resource file
         target_sources(${NAME} PRIVATE
-            ${CMAKE_SOURCE_DIR}/examples/resources.rc
+            ${CMAKE_CURRENT_SOURCE_DIR}/examples/resources.rc
         )
     elseif (UNIX)
 
@@ -646,16 +649,16 @@ function(add_example NAME)
         target_compile_definitions(${NAME} PRIVATE APP_ID="${NAME}")
 
         # Linux desktop entry + icon
-        install(FILES ${CMAKE_SOURCE_DIR}/examples/raeptor-cogs-icon-16.png DESTINATION share/icons/hicolor/16x16/apps RENAME ${NAME}.png)
-        install(FILES ${CMAKE_SOURCE_DIR}/examples/raeptor-cogs-icon-32.png DESTINATION share/icons/hicolor/32x32/apps RENAME ${NAME}.png)
-        install(FILES ${CMAKE_SOURCE_DIR}/examples/raeptor-cogs-icon-48.png DESTINATION share/icons/hicolor/48x48/apps RENAME ${NAME}.png)
-        install(FILES ${CMAKE_SOURCE_DIR}/examples/raeptor-cogs-icon-128.png DESTINATION share/icons/hicolor/128x128/apps RENAME ${NAME}.png)
+        install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/examples/raeptor-cogs-icon-16.png DESTINATION share/icons/hicolor/16x16/apps RENAME ${NAME}.png)
+        install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/examples/raeptor-cogs-icon-32.png DESTINATION share/icons/hicolor/32x32/apps RENAME ${NAME}.png)
+        install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/examples/raeptor-cogs-icon-48.png DESTINATION share/icons/hicolor/48x48/apps RENAME ${NAME}.png)
+        install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/examples/raeptor-cogs-icon-128.png DESTINATION share/icons/hicolor/128x128/apps RENAME ${NAME}.png)
 
         set(EXEC_PATH "$<TARGET_FILE:${NAME}>")
 
         # Create app.desktop file in build dir
         #configure_file(
-        #    ${CMAKE_SOURCE_DIR}/examples/app.desktop.in
+        #    ${CMAKE_CURRENT_SOURCE_DIR}/examples/app.desktop.in
         #    ${CMAKE_BINARY_DIR}/${NAME}.desktop.in
         #    @ONLY
         #)
@@ -730,16 +733,16 @@ function(add_example NAME)
 endfunction()
 
 add_example(RaeptorCogsTestPlayground
-    FOLDER ${CMAKE_SOURCE_DIR}/examples/test-playground
+    FOLDER ${CMAKE_CURRENT_SOURCE_DIR}/examples/test-playground
     ASSETS
-        ${CMAKE_SOURCE_DIR}/examples/test-playground/assets
-        ${CMAKE_SOURCE_DIR}/examples/test-playground/protected
+        ${CMAKE_CURRENT_SOURCE_DIR}/examples/test-playground/assets
+        ${CMAKE_CURRENT_SOURCE_DIR}/examples/test-playground/protected
 )
 
 add_example(RaeptorCogsDemo
-    FOLDER ${CMAKE_SOURCE_DIR}/examples/demo
+    FOLDER ${CMAKE_CURRENT_SOURCE_DIR}/examples/demo
     ASSETS
-        ${CMAKE_SOURCE_DIR}/examples/demo/assets
+        ${CMAKE_CURRENT_SOURCE_DIR}/examples/demo/assets
 )
 
 #========================================================================#

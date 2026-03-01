@@ -39,125 +39,126 @@
 
 #pragma once
 #include <RaeptorCogs/Graphics/GAPI/Common/Core/Internal/RenderPipeline.hpp>
-#include <RaeptorCogs/Graphics/GAPI/Vulkan/Core/Internal/WindowContext.hpp>
 #include <RaeptorCogs/Graphics/GAPI/Vulkan/Core/Internal/VulkanFrame.hpp>
+#include <RaeptorCogs/Graphics/GAPI/Vulkan/Core/Internal/WindowContext.hpp>
 #include <vulkan/vulkan.h>
 
 namespace RaeptorCogs::GAPI::Vulkan {
 
 class RenderPipeline : public Common::RenderPipeline {
-    private:
+  private:
+    // ============================================================================
+    //                               PRIVATE ATTRIBUTES
+    // ============================================================================
 
-        // ============================================================================
-        //                               PRIVATE ATTRIBUTES
-        // ============================================================================
+    /**
+     * @brief Current window context.
+     */
+    WindowContext *currentContext = nullptr;
 
-        /**
-         * @brief Current window context.
-         */
-        WindowContext* currentContext = nullptr;
+    /**
+     * @brief Clear color for the render pipeline.
+     */
+    glm::vec4 clearColor = glm::vec4(0.0f, 0.0f, 0.0f, 0.0f);
 
-        /**
-         * @brief Clear color for the render pipeline.
-         */
-        glm::vec4 clearColor = glm::vec4(0.0f, 0.0f, 0.0f, 0.0f);
+    /**
+     * @brief Vulkan frame data.
+     */
+    VulkanFrame vulkanFrame;
 
-        /**
-         * @brief Vulkan frame data.
-         */
-        VulkanFrame vulkanFrame;
+  protected:
+    // ============================================================================
+    //                               PROTECTED METHODS
+    // ============================================================================
 
-    protected:
+    /**
+     * @see RaeptorCogs::GAPI::Common::RendererBackend::beginFrame()
+     */
+    void beginFrame() override;
 
-        // ============================================================================
-        //                               PROTECTED METHODS
-        // ============================================================================
+    /**
+     * @see RaeptorCogs::GAPI::Common::RendererBackend::endFrame()
+     */
+    void endFrame() override;
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::RendererBackend::beginFrame()
-         */
-        void beginFrame() override;
+  public:
+    // ============================================================================
+    //                             PUBLIC METHODS
+    // ============================================================================
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::RendererBackend::endFrame()
-         */
-        void endFrame() override;
+    /**
+     * @brief Default constructor for RenderPipeline.
+     */
+    RenderPipeline(Common::RendererBackend &renderer)
+        : Common::RenderPipeline(renderer) {}
 
-    public:
+    /**
+     * @brief Destructor for RenderPipeline.
+     */
+    ~RenderPipeline() = default;
 
-        // ============================================================================
-        //                             PUBLIC METHODS
-        // ============================================================================
+    /**
+     * @see RaeptorCogs::GAPI::Common::RendererBackend::renderPass()
+     */
+    void renderPass(int x, int y, int width, int height) override;
 
-        /**
-         * @brief Default constructor for RenderPipeline.
-         */
-        RenderPipeline(Common::RendererBackend& renderer) : Common::RenderPipeline(renderer) {}
+    /**
+     * @see RaeptorCogs::GAPI::Common::RendererBackend::renderMask()
+     */
+    void renderMask(Window *window, int x, int y, int width, int height) override;
 
-        /**
-         * @brief Destructor for RenderPipeline.
-         */
-        ~RenderPipeline() = default;
+    /**
+     * @brief Transition image layout.
+     * @param commandBuffer The command buffer to record the transition commands.
+     * @param image The Vulkan image to transition.
+     * @param oldLayout The current layout of the image.
+     * @param newLayout The desired layout of the image.
+     * @param aspectMask The aspect mask for the image subresource.
+     * @param srcStageMask The source pipeline stage mask.
+     * @param dstStageMask The destination pipeline stage mask.
+     *
+     * @note This function records the necessary commands to transition the image
+     * layout within the provided command buffer.
+     */
+    void transitionImageLayout(
+        VkCommandBuffer commandBuffer, VkImage image, VkImageLayout oldLayout,
+        VkImageLayout newLayout, VkImageAspectFlags aspectMask,
+        VkPipelineStageFlags srcStageMask, VkPipelineStageFlags dstStageMask,
+        uint32_t mipLevels = 1);
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::RendererBackend::renderPass()
-         */
-        void renderPass(int x, int y, int width, int height) override;
+    /**
+     * @brief Get the current window context.
+     * @return Pointer to the current WindowContext.
+     * @note Used to manage the active rendering context.
+     */
+    WindowContext *getCurrentContext() const;
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::RendererBackend::renderMask()
-         */
-        void renderMask(Window* window, int x, int y, int width, int height) override;
+    /**
+     * @brief Set the current window context.
+     * @param context Pointer to the WindowContext to set as current.
+     * @note Used to manage the active rendering context.
+     */
+    void setCurrentContext(WindowContext *context);
 
-        /**
-         * @brief Transition image layout.
-         * @param commandBuffer The command buffer to record the transition commands.
-         * @param image The Vulkan image to transition.
-         * @param oldLayout The current layout of the image.
-         * @param newLayout The desired layout of the image.
-         * @param aspectMask The aspect mask for the image subresource.
-         * @param srcStageMask The source pipeline stage mask.
-         * @param dstStageMask The destination pipeline stage mask.
-         * 
-         * @note This function records the necessary commands to transition the image
-         * layout within the provided command buffer.
-         */
-        void transitionImageLayout(VkCommandBuffer commandBuffer, VkImage image, VkImageLayout oldLayout, VkImageLayout newLayout, VkImageAspectFlags aspectMask, VkPipelineStageFlags srcStageMask, VkPipelineStageFlags dstStageMask);
+    /**
+     * @brief Get the clear color of the render pipeline.
+     * @return The clear color as a glm::vec4.
+     */
+    glm::vec4 getClearColor() const;
 
-        /**
-         * @brief Get the current window context.
-         * @return Pointer to the current WindowContext.
-         * @note Used to manage the active rendering context.
-         */
-        WindowContext* getCurrentContext() const;
+    /**
+     * @brief Set the clear color for the render pipeline.
+     * @param color The clear color as a glm::vec4.
+     * @note The color components should be in the range [0.0, 1.0].
+     * The alpha component is used for transparency.
+     */
+    void setClearColor(const glm::vec4 &color);
 
-        /**
-         * @brief Set the current window context.
-         * @param context Pointer to the WindowContext to set as current.
-         * @note Used to manage the active rendering context.
-         */
-        void setCurrentContext(WindowContext* context);
-
-        /**
-         * @brief Get the clear color of the render pipeline.
-         * @return The clear color as a glm::vec4.
-         */
-        glm::vec4 getClearColor() const;
-
-        /**
-         * @brief Set the clear color for the render pipeline.
-         * @param color The clear color as a glm::vec4.
-         * @note The color components should be in the range [0.0, 1.0].
-         * The alpha component is used for transparency.
-         */
-        void setClearColor(const glm::vec4& color);
-
-        /**
-         * @brief Get the Vulkan frame data.
-         * @return Reference to the VulkanFrame structure.
-         */
-        VulkanFrame& getVulkanFrame();
-
+    /**
+     * @brief Get the Vulkan frame data.
+     * @return Reference to the VulkanFrame structure.
+     */
+    VulkanFrame &getVulkanFrame();
 };
 
 } // namespace RaeptorCogs::GAPI::Vulkan

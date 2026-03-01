@@ -44,9 +44,9 @@ namespace RaeptorCogs::GAPI::Common {
 
 /**
  * @brief VertexArray interface.
- * 
+ *
  * Provides a common interface for vertex array management.
- * 
+ *
  * @note This is an abstract base class and should be inherited by specific vertex array implementations.
  */
 class VertexArray : public ObjectData {
@@ -55,7 +55,7 @@ class VertexArray : public ObjectData {
 
 /**
  * @brief Alias for VertexArray.
- * 
+ *
  * Provides a convenient alias for the VertexArray class.
  */
 using VAO = VertexArray;

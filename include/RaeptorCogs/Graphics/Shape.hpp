@@ -5,7 +5,7 @@
  * @details
  * Typical use cases:
  * - Handling 2D shape definitions and vertex data retrieval.
- * 
+ *
  * TODO:
  * - Connect shape to GPU buffers for rendering.
  * *********************************************************************************
@@ -41,62 +41,61 @@
  ***********************************************************************************/
 
 #pragma once
+#include <RaeptorCogsShaders/common/constants.glsl>
 #include <glm/mat3x2.hpp>
 #include <glm/mat3x3.hpp>
-#include <iostream>
-#include <RaeptorCogsShaders/common/constants.glsl>
 
 namespace RaeptorCogs {
 
 /**
  * @brief Base Shape class.
- * 
+ *
  * Provides an interface for 2D shapes to retrieve vertex and index data.
  */
 class Shape {
-    public:
+  public:
+    // ============================================================================
+    //                               PUBLIC METHODS
+    // ============================================================================
 
-        // ============================================================================
-        //                               PUBLIC METHODS
-        // ============================================================================
+    /**
+     * @brief Virtual destructor.
+     */
+    virtual ~Shape() = default;
 
-        /**
-         * @brief Virtual destructor.
-         */
-        virtual ~Shape() = default;
+    /**
+     * @brief Get vertex data as triangles.
+     *
+     * @param outTrianglesPos Output vector for triangle positions.
+     * @param outTrianglesUV Output vector for triangle UV coordinates.
+     * @param triangleCount Output number of triangles.
+     *
+     * @note The default implementation converts the shape's vertices and indices into triangles.
+     */
+    virtual void getVertexData(
+        std::vector<glm::mat3> *outTrianglesPos, std::vector<glm::mat3x2> *outTrianglesUV, size_t *triangleCount) const;
 
-        /**
-         * @brief Get vertex data as triangles.
-         * 
-         * @param outTrianglesPos Output vector for triangle positions.
-         * @param outTrianglesUV Output vector for triangle UV coordinates.
-         * @param triangleCount Output number of triangles.
-         * 
-         * @note The default implementation converts the shape's vertices and indices into triangles.
-         */
-        virtual void getVertexData(std::vector<glm::mat3> *outTrianglesPos, std::vector<glm::mat3x2> *outTrianglesUV, size_t *triangleCount) const;
+    /**
+     * @brief Get raw vertex array.
+     *
+     * @return Pointer to the vertex array.
+     */
+    virtual const float *getVertices() const = 0;
 
-        /**
-         * @brief Get raw vertex array.
-         * 
-         * @return Pointer to the vertex array.
-         */
-        virtual const float* getVertices() const = 0;
-
-        /**
-         * @brief Get raw index array.
-         * 
-         * @param count Output number of indices.
-         * @return Pointer to the index array.
-         */
-        virtual const unsigned* getIndices(size_t& count) const = 0;
+    /**
+     * @brief Get raw index array.
+     *
+     * @param count Output number of indices.
+     * @return Pointer to the index array.
+     */
+    virtual const unsigned *getIndices(size_t &count) const = 0;
 };
 
 /**
  * @brief Quad shape class.
- * 
+ *
  * Provides vertex and index data for a simple quad shape.
- * 
+ *
  * @code{.cpp}
  * std::shared_ptr<Shape> quad = std::make_shared<Quad>();
  * size_t triangleCount;
@@ -105,177 +104,171 @@ class Shape {
  * @endcode
  */
 class Quad : public Shape {
-    private:
+  private:
+    // ============================================================================
+    //                               PRIVATE ATTRIBUTES
+    // ============================================================================
 
-        // ============================================================================
-        //                               PRIVATE ATTRIBUTES
-        // ============================================================================
+    /**
+     * @brief Vertex data for the quad.
+     *
+     * Each vertex consists of position (x, y) and UV coordinates (u, v).
+     *
+     * @note The quad is defined in a 1x1 space from (0,0) to (1,1).
+     */
+    static constexpr float vertices[] = {
+      // positions    uv
+      0.0f, 0.0f, 0.0f, 0.0f, // Bottom-left
+      1.0f, 0.0f, 1.0f, 0.0f, // Bottom-right
+      1.0f, 1.0f, 1.0f, 1.0f, // Top-right
+      0.0f, 1.0f, 0.0f, 1.0f  // Top-left
+    };
 
-        /**
-         * @brief Vertex data for the quad.
-         * 
-         * Each vertex consists of position (x, y) and UV coordinates (u, v).
-         * 
-         * @note The quad is defined in a 1x1 space from (0,0) to (1,1).
-         */
-        static constexpr float vertices[] = {
-            // positions    uv
-            0.0f, 0.0f,     0.0f, 0.0f,  // Bottom-left
-            1.0f, 0.0f,     1.0f, 0.0f,  // Bottom-right
-            1.0f, 1.0f,     1.0f, 1.0f,  // Top-right
-            0.0f, 1.0f,     0.0f, 1.0f   // Top-left
-        };
+    /**
+     * @brief Index data for the quad.
+     *
+     * Defines two triangles that make up the quad.
+     */
+    static constexpr unsigned indices[] = { 0, 1, 2, 2, 3, 0 };
 
-        /**
-         * @brief Index data for the quad.
-         * 
-         * Defines two triangles that make up the quad.
-         */
-        static constexpr unsigned indices[] = {
-            0, 1, 2,
-            2, 3, 0
-        };
-    public:
+  public:
+    // ============================================================================
+    //                               PUBLIC METHODS
+    // ============================================================================
 
-        // ============================================================================
-        //                               PUBLIC METHODS
-        // ============================================================================
+    /**
+     * @brief Destructor for Quad.
+     */
+    ~Quad() override = default;
 
-        /**
-         * @brief Destructor for Quad.
-         */
-        ~Quad() override = default;
+    /**
+     * @brief Get vertex data.
+     *
+     * @return Pointer to the vertex array.
+     */
+    const float *getVertices() const override {
+      return vertices;
+    }
 
-        /**
-         * @brief Get vertex data.
-         * 
-         * @return Pointer to the vertex array.
-         */
-        const float* getVertices() const override {
-            return vertices;
-        }
-
-        /**
-         * @brief Get index data.
-         * 
-         * @param count Output number of indices.
-         * @return Pointer to the index array.
-         */
-        const unsigned* getIndices(size_t& count) const override {
-            count = std::size(indices);
-            return indices;
-        }
+    /**
+     * @brief Get index data.
+     *
+     * @param count Output number of indices.
+     * @return Pointer to the index array.
+     */
+    const unsigned *getIndices(size_t &count) const override {
+      count = std::size(indices);
+      return indices;
+    }
 };
 
 /**
  * @brief Regular polygon shape class.
- * 
+ *
  * Provides vertex and index data for a regular polygon shape with a specified number of sides.
  */
 class RegularPolygon : public Shape {
-    private:
+  private:
+    // ============================================================================
+    //                               PRIVATE ATTRIBUTES
+    // ============================================================================
 
-        // ============================================================================
-        //                               PRIVATE ATTRIBUTES
-        // ============================================================================
+    /**
+     * @brief Number of sides of the polygon.
+     *
+     * @note Minimum is 3.
+     */
+    unsigned int sides;
 
-        /**
-         * @brief Number of sides of the polygon.
-         * 
-         * @note Minimum is 3.
-         */
-        unsigned int sides;
+    /**
+     * @brief Vertex data.
+     *
+     * Generated based on the number of sides.
+     */
+    std::vector<float> vertices;
 
-        /**
-         * @brief Vertex data.
-         * 
-         * Generated based on the number of sides.
-         */
-        std::vector<float> vertices;
+    /**
+     * @brief Index data.
+     *
+     * Generated based on the number of sides.
+     */
+    std::vector<unsigned> indices;
 
-        /**
-         * @brief Index data.
-         * 
-         * Generated based on the number of sides.
-         */
-        std::vector<unsigned> indices;
+    /**
+     * @brief Generate geometry for the polygon.
+     *
+     * @note Called during construction to populate vertices and indices.
+     */
+    void generateGeometry() {
+      vertices.clear();
+      indices.clear();
+      if (sides < 3u)
+        sides = 3u; // Minimum of 3 sides
 
-        /**
-         * @brief Generate geometry for the polygon.
-         * 
-         * @note Called during construction to populate vertices and indices.
-         */
-        void generateGeometry() {
-            vertices.clear();
-            indices.clear();
-            if (sides < 3u) sides = 3u; // Minimum of 3 sides
+      // Center vertex
+      vertices.push_back(0.5f); // x
+      vertices.push_back(0.5f); // y
+      vertices.push_back(0.5f); // u
+      vertices.push_back(0.5f); // v
 
-            // Center vertex
-            vertices.push_back(0.5f); // x
-            vertices.push_back(0.5f); // y
-            vertices.push_back(0.5f); // u
-            vertices.push_back(0.5f); // v
+      float angleStep = 2.0f * static_cast<float>(PI) / static_cast<float>(sides);
+      for (unsigned int i = 0; i < sides; ++i) {
+        float angle = static_cast<float>(i) * angleStep;
+        float x     = 0.5f + 0.5f * cos(angle);
+        float y     = 0.5f + 0.5f * sin(angle);
+        float u     = x; // Simple UV mapping
+        float v     = y; // Simple UV mapping
+        vertices.push_back(x);
+        vertices.push_back(y);
+        vertices.push_back(u);
+        vertices.push_back(v);
+      }
 
-            float angleStep = 2.0f * static_cast<float>(PI) / static_cast<float>(sides);
-            for (unsigned int i = 0; i < sides; ++i) {
-                float angle = static_cast<float>(i) * angleStep;
-                float x = 0.5f + 0.5f * cos(angle);
-                float y = 0.5f + 0.5f * sin(angle);
-                float u = x; // Simple UV mapping
-                float v = y; // Simple UV mapping
-                vertices.push_back(x);
-                vertices.push_back(y);
-                vertices.push_back(u);
-                vertices.push_back(v);
-            }
+      for (unsigned int i = 1; i <= sides; ++i) {
+        indices.push_back(0); // Center vertex
+        indices.push_back(i);
+        indices.push_back(i % sides + 1);
+      }
+    }
 
-            for (unsigned int i = 1; i <= sides; ++i) {
-                indices.push_back(0); // Center vertex
-                indices.push_back(i);
-                indices.push_back(i % sides + 1);
-            }
-        }
+  public:
+    // ============================================================================
+    //                               PUBLIC METHODS
+    // ============================================================================
 
-    public:
+    /**
+     * @brief Destructor for RegularPolygon.
+     */
+    ~RegularPolygon() override = default;
 
-        // ============================================================================
-        //                               PUBLIC METHODS
-        // ============================================================================
+    /**
+     * @brief Constructor for RegularPolygon.
+     *
+     * @param sides Number of sides of the polygon.
+     */
+    RegularPolygon(unsigned int sides) : sides(sides) {
+      generateGeometry();
+    }
 
-        /**
-         * @brief Destructor for RegularPolygon.
-         */
-        ~RegularPolygon() override = default;
+    /**
+     * @brief Get vertex data.
+     *
+     * @return Pointer to the vertex array.
+     */
+    const float *getVertices() const override {
+      return vertices.data();
+    }
 
-        /**
-         * @brief Constructor for RegularPolygon.
-         * 
-         * @param sides Number of sides of the polygon.
-         */
-        RegularPolygon(unsigned int sides) : sides(sides) {
-            generateGeometry();
-        }
-
-        /**
-         * @brief Get vertex data.
-         * 
-         * @return Pointer to the vertex array.
-         */
-        const float* getVertices() const override {
-            return vertices.data();
-        }
-
-        /**
-         * @brief Get index data.
-         * 
-         * @param count Output number of indices.
-         * @return Pointer to the index array.
-         */
-        const unsigned* getIndices(size_t& count) const override {
-            count = indices.size();
-            return indices.data();
-        }
-
+    /**
+     * @brief Get index data.
+     *
+     * @param count Output number of indices.
+     * @return Pointer to the index array.
+     */
+    const unsigned *getIndices(size_t &count) const override {
+      count = indices.size();
+      return indices.data();
+    }
 };
 
-};
+}; // namespace RaeptorCogs

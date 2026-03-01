@@ -39,59 +39,59 @@
 
 #pragma once
 #include <RaeptorCogs/Graphics/GAPI/Common/Resources/Buffer.hpp>
-#include <RaeptorCogs/Graphics/GAPI/Vulkan/Resources/Object.hpp>
 #include <RaeptorCogs/Graphics/GAPI/Vulkan/Core/Vulkan.hpp>
+#include <RaeptorCogs/Graphics/GAPI/Vulkan/Resources/Object.hpp>
+
 
 namespace RaeptorCogs::GAPI::Vulkan {
 
 class Buffer {
-    private:
-        /**
-         * @brief Vulkan buffer handle.
-         */
-        VkBuffer buffer = nullptr;
+  private:
+    /**
+     * @brief Vulkan buffer handle.
+     */
+    VkBuffer buffer = nullptr;
 
-        /**
-         * @brief Vulkan device memory handle.
-         */
-        VkDeviceMemory memory = nullptr;
+    /**
+     * @brief Vulkan device memory handle.
+     */
+    VkDeviceMemory memory = nullptr;
 
-    protected:
-        /**
-         * @brief Get the Vulkan buffer handle.
-         * 
-         * @return VkBuffer& Handle to the Vulkan buffer.
-         */
-        VkBuffer& getBuffer();
+  protected:
+    /**
+     * @brief Get the Vulkan buffer handle.
+     *
+     * @return VkBuffer& Handle to the Vulkan buffer.
+     */
+    VkBuffer &getBuffer();
 
-        /**
-         * @brief Get the Vulkan device memory handle.
-         * 
-         * @return VkDeviceMemory& Handle to the Vulkan device memory.
-         */
-        VkDeviceMemory& getMemory();
+    /**
+     * @brief Get the Vulkan device memory handle.
+     *
+     * @return VkDeviceMemory& Handle to the Vulkan device memory.
+     */
+    VkDeviceMemory &getMemory();
 
-    public:
-        /**
-         * @brief Constructor for Buffer.
-         */
-        Buffer() = default;
+  public:
+    /**
+     * @brief Constructor for Buffer.
+     */
+    Buffer() = default;
 
-        /**
-         * @brief Destructor for Buffer.
-         */
-        ~Buffer();
+    /**
+     * @brief Destructor for Buffer.
+     */
+    ~Buffer();
 
-        /**
-         * @brief Build the buffer with given data, size, and usage.
-         * @param data Pointer to the data to be copied into the buffer.
-         * @param size Size of the data in bytes.
-         * @param usage Vulkan buffer usage flags.
-         * 
-         * @note This is a helper function for buffer creation.
-         */
-        void vkBuild(const void* data, size_t size, VkBufferUsageFlags usage);
-
+    /**
+     * @brief Build the buffer with given data, size, and usage.
+     * @param data Pointer to the data to be copied into the buffer.
+     * @param size Size of the data in bytes.
+     * @param usage Vulkan buffer usage flags.
+     *
+     * @note This is a helper function for buffer creation.
+     */
+    void vkBuild(const void *data, size_t size, VkBufferUsageFlags usage);
 };
 
 // -------------------------------------------------------------
@@ -102,29 +102,29 @@ class Buffer {
  * @see RaeptorCogs::GAPI::Common::Framebuffer
  */
 class Framebuffer : public Common::Framebuffer, Buffer {
-    public:
-        /**
-         * @brief Constructor for Framebuffer.
-         */
-        Framebuffer();
+  public:
+    /**
+     * @brief Constructor for Framebuffer.
+     */
+    Framebuffer();
 
-        /**
-         * @brief Bind the framebuffer for use.
-         * 
-         * Binds the Vulkan framebuffer object.
-         * 
-         * @note Overrides the pure virtual method from the base class.
-         */
-        void bind() override;
+    /**
+     * @brief Bind the framebuffer for use.
+     *
+     * Binds the Vulkan framebuffer object.
+     *
+     * @note Overrides the pure virtual method from the base class.
+     */
+    void bind() override;
 
-        /**
-         * @brief Unbind the framebuffer.
-         * 
-         * Unbinds the Vulkan framebuffer object.
-         * 
-         * @note Overrides the pure virtual method from the base class.
-         */
-        void unbind() const override;
+    /**
+     * @brief Unbind the framebuffer.
+     *
+     * Unbinds the Vulkan framebuffer object.
+     *
+     * @note Overrides the pure virtual method from the base class.
+     */
+    void unbind() const override;
 };
 
 /**
@@ -143,29 +143,29 @@ REGISTER(Common::Framebuffer, Framebuffer);
  * @see RaeptorCogs::GAPI::Common::Renderbuffer
  */
 class Renderbuffer : public Common::Renderbuffer, Buffer {
-    public:
-        /**
-         * @brief Constructor for Renderbuffer.
-         */
-        Renderbuffer();
+  public:
+    /**
+     * @brief Constructor for Renderbuffer.
+     */
+    Renderbuffer();
 
-        /**
-         * @brief Bind the renderbuffer for use.
-         * 
-         * Binds the Vulkan renderbuffer object.
-         * 
-         * @note Overrides the pure virtual method from the base class.
-         */
-        void bind() override;
+    /**
+     * @brief Bind the renderbuffer for use.
+     *
+     * Binds the Vulkan renderbuffer object.
+     *
+     * @note Overrides the pure virtual method from the base class.
+     */
+    void bind() override;
 
-        /**
-         * @brief Unbind the renderbuffer.
-         * 
-         * Unbinds the Vulkan renderbuffer object.
-         * 
-         * @note Overrides the pure virtual method from the base class.
-         */
-        void unbind() const override;
+    /**
+     * @brief Unbind the renderbuffer.
+     *
+     * Unbinds the Vulkan renderbuffer object.
+     *
+     * @note Overrides the pure virtual method from the base class.
+     */
+    void unbind() const override;
 };
 
 /**
@@ -184,34 +184,34 @@ REGISTER(Common::Renderbuffer, Renderbuffer);
  * @see RaeptorCogs::GAPI::Common::Vertexbuffer
  */
 class Vertexbuffer : public Common::Vertexbuffer, Buffer {
-    public:
-        /**
-         * @brief Constructor for Vertexbuffer.
-         */
-        Vertexbuffer();
-        
-        /**
-         * @brief Bind the vertex buffer for use.
-         * 
-         * Binds the Vulkan vertex buffer object.
-         * 
-         * @note Overrides the pure virtual method from the base class.
-         */
-        void bind() override;
+  public:
+    /**
+     * @brief Constructor for Vertexbuffer.
+     */
+    Vertexbuffer();
 
-        /**
-         * @brief Unbind the vertex buffer.
-         * 
-         * Unbinds the Vulkan vertex buffer object.
-         * 
-         * @note Overrides the pure virtual method from the base class.
-         */
-        void unbind() const override;
+    /**
+     * @brief Bind the vertex buffer for use.
+     *
+     * Binds the Vulkan vertex buffer object.
+     *
+     * @note Overrides the pure virtual method from the base class.
+     */
+    void bind() override;
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::Vertexbuffer::build
-         */
-        void build(const void* data, size_t size) override;
+    /**
+     * @brief Unbind the vertex buffer.
+     *
+     * Unbinds the Vulkan vertex buffer object.
+     *
+     * @note Overrides the pure virtual method from the base class.
+     */
+    void unbind() const override;
+
+    /**
+     * @see RaeptorCogs::GAPI::Common::Vertexbuffer::build
+     */
+    void build(const void *data, size_t size) override;
 };
 
 /**
@@ -230,34 +230,34 @@ REGISTER(Common::Vertexbuffer, Vertexbuffer);
  * @see RaeptorCogs::GAPI::Common::Elementbuffer
  */
 class Elementbuffer : public Common::Elementbuffer, Buffer {
-    public:
-        /**
-         * @brief Constructor for Elementbuffer.
-         */
-        Elementbuffer();
+  public:
+    /**
+     * @brief Constructor for Elementbuffer.
+     */
+    Elementbuffer();
 
-        /**
-         * @brief Bind the element buffer for use.
-         * 
-         * Binds the Vulkan element buffer object.
-         * 
-         * @note Overrides the pure virtual method from the base class.
-         */
-        void bind() override;
+    /**
+     * @brief Bind the element buffer for use.
+     *
+     * Binds the Vulkan element buffer object.
+     *
+     * @note Overrides the pure virtual method from the base class.
+     */
+    void bind() override;
 
-        /**
-         * @brief Unbind the element buffer.
-         * 
-         * Unbinds the Vulkan element buffer object.
-         * 
-         * @note Overrides the pure virtual method from the base class.
-         */
-        void unbind() const override;
+    /**
+     * @brief Unbind the element buffer.
+     *
+     * Unbinds the Vulkan element buffer object.
+     *
+     * @note Overrides the pure virtual method from the base class.
+     */
+    void unbind() const override;
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::Elementbuffer::build
-         */
-        void build(const void* data, size_t size) override;
+    /**
+     * @see RaeptorCogs::GAPI::Common::Elementbuffer::build
+     */
+    void build(const void *data, size_t size) override;
 };
 
 /**
@@ -276,44 +276,44 @@ REGISTER(Common::Elementbuffer, Elementbuffer);
  * @see RaeptorCogs::GAPI::Common::ShaderStorageBuffer
  */
 class ShaderStorageBuffer : public Common::ShaderStorageBuffer, Buffer {
-    public:
-        /**
-         * @brief Constructor for ShaderStorageBuffer.
-         */
-        ShaderStorageBuffer();
+  public:
+    /**
+     * @brief Constructor for ShaderStorageBuffer.
+     */
+    ShaderStorageBuffer();
 
-        /**
-         * @brief Bind the shader storage buffer for use.
-         * 
-         * Binds the Vulkan shader storage buffer object.
-         * 
-         * @note Overrides the pure virtual method from the base class.
-         */
-        void bind() override;
+    /**
+     * @brief Bind the shader storage buffer for use.
+     *
+     * Binds the Vulkan shader storage buffer object.
+     *
+     * @note Overrides the pure virtual method from the base class.
+     */
+    void bind() override;
 
-        /**
-         * @brief Unbind the shader storage buffer.
-         * 
-         * Unbinds the Vulkan shader storage buffer object.
-         * 
-         * @note Overrides the pure virtual method from the base class.
-         */
-        void unbind() const override;
+    /**
+     * @brief Unbind the shader storage buffer.
+     *
+     * Unbinds the Vulkan shader storage buffer object.
+     *
+     * @note Overrides the pure virtual method from the base class.
+     */
+    void unbind() const override;
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::ShaderStorageBuffer::allocate
-         */
-        void allocate(size_t size) override;
+    /**
+     * @see RaeptorCogs::GAPI::Common::ShaderStorageBuffer::allocate
+     */
+    void allocate(size_t size) override;
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::ShaderStorageBuffer::setBindingPoint
-         */
-        void setBindingPoint(unsigned int bindingPoint) override;
+    /**
+     * @see RaeptorCogs::GAPI::Common::ShaderStorageBuffer::setBindingPoint
+     */
+    void setBindingPoint(unsigned int bindingPoint) override;
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::ShaderStorageBuffer::upload
-         */
-        void upload(const void* data, size_t size, size_t offset = 0) override;
+    /**
+     * @see RaeptorCogs::GAPI::Common::ShaderStorageBuffer::upload
+     */
+    void upload(const void *data, size_t size, size_t offset = 0) override;
 };
 
 /**
@@ -324,4 +324,4 @@ using SSBO = ShaderStorageBuffer;
 /** @brief Register ShaderStorageBuffer with the FactoryRegistry.*/
 REGISTER(Common::ShaderStorageBuffer, ShaderStorageBuffer);
 
-}
+} // namespace RaeptorCogs::GAPI::Vulkan

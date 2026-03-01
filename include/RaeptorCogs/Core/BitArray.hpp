@@ -38,18 +38,18 @@
  ***********************************************************************************/
 
 #pragma once
-#include <vector>
-#include <iostream>
 #include <bitset>
 #include <cstdint>
+#include <iostream>
+#include <vector>
 
 namespace RaeptorCogs {
 
 /**
  * @brief BitArray class.
- * 
+ *
  * Represents a dynamic array of bits and provides utilities for manipulating them.
- * 
+ *
  * @code{.cpp}
  * RaeptorCogs::BitArray bitArray;
  * bitArray.set(5);
@@ -57,108 +57,107 @@ namespace RaeptorCogs {
  * @endcode
  */
 class BitArray {
-    private:
+  private:
+    // ============================================================================
+    //                               PRIVATE ATTRIBUTES
+    // ============================================================================
 
-        // ============================================================================
-        //                               PRIVATE ATTRIBUTES
-        // ============================================================================
+    /**
+     * @brief Underlying storage for the bits.
+     *
+     * Each uint64_t represents 64 bits.
+     *
+     * @note Uses a vector to allow dynamic resizing.
+     */
+    std::vector<uint64_t> bits;
 
-        /**
-         * @brief Underlying storage for the bits.
-         * 
-         * Each uint64_t represents 64 bits.
-         * 
-         * @note Uses a vector to allow dynamic resizing.
-         */
-        std::vector<uint64_t> bits;
-    public:
+  public:
+    // ============================================================================
+    //                               PUBLIC METHODS
+    // ============================================================================
 
-        // ============================================================================
-        //                               PUBLIC METHODS
-        // ============================================================================
+    /**
+     * @brief Default constructor for BitArray.
+     */
+    BitArray() = default;
 
-        /**
-         * @brief Default constructor for BitArray.
-         */
-        BitArray() = default;
+    /**
+     * @brief Destructor for BitArray.
+     */
+    ~BitArray() = default;
 
-        /**
-         * @brief Destructor for BitArray.
-         */
-        ~BitArray() = default;
+    /**
+     * @brief Set the bit at the specified index.
+     *
+     * @param index The index of the bit to set.
+     * @return Reference to the BitArray for chaining.
+     *
+     * @note Automatically resizes the underlying storage if the index is out of bounds.
+     */
+    BitArray &set(size_t index) {
+      size_t vecIndex = index / 64;
+      size_t bitIndex = index % 64;
+      if (vecIndex >= bits.size()) {
+        bits.resize(vecIndex + 1, 0);
+      }
+      bits[vecIndex] |= (uint64_t(1) << bitIndex);
+      return *this;
+    }
 
-        /**
-         * @brief Set the bit at the specified index.
-         * 
-         * @param index The index of the bit to set.
-         * @return Reference to the BitArray for chaining.
-         * 
-         * @note Automatically resizes the underlying storage if the index is out of bounds.
-         */
-        BitArray& set(size_t index) {
-            size_t vecIndex = index / 64;
-            size_t bitIndex = index % 64;
-            if (vecIndex >= bits.size()) {
-                bits.resize(vecIndex + 1, 0);
-            }
-            bits[vecIndex] |= (uint64_t(1) << bitIndex);
-            return *this;
-        }
+    /**
+     * @brief Test if the bit at the specified index is set.
+     *
+     * @param index The index of the bit to test.
+     * @return true if the bit is set, false otherwise.
+     *
+     * @note Returns false if the index is out of bounds.
+     */
+    bool test(size_t index) {
+      size_t vecIndex = index / 64;
+      size_t bitIndex = index % 64;
+      if (vecIndex >= bits.size()) {
+        return false;
+      }
+      return (bits[vecIndex] & (uint64_t(1) << bitIndex)) != 0;
+    }
 
-        /**
-         * @brief Test if the bit at the specified index is set.
-         * 
-         * @param index The index of the bit to test.
-         * @return true if the bit is set, false otherwise.
-         * 
-         * @note Returns false if the index is out of bounds.
-         */
-        bool test(size_t index) {
-            size_t vecIndex = index / 64;
-            size_t bitIndex = index % 64;
-            if (vecIndex >= bits.size()) {
-                return false;
-            }
-            return (bits[vecIndex] & (uint64_t(1) << bitIndex)) != 0;
-        }
+    /**
+     * @brief Clear all bits in the BitArray.
+     *
+     * @note Resets the BitArray to an empty state.
+     */
+    void clear() {
+      bits.clear();
+    }
 
-        /**
-         * @brief Clear all bits in the BitArray.
-         * 
-         * @note Resets the BitArray to an empty state.
-         */
-        void clear() {
-            bits.clear();
-        }
-
-        /**
-         * @brief Get the underlying data of the BitArray.
-         * 
-         * @return Vector of uint64_t representing the bits.
-         */
-        std::vector<uint64_t> data() const {
-            return bits;
-        }
+    /**
+     * @brief Get the underlying data of the BitArray.
+     *
+     * @return Vector of uint64_t representing the bits.
+     */
+    std::vector<uint64_t> data() const {
+      return bits;
+    }
 };
 
-}
+} // namespace RaeptorCogs
 
 namespace std {
 
 /**
  * @brief Stream output operator for BitArray.
- * 
+ *
  * @param os Output stream.
  * @param bitArray BitArray instance to output.
  * @return Reference to the output stream.
  */
-inline std::ostream& operator<<(std::ostream& os, const RaeptorCogs::BitArray& bitArray) {
-    os << "BitArray{";
-    for (size_t i = 0; i < bitArray.data().size(); ++i) {
-        os << " " << std::bitset<64>(bitArray.data()[i]);
-    }
-    os << " }";
-    return os;
+inline std::ostream &operator<<(std::ostream &os, const RaeptorCogs::BitArray &bitArray) {
+  os << "BitArray{";
+  for (size_t i = 0; i < bitArray.data().size(); ++i) {
+    os << " " << std::bitset<64>(bitArray.data()[i]);
+  }
+  os << " }";
+  return os;
 }
 
-}
+} // namespace std

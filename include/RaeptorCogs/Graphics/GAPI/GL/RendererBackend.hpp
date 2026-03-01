@@ -6,16 +6,17 @@
  * Typical use cases:
  * - Defining OpenGL-specific renderer backend implementations
  *
- * TODO: 
- * - Optimize dynamic instance data management to reduce memory usage and improve performance. (Map/Unmap or Persistent Mapping)
+ * TODO:
+ * - Optimize dynamic instance data management to reduce memory usage and improve performance. (Map/Unmap or Persistent
+ * Mapping)
  * - Implement frustum culling to avoid rendering objects outside the view.
  * - Implement MSAA or FXAA for better visual quality.
  * - Add support for more complex shapes and 3D graphics.
  * - Implement a more advanced shader system to support various effects and materials.
  * - Implement a profiler to identify and address performance bottlenecks.
- * 
+ *
  * - Make texture atlas support different filtering modes (nearest, linear, mipmaps).
- * 
+ *
  * - Make the masking faster and more efficient by optimizing the shader and reducing overdraw.
  * - Maybe one day remove this abomination: "&shader == &this->maskShader" UPDATE : did it :)
  * - Add batch break indices.
@@ -52,20 +53,19 @@
  ***********************************************************************************/
 
 #pragma once
-#include <RaeptorCogs/Graphics/Renderer.hpp>
 #include <RaeptorCogs/Graphics/GAPI/Common/RendererBackend.hpp>
-#include <RaeptorCogs/Graphics/GAPI/GL/Core/Internal/ImGuiModule.hpp>
-#include <RaeptorCogs/Graphics/GAPI/GL/Core/Internal/RenderPipeline.hpp>
-#include <RaeptorCogs/Graphics/GAPI/GL/Core/Internal/GraphicCore.hpp>
 #include <RaeptorCogs/Graphics/GAPI/Common/Resources/Object.hpp>
 #include <RaeptorCogs/Graphics/GAPI/GL/Constants.hpp>
-
+#include <RaeptorCogs/Graphics/GAPI/GL/Core/Internal/GraphicCore.hpp>
+#include <RaeptorCogs/Graphics/GAPI/GL/Core/Internal/ImGuiModule.hpp>
+#include <RaeptorCogs/Graphics/GAPI/GL/Core/Internal/RenderPipeline.hpp>
+#include <RaeptorCogs/Graphics/Renderer.hpp>
 
 /**
  * @brief RaeptorCogs GAPI GL namespace.
- * 
+ *
  * Contains OpenGL graphics API related classes and functions.
- * 
+ *
  * @note This namespace is used for OpenGL-specific implementations.
  * @see RaeptorCogs::GAPI::Common
  */
@@ -75,124 +75,126 @@ namespace RaeptorCogs::GAPI::GL {
 
 /**
  * @brief OpenGL Renderer backend implementation.
- * 
+ *
  * Provides OpenGL-specific implementations for the renderer backend interface.
- * 
+ *
  * @note This class inherits from the common RendererBackend interface.
  * @see RaeptorCogs::GAPI::Common::RendererBackend
  */
 class RendererBackend : public Common::RendererBackend {
-    private:
+  private:
+    // ============================================================================
+    //                             PRIVATE ATTRIBUTES
+    // ============================================================================
 
-        // ============================================================================
-        //                             PRIVATE ATTRIBUTES
-        // ============================================================================
+    // --------------------------------------------
+    //                  Modules
+    // --------------------------------------------
 
-        // --------------------------------------------
-        //                  Modules
-        // --------------------------------------------
+    /**
+     * @brief ImGui implementation instance.
+     *
+     * Holds the OpenGL-specific ImGui implementation.
+     */
+    ImGuiModule imGui;
 
-        /**
-         * @brief ImGui implementation instance.
-         * 
-         * Holds the OpenGL-specific ImGui implementation.
-         */
-        ImGuiModule imGui;
+    /**
+     * @brief Graphic core implementation.
+     *
+     * Manages OpenGL core functionalities.
+     */
+    GraphicCore graphicCore;
 
-        /**
-         * @brief Graphic core implementation.
-         * 
-         * Manages OpenGL core functionalities.
-         */
-        GraphicCore graphicCore;
+    /**
+     * @brief Render pipeline implementation.
+     *
+     * Manages the OpenGL rendering pipeline.
+     */
+    RenderPipeline renderPipeline;
 
-        /**
-         * @brief Render pipeline implementation.
-         * 
-         * Manages the OpenGL rendering pipeline.
-         */
-        RenderPipeline renderPipeline;
+  public:
+    // ============================================================================
+    //                             PUBLIC METHODS
+    // ============================================================================
 
-    public:
+    /**
+     * @brief Constructor for RendererBackend.
+     */
+    RendererBackend() : Common::RendererBackend(), imGui(), graphicCore(*this), renderPipeline(*this) {}
 
-        // ============================================================================
-        //                             PUBLIC METHODS
-        // ============================================================================
+    /**
+     * @brief Destructor for RendererBackend.
+     *
+     * Cleans up resources used by the RendererBackend.
+     */
+    ~RendererBackend() override;
 
-        /**
-         * @brief Constructor for RendererBackend.
-         */
-        RendererBackend() : Common::RendererBackend(),
-            imGui(),
-            graphicCore(*this),
-            renderPipeline(*this) {}
+    /**
+     * @see RaeptorCogs::GAPI::Common::RendererBackend::initialize()
+     */
+    void initialize() override;
 
-        /**
-         * @brief Destructor for RendererBackend.
-         * 
-         * Cleans up resources used by the RendererBackend.
-         */
-        ~RendererBackend() override;
+    /**
+     * @see RaeptorCogs::GAPI::Common::RendererBackend::isInitialized()
+     */
+    bool isInitialized() const override;
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::RendererBackend::initialize()
-         */
-        void initialize() override;
+    /**
+     * @see RaeptorCogs::GAPI::Common::RendererBackend::getBackendType()
+     */
+    GraphicsBackend getBackendType() const override {
+      return GraphicsBackend::GL;
+    }
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::RendererBackend::isInitialized()
-         */
-        bool isInitialized() const override;
+    /**
+     * @see RaeptorCogs::GAPI::Common::RendererBackend::Create()
+     */
+    Common::ObjectData *Create(std::type_index type) override {
+      auto &map = FactoryRegistry::get();
+      auto it   = map.find(type);
+      if (it == map.end()) throw std::runtime_error("Type not registered");
+      return it->second();
+    }
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::RendererBackend::getBackendType()
-         */
-        GraphicsBackend getBackendType() const override { return GraphicsBackend::GL; }
+    /**
+     * @see RaeptorCogs::GAPI::Common::RendererBackend::render(Window*, int, int, int, int)
+     */
+    void render(Window *window, int x, int y, int width, int height) override;
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::RendererBackend::Create()
-         */
-        Common::ObjectData* Create(std::type_index type) override {
-            auto& map = FactoryRegistry::get();
-            auto it = map.find(type);
-            if (it == map.end())
-                throw std::runtime_error("Type not registered");
-            return it->second();
-        }
+    /**
+     * @see RaeptorCogs::GAPI::Common::RendererBackend::render(Texture&, int, int, int, int)
+     */
+    void render(Texture &texture, int x, int y, int width, int height) override;
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::RendererBackend::render(Window*, int, int, int, int)
-         */
-        void render(Window* window, int x, int y, int width, int height) override;
-        
-        /**
-         * @see RaeptorCogs::GAPI::Common::RendererBackend::render(Texture&, int, int, int, int)
-         */
-        void render(Texture& texture, int x, int y, int width, int height) override;
+    /**
+     * @see RaeptorCogs::GAPI::Common::RendererBackend::createWindowContext()
+     */
+    Common::WindowContext *createWindowContext() override;
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::RendererBackend::createWindowContext()
-         */
-        Common::WindowContext* createWindowContext() override;
+    // --------------------------------------------
+    //                  Modules
+    // --------------------------------------------
 
-        // --------------------------------------------
-        //                  Modules
-        // --------------------------------------------
+    /**
+     * @see RaeptorCogs::GAPI::Common::RendererBackend::getImGuiModule()
+     */
+    ImGuiModule &getImGuiModule() override {
+      return this->imGui;
+    }
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::RendererBackend::getImGuiModule()
-         */
-        ImGuiModule& getImGuiModule() override { return this->imGui; }
+    /**
+     * @see RaeptorCogs::GAPI::Common::RendererBackend::getGraphicCore()
+     */
+    GraphicCore &getGraphicCore() override {
+      return this->graphicCore;
+    }
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::RendererBackend::getGraphicCore()
-         */
-        GraphicCore& getGraphicCore() override { return this->graphicCore; }
-
-        /**
-         * @see RaeptorCogs::GAPI::Common::RendererBackend::getRenderPipeline()
-         */
-        RenderPipeline& getRenderPipeline() override { return this->renderPipeline; }
+    /**
+     * @see RaeptorCogs::GAPI::Common::RendererBackend::getRenderPipeline()
+     */
+    RenderPipeline &getRenderPipeline() override {
+      return this->renderPipeline;
+    }
 };
 
-}
+} // namespace RaeptorCogs::GAPI::GL

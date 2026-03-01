@@ -40,7 +40,6 @@
 #pragma once
 #include <RaeptorCogs/Graphics/GAPI/Vulkan/Core/Vulkan.hpp>
 
-
 /**
  * @brief Vulkan frame data structure.
  * Holds data relevant to a single frame in Vulkan rendering.
@@ -49,5 +48,5 @@ struct VulkanFrame {
     /** @brief Command buffer for the frame. */
     VkCommandBuffer commandBuffer = VK_NULL_HANDLE;
     /** @brief Framebuffer for the frame. */
-    VkFramebuffer   framebuffer   = VK_NULL_HANDLE;
+    VkFramebuffer framebuffer = VK_NULL_HANDLE;
 };

@@ -27,15 +27,14 @@
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED
+ * "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+ * LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ * PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
 #pragma once
@@ -46,71 +45,68 @@ namespace Singletons {
 
 /**
  * @brief Random singleton class.
- * 
+ *
  * Provides random number generation functionalities.
- * 
+ *
  * @code{.cpp}
  * int randInt = RaeptorCogs::Random().getInt(1, 10);
  * float randFloat = RaeptorCogs::Random().getFloat(0.0f, 1.0f);
  * @endcode
  */
 class Random {
-    private:
+  private:
+    // ============================================================================
+    //                             PRIVATE METHODS
+    // ============================================================================
 
-        // ============================================================================
-        //                             PRIVATE METHODS
-        // ============================================================================
+    /**
+     * @brief Private constructor for the Random singleton.
+     */
+    Random() = default;
 
-        /**
-         * @brief Private constructor for the Random singleton.
-         */
-        Random() = default;
+    friend SingletonAccessor<Random>;
 
-        friend SingletonAccessor<Random>;
+  public:
+    // ============================================================================
+    //                             PUBLIC METHODS
+    // ============================================================================
 
-    public:
+    /**
+     * @brief Deleted copy constructor
+     */
+    Random(const Random &) = delete;
 
-        // ============================================================================
-        //                             PUBLIC METHODS
-        // ============================================================================
+    /**
+     * @brief Deleted assignment operator
+     */
+    Random &operator=(const Random &) = delete;
 
-        /**
-         * @brief Deleted copy constructor
-         */
-        Random(const Random&) = delete;
-        
-        /**
-         * @brief Deleted assignment operator
-         */
-        Random& operator=(const Random&) = delete;
+    /**
+     * @brief Generate a random integer in the range [min, max].
+     *
+     * @param min The minimum value (inclusive).
+     * @param max The maximum value (inclusive).
+     * @return A random integer between min and max.
+     *
+     * @code{.cpp}
+     * int randInt = RaeptorCogs::Random().getInt(1, 10);
+     * @endcode
+     */
+    int getInt(int min, int max);
 
-        /**
-         * @brief Generate a random integer in the range [min, max].
-         * 
-         * @param min The minimum value (inclusive).
-         * @param max The maximum value (inclusive).
-         * @return A random integer between min and max.
-         * 
-         * @code{.cpp}
-         * int randInt = RaeptorCogs::Random().getInt(1, 10);
-         * @endcode
-         */
-        int getInt(int min, int max);
-
-        /**
-         * @brief Generate a random float in the range [min, max).
-         * 
-         * @param min The minimum value (inclusive).
-         * @param max The maximum value (exclusive).
-         * @return A random float between min and max.
-         * 
-         * @code{.cpp}
-         * float randFloat = RaeptorCogs::Random().getFloat(0.0f, 1.0f);
-         * @endcode
-         */
-        float getFloat(float min, float max);
-
+    /**
+     * @brief Generate a random float in the range [min, max).
+     *
+     * @param min The minimum value (inclusive).
+     * @param max The maximum value (exclusive).
+     * @return A random float between min and max.
+     *
+     * @code{.cpp}
+     * float randFloat = RaeptorCogs::Random().getFloat(0.0f, 1.0f);
+     * @endcode
+     */
+    float getFloat(float min, float max);
 };
 
-}
-}
+} // namespace Singletons
+} // namespace RaeptorCogs

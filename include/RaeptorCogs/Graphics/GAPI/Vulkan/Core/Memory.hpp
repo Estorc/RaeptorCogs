@@ -40,29 +40,32 @@
 #pragma once
 #include <RaeptorCogs/Graphics/GAPI/Vulkan/RendererBackend.hpp>
 #include <vulkan/vulkan.h>
-#include <vector>
 
 namespace RaeptorCogs::GAPI::Vulkan {
 
 /**
  * @brief Allocate Vulkan device memory for the given data.
- * 
+ *
  * @param renderer Pointer to the Vulkan renderer backend.
  * @param data Data for which memory is to be allocated.
- * 
+ *
  * @return VkDeviceMemory Handle to the allocated device memory.
  */
-template<typename T>
-VkDeviceMemory AllocateMemory(RaeptorCogs::GAPI::Vulkan::RendererBackend* renderer, T data, VkMemoryPropertyFlags properties = VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
+template <typename T>
+VkDeviceMemory AllocateMemory(
+    RaeptorCogs::GAPI::Vulkan::RendererBackend *renderer, T data,
+    VkMemoryPropertyFlags properties = VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
 
 /**
  * @brief Copy data from one Vulkan buffer to another.
- * 
+ *
  * @param srcBuffer Source Vulkan buffer.
  * @param dstBuffer Destination Vulkan buffer.
- * 
+ *
  * @param size Size of data to copy in bytes.
  */
-void CopyBuffer(RaeptorCogs::GAPI::Vulkan::RendererBackend* renderer, VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size, VkCommandBuffer cmd);
+void CopyBuffer(
+    RaeptorCogs::GAPI::Vulkan::RendererBackend *renderer, VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size,
+    VkCommandBuffer cmd);
 
-}
+} // namespace RaeptorCogs::GAPI::Vulkan

@@ -40,7 +40,7 @@
 #pragma once
 
 namespace RaeptorCogs {
-    class Window;
+class Window;
 }
 
 namespace RaeptorCogs::GAPI::Common {
@@ -49,62 +49,61 @@ class RendererBackend;
 
 /**
  * @brief Window context interface.
- * 
+ *
  * Provides an interface for window context implementations.
  */
 class WindowContext {
-    private:
+  private:
+    // ============================================================================
+    //                             PRIVATE MEMBERS
+    // ============================================================================
 
-        // ============================================================================
-        //                             PRIVATE MEMBERS
-        // ============================================================================
+    /**
+     * @brief Pointer to renderer.
+     *
+     * Holds a pointer to the renderer singleton.
+     */
+    RendererBackend *renderer;
 
-        /**
-         * @brief Pointer to renderer.
-         * 
-         * Holds a pointer to the renderer singleton.
-         */
-        RendererBackend* renderer;
-    public:
+  public:
+    // ============================================================================
+    //                               PUBLIC METHODS
+    // ============================================================================
 
-        // ============================================================================
-        //                               PUBLIC METHODS
-        // ============================================================================
+    /**
+     * @brief Default constructor.
+     */
+    WindowContext(RendererBackend *renderer) : renderer(renderer) {}
 
-        /**
-         * @brief Default constructor.
-         */
-        WindowContext(RendererBackend* renderer) : renderer(renderer) {}
+    /**
+     * @brief Virtual destructor.
+     */
+    virtual ~WindowContext() = default;
 
-        /**
-         * @brief Virtual destructor.
-         */
-        virtual ~WindowContext() = default;
+    /**
+     * @brief Create ImGui context for the given window.
+     *
+     * @param window Pointer to the window.
+     *
+     * @note Must be implemented by derived classes.
+     */
+    virtual void initialize(Window *window) = 0;
 
-        /**
-         * @brief Create ImGui context for the given window.
-         * 
-         * @param window Pointer to the window.
-         * 
-         * @note Must be implemented by derived classes.
-         */
-        virtual void initialize(Window* window) = 0;
+    /**
+     * @brief Bind the window context for rendering.
+     *
+     * @note Must be implemented by derived classes.
+     */
+    virtual void bind() = 0;
 
-        /**
-         * @brief Bind the window context for rendering.
-         * 
-         * @note Must be implemented by derived classes.
-         */
-        virtual void bind() = 0;
-
-        /**
-         * @brief Get the renderer pointer.
-         * 
-         * @return Pointer to the renderer singleton.
-         */
-        RendererBackend* getRenderer() const {
-            return this->renderer;
-        }
+    /**
+     * @brief Get the renderer pointer.
+     *
+     * @return Pointer to the renderer singleton.
+     */
+    RendererBackend *getRenderer() const {
+      return this->renderer;
+    }
 };
 
-}
+} // namespace RaeptorCogs::GAPI::Common

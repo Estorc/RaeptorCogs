@@ -40,236 +40,254 @@
 #pragma once
 #include <RaeptorCogs/Graphics/GAPI/Common/Core/Internal/GraphicCore.hpp>
 #include <RaeptorCogs/Graphics/GAPI/Vulkan/Resources/Buffer.hpp>
-#include <RaeptorCogs/Graphics/GAPI/Vulkan/Resources/TextureData.hpp>
 #include <RaeptorCogs/Graphics/GAPI/Vulkan/Resources/Shader.hpp>
+#include <RaeptorCogs/Graphics/GAPI/Vulkan/Resources/TextureData.hpp>
 #include <RaeptorCogs/Graphics/GAPI/Vulkan/Resources/VertexArray.hpp>
 #include <RaeptorCogs/IO/Texture.hpp>
 #include <vulkan/vulkan.h>
 
+
 namespace RaeptorCogs::GAPI::Vulkan {
 
 class GraphicCore : public Common::GraphicCore {
-    private:
+  private:
+    // ============================================================================
+    //                             PRIVATE MEMBERS
+    // ============================================================================
 
-        // ============================================================================
-        //                             PRIVATE MEMBERS
-        // ============================================================================
+    /**
+     * @brief Vulkan instance.
+     *
+     * Represents the Vulkan instance.
+     */
+    VkInstance instance;
 
-        /**
-         * @brief Vulkan instance.
-         * 
-         * Represents the Vulkan instance.
-         */
-        VkInstance instance;
+    /**
+     * @brief Vulkan physical device.
+     *
+     * Represents the Vulkan physical device.
+     */
+    VkPhysicalDevice physicalDevice;
 
-        /**
-         * @brief Vulkan physical device.
-         * 
-         * Represents the Vulkan physical device.
-         */
-        VkPhysicalDevice physicalDevice;
+    /**
+     * @brief Vulkan logical device.
+     *
+     * Represents the Vulkan logical device.
+     */
+    VkDevice device;
 
-        /**
-         * @brief Vulkan logical device.
-         * 
-         * Represents the Vulkan logical device.
-         */
-        VkDevice device;
+    /**
+     * @brief Vulkan graphics queue family index.
+     *
+     * Index of the graphics queue family.
+     */
+    uint32_t graphicsQueueFamilyIndex;
 
-        /**
-         * @brief Vulkan graphics queue family index.
-         * 
-         * Index of the graphics queue family.
-         */
-        uint32_t graphicsQueueFamilyIndex;
+    /**
+     * @brief Vulkan graphics queue.
+     *
+     * Handles graphics commands.
+     */
+    VkQueue graphicsQueue;
 
-        /**
-         * @brief Vulkan graphics queue.
-         * 
-         * Handles graphics commands.
-         */
-        VkQueue graphicsQueue;
+    /**
+     * @brief Vulkan present queue.
+     *
+     * Handles presentation commands.
+     */
+    VkQueue presentQueue;
 
-        /**
-         * @brief Vulkan present queue.
-         * 
-         * Handles presentation commands.
-         */
-        VkQueue presentQueue;
+    /**
+     * @brief Vulkan pipeline cache.
+     *
+     * Caches pipeline state objects.
+     */
+    VkPipelineCache pipelineCache;
 
-        /**
-         * @brief Vulkan pipeline cache.
-         * 
-         * Caches pipeline state objects.
-         */
-        VkPipelineCache pipelineCache;
+    /**
+     * @brief Vulkan render pass.
+     *
+     * Defines the render pass configuration.
+     *
+     * @note Lazily initialized in createRenderPass().
+     */
+    VkRenderPass renderPass = VK_NULL_HANDLE;
 
-        /**
-         * @brief Vulkan render pass.
-         * 
-         * Defines the render pass configuration.
-         * 
-         * @note Lazily initialized in createRenderPass().
-         */
-        VkRenderPass renderPass = VK_NULL_HANDLE;
+    /**
+     * @brief Vulkan command pool.
+     *
+     * Manages the allocation of command buffers.
+     */
+    VkCommandPool commandPool;
 
-        /**
-         * @brief Vulkan command pool.
-         * 
-         * Manages the allocation of command buffers.
-         */
-        VkCommandPool commandPool;
+  public:
+    // ============================================================================
+    //                             PUBLIC METHODS
+    // ============================================================================
 
-    public:
+    /**
+     * @brief Constructor for GraphicCore.
+     *
+     * Initializes the GraphicCore with a reference to the renderer backend.
+     *
+     * @param renderer Reference to the renderer backend.
+     */
+    GraphicCore(Common::RendererBackend &renderer) : Common::GraphicCore(renderer) {}
 
-        // ============================================================================
-        //                             PUBLIC METHODS
-        // ============================================================================
+    /**
+     * @brief Create Vulkan render pass.
+     *
+     * @param swapchainImageFormat Format of the swapchain images.
+     *
+     * @note Initializes the renderPass member.
+     */
+    void createRenderPass(VkFormat swapchainImageFormat);
 
-        /**
-         * @brief Constructor for GraphicCore.
-         * 
-         * Initializes the GraphicCore with a reference to the renderer backend.
-         * 
-         * @param renderer Reference to the renderer backend.
-         */
-        GraphicCore(Common::RendererBackend& renderer) : Common::GraphicCore(renderer) {}
+    /**
+     * @brief Get the Vulkan instance.
+     *
+     * @return Vulkan instance.
+     */
+    VkInstance &getInstance() {
+      return this->instance;
+    }
 
-        /**
-         * @brief Create Vulkan render pass.
-         * 
-         * @param swapchainImageFormat Format of the swapchain images.
-         * 
-         * @note Initializes the renderPass member.
-         */
-        void createRenderPass(VkFormat swapchainImageFormat);
+    /**
+     * @brief Get the Vulkan physical device.
+     *
+     * @return Vulkan physical device.
+     */
+    VkPhysicalDevice &getPhysicalDevice() {
+      return this->physicalDevice;
+    }
 
-        /**
-         * @brief Get the Vulkan instance.
-         * 
-         * @return Vulkan instance.
-         */
-        VkInstance& getInstance() { return this->instance; }
+    /**
+     * @brief Get the Vulkan logical device.
+     *
+     * @return Vulkan logical device.
+     */
+    VkDevice &getDevice() {
+      return this->device;
+    }
 
-        /**
-         * @brief Get the Vulkan physical device.
-         * 
-         * @return Vulkan physical device.
-         */
-        VkPhysicalDevice& getPhysicalDevice() { return this->physicalDevice; }
+    /**
+     * @brief Get the Vulkan graphics queue family index.
+     *
+     * @return Vulkan graphics queue family index.
+     */
+    uint32_t &getGraphicsQueueFamilyIndex() {
+      return this->graphicsQueueFamilyIndex;
+    }
 
-        /**
-         * @brief Get the Vulkan logical device.
-         * 
-         * @return Vulkan logical device.
-         */
-        VkDevice& getDevice() { return this->device; }
+    /**
+     * @brief Get the Vulkan graphics queue.
+     *
+     * @return Vulkan graphics queue.
+     */
+    VkQueue &getGraphicsQueue() {
+      return this->graphicsQueue;
+    }
 
-        /**
-         * @brief Get the Vulkan graphics queue family index.
-         * 
-         * @return Vulkan graphics queue family index.
-         */
-        uint32_t& getGraphicsQueueFamilyIndex() { return this->graphicsQueueFamilyIndex; }
+    /**
+     * @brief Get the Vulkan present queue.
+     *
+     * @return Vulkan present queue.
+     */
+    VkQueue &getPresentQueue() {
+      return this->presentQueue;
+    }
 
-        /**
-         * @brief Get the Vulkan graphics queue.
-         * 
-         * @return Vulkan graphics queue.
-         */
-        VkQueue& getGraphicsQueue() { return this->graphicsQueue; }
+    /**
+     * @brief Get the Vulkan pipeline cache.
+     *
+     * @return Vulkan pipeline cache.
+     */
+    VkPipelineCache &getPipelineCache() {
+      return this->pipelineCache;
+    }
 
-        /**
-         * @brief Get the Vulkan present queue.
-         * 
-         * @return Vulkan present queue.
-         */
-        VkQueue& getPresentQueue() { return this->presentQueue; }
+    /**
+     * @brief Get the Vulkan render pass.
+     *
+     * @return Vulkan render pass.
+     */
+    VkRenderPass &getRenderPass() {
+      return this->renderPass;
+    }
 
-        /**
-         * @brief Get the Vulkan pipeline cache.
-         * 
-         * @return Vulkan pipeline cache.
-         */
-        VkPipelineCache& getPipelineCache() { return this->pipelineCache; }
+    /**
+     * @brief Get the Vulkan command pool.
+     *
+     * @return Vulkan command pool.
+     */
+    VkCommandPool &getCommandPool() {
+      return this->commandPool;
+    }
 
-        /**
-         * @brief Get the Vulkan render pass.
-         * 
-         * @return Vulkan render pass.
-         */
-        VkRenderPass& getRenderPass() { return this->renderPass; }
+    // ------------------------------------------------------------------------
+    //                      State machine methods
+    // ------------------------------------------------------------------------
 
-        /**
-         * @brief Get the Vulkan command pool.
-         * 
-         * @return Vulkan command pool.
-         */
-        VkCommandPool& getCommandPool() { return this->commandPool; }
+    /**
+     * @see Common::GraphicCore::setViewport
+     */
+    void setViewport(int x, int y, int width, int height) override;
 
-        // ------------------------------------------------------------------------
-        //                      State machine methods
-        // ------------------------------------------------------------------------
-        
-        /**
-         * @see Common::GraphicCore::setViewport
-         */
-        void setViewport(int x, int y, int width, int height) override;
+    /**
+     * @see Common::GraphicCore::clearSwapchainBuffers
+     */
+    void clearSwapchainBuffers() override;
 
-        /**
-         * @see Common::GraphicCore::clearSwapchainBuffers
-         */
-        void clearSwapchainBuffers() override;
+    /**
+     * @see Common::GraphicCore::useBlend
+     */
+    void useBlend() override;
 
-        /**
-         * @see Common::GraphicCore::useBlend
-         */
-        void useBlend() override;
+    /**
+     * @see Common::GraphicCore::bindMaskTexture
+     */
+    void bindMaskTexture() override;
 
-        /**
-         * @see Common::GraphicCore::bindMaskTexture
-         */
-        void bindMaskTexture() override;
+    /**
+     * @see Common::GraphicCore::setTextureUniform
+     */
+    void setTextureUniform(ObjectHandler<Common::Shader> shader) override;
 
-        /**
-         * @see Common::GraphicCore::setTextureUniform
-         */
-        void setTextureUniform(ObjectHandler<Common::Shader> shader) override;
+    /**
+     * @see Common::GraphicCore::setMaskTextureUniform
+     */
+    void setMaskTextureUniform(ObjectHandler<Common::Shader> shader) override;
 
-        /**
-         * @see Common::GraphicCore::setMaskTextureUniform
-         */
-        void setMaskTextureUniform(ObjectHandler<Common::Shader> shader) override;
+    /**
+     * @see Common::GraphicCore::drawElementsInstancedBaseVertexBaseInstance
+     */
+    void drawElementsInstancedBaseVertexBaseInstance(
+        size_t count, size_t instanceCount, size_t first, int baseVertex, unsigned int baseInstance) override;
 
-        /**
-         * @see Common::GraphicCore::drawElementsInstancedBaseVertexBaseInstance
-         */
-        void drawElementsInstancedBaseVertexBaseInstance(size_t count, size_t instanceCount, size_t first, int baseVertex, unsigned int baseInstance) override;
-        
-        /**
-         * @see Common::GraphicCore::bindGraphicTexture
-         */
-        void bindGraphicTexture(Graphic2D& graphic) override;
+    /**
+     * @see Common::GraphicCore::bindGraphicTexture
+     */
+    void bindGraphicTexture(Graphic2D &graphic) override;
 
-        /**
-         * @see Common::GraphicCore::enableStencilGuarding
-         */
-        void enableStencilGuarding() override;
+    /**
+     * @see Common::GraphicCore::enableStencilGuarding
+     */
+    void enableStencilGuarding() override;
 
-        /**
-         * @see Common::GraphicCore::setRenderTarget
-         */
-        void setRenderTarget(Window* window, int x, int y, int width, int height) override;
+    /**
+     * @see Common::GraphicCore::setRenderTarget
+     */
+    void setRenderTarget(Window *window, int x, int y, int width, int height) override;
 
-        /**
-         * @see Common::GraphicCore::setRenderTarget
-         */
-        void setRenderTarget(Texture texture, int x, int y, int width, int height) override;
+    /**
+     * @see Common::GraphicCore::setRenderTarget
+     */
+    void setRenderTarget(Texture texture, int x, int y, int width, int height) override;
 
-        /**
-         * @see Common::GraphicCore::clearColorBuffer
-         */
-        void clearColorBuffer(float r, float g, float b, float a) override;
+    /**
+     * @see Common::GraphicCore::clearColorBuffer
+     */
+    void clearColorBuffer(float r, float g, float b, float a) override;
 };
 
-}
+} // namespace RaeptorCogs::GAPI::Vulkan

@@ -38,200 +38,203 @@
  ***********************************************************************************/
 
 #pragma once
-#include <RaeptorCogs/Graphics/GAPI/Common/Core/Internal/ImGuiModule.hpp>
 #include <RaeptorCogs/Graphics/GAPI/Common/Core/Internal/GraphicCore.hpp>
+#include <RaeptorCogs/Graphics/GAPI/Common/Core/Internal/ImGuiModule.hpp>
 #include <RaeptorCogs/Graphics/GAPI/Common/Core/Internal/RenderPipeline.hpp>
+
 
 #include <typeindex>
 
 /**
  * @brief RaeptorCogs GAPI namespace.
- * 
+ *
  * Contains graphics API related classes and functions.
- * 
+ *
  * @note This namespace is further divided into sub-namespaces for different graphics APIs and common functionality.
  */
-namespace RaeptorCogs::GAPI{};
+namespace RaeptorCogs::GAPI {};
 
 /**
  * @brief RaeptorCogs GAPI Common namespace.
- * 
+ *
  * Contains common graphics API related classes and functions shared across different backends.
- * 
+ *
  * @note This namespace is used for defining interfaces and shared functionality.
  */
-namespace RaeptorCogs::GAPI::Common{};
+namespace RaeptorCogs::GAPI::Common {};
 
 namespace RaeptorCogs {
-    class Window;
-    class Texture;
+class Window;
+class Texture;
 
-    namespace Singletons {
-        class Platform;
-    }
-
-    /**
-     * @brief Graphics backend enumeration.
-     * 
-     * Defines supported graphics backends.
-     */
-    enum class GraphicsBackend {
-        /** OpenGL graphics backend */
-        GL,
-        /** WebGL graphics backend */
-        WebGL,
-        /** Vulkan graphics backend */
-        Vulkan,
-    };
+namespace Singletons {
+class Platform;
 }
+
+/**
+ * @brief Graphics backend enumeration.
+ *
+ * Defines supported graphics backends.
+ */
+enum class GraphicsBackend {
+  /** OpenGL graphics backend */
+  GL,
+  /** WebGL graphics backend */
+  WebGL,
+  /** Vulkan graphics backend */
+  Vulkan,
+};
+} // namespace RaeptorCogs
 
 namespace RaeptorCogs::GAPI::Common {
 
 class WindowContext;
 
 class RendererBackend {
-    private:
+  private:
+    // ============================================================================
+    //                               PRIVATE ATTRIBUTES
+    // ============================================================================
 
-        // ============================================================================
-        //                               PRIVATE ATTRIBUTES
-        // ============================================================================
+    /**
+     * @brief Platform pointer.
+     *
+     * Holds a pointer to the platform singleton.
+     */
+    Singletons::Platform *platform = nullptr;
 
-        /**
-         * @brief Platform pointer.
-         * 
-         * Holds a pointer to the platform singleton.
-         */
-        Singletons::Platform *platform = nullptr;
+    /**
+     * @brief Object allocator.
+     *
+     * Manages allocation of object data instances.
+     */
+    ObjectAllocator objectAllocator;
 
-        /**
-         * @brief Object allocator.
-         * 
-         * Manages allocation of object data instances.
-         */
-        ObjectAllocator objectAllocator;
+  public:
+    // ============================================================================
+    //                               PUBLIC METHODS
+    // ============================================================================
 
-    public:
+    /**
+     * @brief Virtual destructor for RendererBackend.
+     */
+    virtual ~RendererBackend();
 
-        // ============================================================================
-        //                               PUBLIC METHODS
-        // ============================================================================
+    /**
+     * @brief Initialize the renderer backend.
+     *
+     * @note Sets up necessary resources and state for rendering.
+     */
+    virtual void initialize() = 0;
 
-        /**
-         * @brief Virtual destructor for RendererBackend.
-         */
-        virtual ~RendererBackend();
+    /**
+     * @brief Check if the renderer backend is initialized.
+     *
+     * @return true if initialized, false otherwise.
+     */
+    virtual bool isInitialized() const = 0;
 
-        /**
-         * @brief Initialize the renderer backend.
-         * 
-         * @note Sets up necessary resources and state for rendering.
-         */
-        virtual void initialize() = 0;
+    /**
+     * @brief Get the graphics backend type.
+     *
+     * @return GraphicsBackend enumeration value.
+     */
+    virtual GraphicsBackend getBackendType() const = 0;
 
-        /**
-         * @brief Check if the renderer backend is initialized.
-         * 
-         * @return true if initialized, false otherwise.
-         */
-        virtual bool isInitialized() const = 0;
+    /**
+     * @brief Create an object of the specified type.
+     *
+     * @param type Type index of the object to be created.
+     * @return Pointer to the created object data.
+     *
+     * @note This is a pure virtual function and must be implemented by derived classes.
+     */
+    virtual Common::ObjectData *Create(std::type_index type) = 0;
 
-        /**
-         * @brief Get the graphics backend type.
-         * 
-         * @return GraphicsBackend enumeration value.
-         */
-        virtual GraphicsBackend getBackendType() const = 0;
+    /**
+     * @brief Get the object allocator.
+     *
+     * @return Reference to the object allocator.
+     */
+    virtual ObjectAllocator &getObjectAllocator() {
+      return this->objectAllocator;
+    }
 
-        /**
-         * @brief Create an object of the specified type.
-         * 
-         * @param type Type index of the object to be created.
-         * @return Pointer to the created object data.
-         * 
-         * @note This is a pure virtual function and must be implemented by derived classes.
-         */
-        virtual Common::ObjectData* Create(std::type_index type) = 0;
+    /**
+     * @brief Backend implementation for rendering to a window.
+     *
+     * @param window Pointer to the target window. If nullptr, renders to the default framebuffer.
+     * @param x X coordinate of the rendering area.
+     * @param y Y coordinate of the rendering area.
+     * @param width Width of the rendering area.
+     * @param height Height of the rendering area.
+     *
+     * @note Renders the scene to the specified window or default framebuffer.
+     */
+    virtual void render(Window *window, int x, int y, int width, int height) = 0;
 
-        /**
-         * @brief Get the object allocator.
-         * 
-         * @return Reference to the object allocator.
-         */
-        virtual ObjectAllocator& getObjectAllocator() {
-            return this->objectAllocator;
-        }
+    /**
+     * @brief Backend implementation for rendering to a texture.
+     *
+     * @param texture Reference to the target texture.
+     * @param x X coordinate of the rendering area.
+     * @param y Y coordinate of the rendering area.
+     * @param width Width of the rendering area.
+     * @param height Height of the rendering area.
+     *
+     * @note Renders the scene directly into the provided texture.
+     */
+    virtual void render(Texture &texture, int x, int y, int width, int height) = 0;
 
-        /**
-         * @brief Backend implementation for rendering to a window.
-         * 
-         * @param window Pointer to the target window. If nullptr, renders to the default framebuffer.
-         * @param x X coordinate of the rendering area.
-         * @param y Y coordinate of the rendering area.
-         * @param width Width of the rendering area.
-         * @param height Height of the rendering area.
-         * 
-         * @note Renders the scene to the specified window or default framebuffer.
-         */
-        virtual void render(Window* window, int x, int y, int width, int height) = 0;
+    /**
+     * @brief Create a window context.
+     *
+     * @return Pointer to the created window context.
+     */
+    virtual Common::WindowContext *createWindowContext() = 0;
 
-        /**
-         * @brief Backend implementation for rendering to a texture.
-         * 
-         * @param texture Reference to the target texture.
-         * @param x X coordinate of the rendering area.
-         * @param y Y coordinate of the rendering area.
-         * @param width Width of the rendering area.
-         * @param height Height of the rendering area.
-         * 
-         * @note Renders the scene directly into the provided texture.
-         */
-        virtual void render(Texture& texture, int x, int y, int width, int height) = 0;
+    /**
+     * @brief Set the platform singleton.
+     *
+     * @param platform Pointer to the platform singleton.
+     */
+    void setPlatform(Singletons::Platform *platform) {
+      this->platform = platform;
+    }
 
-        /**
-         * @brief Create a window context.
-         * 
-         * @return Pointer to the created window context.
-         */
-        virtual Common::WindowContext* createWindowContext() = 0;
+    // --------------------------------------------
+    //                  Modules
+    // --------------------------------------------
 
-        /**
-         * @brief Set the platform singleton.
-         * 
-         * @param platform Pointer to the platform singleton.
-         */
-        void setPlatform(Singletons::Platform* platform) { this->platform = platform; }
+    /**
+     * @brief Get the platform singleton.
+     *
+     * @return Reference to the platform singleton.
+     */
+    Singletons::Platform &getPlatform() const {
+      return *this->platform;
+    }
 
-        // --------------------------------------------
-        //                  Modules
-        // --------------------------------------------
+    /**
+     * @brief Get the ImGui implementation.
+     *
+     * @return Reference to the ImGui implementation.
+     */
+    virtual ImGuiModule &getImGuiModule() = 0;
 
-        /**
-         * @brief Get the platform singleton.
-         * 
-         * @return Reference to the platform singleton.
-         */
-        Singletons::Platform& getPlatform() const { return *this->platform; }
+    /**
+     * @brief Get the GraphicCore implementation.
+     *
+     * @return Reference to the GraphicCore implementation.
+     */
+    virtual GraphicCore &getGraphicCore() = 0;
 
-        /**
-         * @brief Get the ImGui implementation.
-         * 
-         * @return Reference to the ImGui implementation.
-         */
-        virtual ImGuiModule& getImGuiModule() = 0;
-
-        /**
-         * @brief Get the GraphicCore implementation.
-         * 
-         * @return Reference to the GraphicCore implementation.
-         */
-        virtual GraphicCore& getGraphicCore() = 0;
-
-        /**
-         * @brief Get the RenderPipeline implementation.
-         * 
-         * @return Reference to the RenderPipeline implementation.
-         */
-        virtual RenderPipeline& getRenderPipeline() = 0;
+    /**
+     * @brief Get the RenderPipeline implementation.
+     *
+     * @return Reference to the RenderPipeline implementation.
+     */
+    virtual RenderPipeline &getRenderPipeline() = 0;
 };
 
-}
+} // namespace RaeptorCogs::GAPI::Common

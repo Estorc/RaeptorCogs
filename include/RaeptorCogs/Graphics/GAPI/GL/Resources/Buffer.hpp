@@ -51,34 +51,34 @@ namespace RaeptorCogs::GAPI::GL {
  * @see RaeptorCogs::GAPI::Common::Framebuffer
  */
 class Framebuffer : public ObjectMixin<Common::Framebuffer> {
-    public:
-        /**
-         * @brief Constructor for Framebuffer.
-         */
-        Framebuffer();
+  public:
+    /**
+     * @brief Constructor for Framebuffer.
+     */
+    Framebuffer();
 
-        /**
-         * @brief Destructor for Framebuffer.
-         */
-        ~Framebuffer() override;
+    /**
+     * @brief Destructor for Framebuffer.
+     */
+    ~Framebuffer() override;
 
-        /**
-         * @brief Bind the framebuffer for use.
-         * 
-         * Binds the OpenGL framebuffer object.
-         * 
-         * @note Overrides the pure virtual method from the base class.
-         */
-        void bind() override;
+    /**
+     * @brief Bind the framebuffer for use.
+     *
+     * Binds the OpenGL framebuffer object.
+     *
+     * @note Overrides the pure virtual method from the base class.
+     */
+    void bind() override;
 
-        /**
-         * @brief Unbind the framebuffer.
-         * 
-         * Unbinds the OpenGL framebuffer object.
-         * 
-         * @note Overrides the pure virtual method from the base class.
-         */
-        void unbind() const override;
+    /**
+     * @brief Unbind the framebuffer.
+     *
+     * Unbinds the OpenGL framebuffer object.
+     *
+     * @note Overrides the pure virtual method from the base class.
+     */
+    void unbind() const override;
 };
 
 /**
@@ -97,34 +97,34 @@ REGISTER(Common::Framebuffer, Framebuffer);
  * @see RaeptorCogs::GAPI::Common::Renderbuffer
  */
 class Renderbuffer : public ObjectMixin<Common::Renderbuffer> {
-    public:
-        /**
-         * @brief Constructor for Renderbuffer.
-         */
-        Renderbuffer();
+  public:
+    /**
+     * @brief Constructor for Renderbuffer.
+     */
+    Renderbuffer();
 
-        /**
-         * @brief Destructor for Renderbuffer.
-         */
-        ~Renderbuffer() override;
+    /**
+     * @brief Destructor for Renderbuffer.
+     */
+    ~Renderbuffer() override;
 
-        /**
-         * @brief Bind the renderbuffer for use.
-         * 
-         * Binds the OpenGL renderbuffer object.
-         * 
-         * @note Overrides the pure virtual method from the base class.
-         */
-        void bind() override;
+    /**
+     * @brief Bind the renderbuffer for use.
+     *
+     * Binds the OpenGL renderbuffer object.
+     *
+     * @note Overrides the pure virtual method from the base class.
+     */
+    void bind() override;
 
-        /**
-         * @brief Unbind the renderbuffer.
-         * 
-         * Unbinds the OpenGL renderbuffer object.
-         * 
-         * @note Overrides the pure virtual method from the base class.
-         */
-        void unbind() const override;
+    /**
+     * @brief Unbind the renderbuffer.
+     *
+     * Unbinds the OpenGL renderbuffer object.
+     *
+     * @note Overrides the pure virtual method from the base class.
+     */
+    void unbind() const override;
 };
 
 /**
@@ -143,39 +143,39 @@ REGISTER(Common::Renderbuffer, Renderbuffer);
  * @see RaeptorCogs::GAPI::Common::Vertexbuffer
  */
 class Vertexbuffer : public ObjectMixin<Common::Vertexbuffer> {
-    public:
-        /**
-         * @brief Constructor for Vertexbuffer.
-         */
-        Vertexbuffer();
+  public:
+    /**
+     * @brief Constructor for Vertexbuffer.
+     */
+    Vertexbuffer();
 
-        /**
-         * @brief Destructor for Vertexbuffer.
-         */
-        ~Vertexbuffer() override;
-        
-        /**
-         * @brief Bind the vertex buffer for use.
-         * 
-         * Binds the OpenGL vertex buffer object.
-         * 
-         * @note Overrides the pure virtual method from the base class.
-         */
-        void bind() override;
+    /**
+     * @brief Destructor for Vertexbuffer.
+     */
+    ~Vertexbuffer() override;
 
-        /**
-         * @brief Unbind the vertex buffer.
-         * 
-         * Unbinds the OpenGL vertex buffer object.
-         * 
-         * @note Overrides the pure virtual method from the base class.
-         */
-        void unbind() const override;
+    /**
+     * @brief Bind the vertex buffer for use.
+     *
+     * Binds the OpenGL vertex buffer object.
+     *
+     * @note Overrides the pure virtual method from the base class.
+     */
+    void bind() override;
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::Vertexbuffer::build
-         */
-        void build(const void* data, size_t size) override;
+    /**
+     * @brief Unbind the vertex buffer.
+     *
+     * Unbinds the OpenGL vertex buffer object.
+     *
+     * @note Overrides the pure virtual method from the base class.
+     */
+    void unbind() const override;
+
+    /**
+     * @see RaeptorCogs::GAPI::Common::Vertexbuffer::build
+     */
+    void build(const void *data, size_t size) override;
 };
 
 /**
@@ -194,39 +194,39 @@ REGISTER(Common::Vertexbuffer, Vertexbuffer);
  * @see RaeptorCogs::GAPI::Common::Elementbuffer
  */
 class Elementbuffer : public ObjectMixin<Common::Elementbuffer> {
-    public:
-        /**
-         * @brief Constructor for Elementbuffer.
-         */
-        Elementbuffer();
+  public:
+    /**
+     * @brief Constructor for Elementbuffer.
+     */
+    Elementbuffer();
 
-        /**
-         * @brief Destructor for Elementbuffer.
-         */
-        ~Elementbuffer() override;
+    /**
+     * @brief Destructor for Elementbuffer.
+     */
+    ~Elementbuffer() override;
 
-        /**
-         * @brief Bind the element buffer for use.
-         * 
-         * Binds the OpenGL element buffer object.
-         * 
-         * @note Overrides the pure virtual method from the base class.
-         */
-        void bind() override;
+    /**
+     * @brief Bind the element buffer for use.
+     *
+     * Binds the OpenGL element buffer object.
+     *
+     * @note Overrides the pure virtual method from the base class.
+     */
+    void bind() override;
 
-        /**
-         * @brief Unbind the element buffer.
-         * 
-         * Unbinds the OpenGL element buffer object.
-         * 
-         * @note Overrides the pure virtual method from the base class.
-         */
-        void unbind() const override;
+    /**
+     * @brief Unbind the element buffer.
+     *
+     * Unbinds the OpenGL element buffer object.
+     *
+     * @note Overrides the pure virtual method from the base class.
+     */
+    void unbind() const override;
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::Elementbuffer::build
-         */
-        void build(const void* data, size_t size) override;
+    /**
+     * @see RaeptorCogs::GAPI::Common::Elementbuffer::build
+     */
+    void build(const void *data, size_t size) override;
 };
 
 /**
@@ -245,49 +245,49 @@ REGISTER(Common::Elementbuffer, Elementbuffer);
  * @see RaeptorCogs::GAPI::Common::ShaderStorageBuffer
  */
 class ShaderStorageBuffer : public ObjectMixin<Common::ShaderStorageBuffer> {
-    public:
-        /**
-         * @brief Constructor for ShaderStorageBuffer.
-         */
-        ShaderStorageBuffer();
+  public:
+    /**
+     * @brief Constructor for ShaderStorageBuffer.
+     */
+    ShaderStorageBuffer();
 
-        /**
-         * @brief Destructor for ShaderStorageBuffer.
-         */
-        ~ShaderStorageBuffer() override;
+    /**
+     * @brief Destructor for ShaderStorageBuffer.
+     */
+    ~ShaderStorageBuffer() override;
 
-        /**
-         * @brief Bind the shader storage buffer for use.
-         * 
-         * Binds the OpenGL shader storage buffer object.
-         * 
-         * @note Overrides the pure virtual method from the base class.
-         */
-        void bind() override;
+    /**
+     * @brief Bind the shader storage buffer for use.
+     *
+     * Binds the OpenGL shader storage buffer object.
+     *
+     * @note Overrides the pure virtual method from the base class.
+     */
+    void bind() override;
 
-        /**
-         * @brief Unbind the shader storage buffer.
-         * 
-         * Unbinds the OpenGL shader storage buffer object.
-         * 
-         * @note Overrides the pure virtual method from the base class.
-         */
-        void unbind() const override;
+    /**
+     * @brief Unbind the shader storage buffer.
+     *
+     * Unbinds the OpenGL shader storage buffer object.
+     *
+     * @note Overrides the pure virtual method from the base class.
+     */
+    void unbind() const override;
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::ShaderStorageBuffer::allocate
-         */
-        void allocate(size_t size) override;
+    /**
+     * @see RaeptorCogs::GAPI::Common::ShaderStorageBuffer::allocate
+     */
+    void allocate(size_t size) override;
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::ShaderStorageBuffer::setBindingPoint
-         */
-        void setBindingPoint(unsigned int bindingPoint) override;
+    /**
+     * @see RaeptorCogs::GAPI::Common::ShaderStorageBuffer::setBindingPoint
+     */
+    void setBindingPoint(unsigned int bindingPoint) override;
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::ShaderStorageBuffer::upload
-         */
-        void upload(const void* data, size_t size, size_t offset = 0) override;
+    /**
+     * @see RaeptorCogs::GAPI::Common::ShaderStorageBuffer::upload
+     */
+    void upload(const void *data, size_t size, size_t offset = 0) override;
 };
 
 /**
@@ -298,4 +298,4 @@ using SSBO = ShaderStorageBuffer;
 /** @brief Register ShaderStorageBuffer with the FactoryRegistry.*/
 REGISTER(Common::ShaderStorageBuffer, ShaderStorageBuffer);
 
-}
+} // namespace RaeptorCogs::GAPI::GL

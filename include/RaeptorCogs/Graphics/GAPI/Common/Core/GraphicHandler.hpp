@@ -38,236 +38,233 @@
  ***********************************************************************************/
 
 #pragma once
-#include <iostream>
-#include <vector>
 #include <cstdint>
+#include <iostream>
 #include <tuple>
 
 namespace RaeptorCogs {
-    class Graphic2D;
+class Graphic2D;
+
+/**
+ * @brief Batch key structure.
+ *
+ * Represents a unique key for graphic batching based on rendering parameters.
+ */
+struct BatchKey {
+    /**
+     * @brief Writing mask.
+     *
+     * Indicates which buffers are written to during rendering.
+     *
+     * @note Used for batching graphics with similar write operations.
+     */
+    int writingMask;
 
     /**
-     * @brief Batch key structure.
-     * 
-     * Represents a unique key for graphic batching based on rendering parameters.
+     * @brief Reading mask.
+     *
+     * Indicates which buffers are read from during rendering.
+     *
+     * @note Used for batching graphics with similar read operations.
      */
-    struct BatchKey {
-        /**
-         * @brief Writing mask.
-         * 
-         * Indicates which buffers are written to during rendering.
-         * 
-         * @note Used for batching graphics with similar write operations.
-         */
-        int writingMask;
+    int readingMask;
 
-        /**
-         * @brief Reading mask.
-         * 
-         * Indicates which buffers are read from during rendering.
-         * 
-         * @note Used for batching graphics with similar read operations.
-         */
-        int readingMask;
+    /**
+     * @brief Z-index for rendering order.
+     *
+     * Determines the rendering order of graphics, with lower values rendered first.
+     *
+     * @note Used for batching graphics with similar depth.
+     */
+    int zindex;
 
-        /**
-         * @brief Z-index for rendering order.
-         * 
-         * Determines the rendering order of graphics, with lower values rendered first.
-         * 
-         * @note Used for batching graphics with similar depth.
-         */
-        int zindex;
+    /**
+     * @brief Opaqueness flag.
+     *
+     * Indicates whether the graphic is opaque or transparent.
+     *
+     * @note Used for batching graphics with similar transparency.
+     */
+    bool isOpaque;
 
-        /**
-         * @brief Opaqueness flag.
-         * 
-         * Indicates whether the graphic is opaque or transparent.
-         * 
-         * @note Used for batching graphics with similar transparency.
-         */
-        bool isOpaque;
+    /**
+     * @brief Shader program ID.
+     *
+     * Identifier for the shader program used for rendering.
+     *
+     * @note Used for batching graphics using the same shader.
+     */
+    uint32_t programID;
 
-        /**
-         * @brief Shader program ID.
-         * 
-         * Identifier for the shader program used for rendering.
-         * 
-         * @note Used for batching graphics using the same shader.
-         */
-        uint32_t programID;
+    /**
+     * @brief Texture ID.
+     *
+     * Identifier for the texture used for rendering.
+     *
+     * @note Used for batching graphics using the same texture.
+     */
+    uint32_t textureID;
 
-        /**
-         * @brief Texture ID.
-         * 
-         * Identifier for the texture used for rendering.
-         * 
-         * @note Used for batching graphics using the same texture.
-         */
-        uint32_t textureID;
+    /**
+     * @brief Less-than operator for ordering.
+     *
+     * @param other The other BatchKey to compare with.
+     * @return true if this BatchKey is less than the other, false otherwise.
+     *
+     * @note Used for sorting BatchKeys in collections.
+     */
+    bool operator<(const BatchKey &other) const noexcept {
+      return std::tie(writingMask, readingMask, zindex, isOpaque, programID, textureID) <
+             std::tie(
+                 other.writingMask, other.readingMask, other.zindex, other.isOpaque, other.programID, other.textureID);
+    }
 
-        /**
-         * @brief Less-than operator for ordering.
-         * 
-         * @param other The other BatchKey to compare with.
-         * @return true if this BatchKey is less than the other, false otherwise.
-         * 
-         * @note Used for sorting BatchKeys in collections.
-         */
-        bool operator<(const BatchKey& other) const noexcept {
-            return std::tie(writingMask, readingMask, zindex, isOpaque, programID, textureID)
-                < std::tie(other.writingMask, other.readingMask, other.zindex, other.isOpaque, other.programID, other.textureID);
-        }
+    /**
+     * @brief Greater-than operator for ordering.
+     *
+     * @param other The other BatchKey to compare with.
+     * @return true if this BatchKey is greater than the other, false otherwise.
+     *
+     * @note Used for sorting BatchKeys in collections.
+     */
+    bool operator>(const BatchKey &other) const noexcept {
+      return other < *this;
+    }
 
-        /**
-         * @brief Greater-than operator for ordering.
-         * 
-         * @param other The other BatchKey to compare with.
-         * @return true if this BatchKey is greater than the other, false otherwise.
-         * 
-         * @note Used for sorting BatchKeys in collections.
-         */
-        bool operator>(const BatchKey& other) const noexcept {
-            return other < *this;
-        }
+    /**
+     * @brief Not-equal operator.
+     *
+     * @param other The other BatchKey to compare with.
+     * @return true if this BatchKey is not equal to the other, false otherwise.
+     *
+     * @note Used for comparing BatchKeys in collections.
+     */
+    bool operator!=(const BatchKey &other) const noexcept {
+      return !(*this == other);
+    }
 
-        /**
-         * @brief Not-equal operator.
-         * 
-         * @param other The other BatchKey to compare with.
-         * @return true if this BatchKey is not equal to the other, false otherwise.
-         * 
-         * @note Used for comparing BatchKeys in collections.
-         */
-        bool operator!=(const BatchKey& other) const noexcept {
-            return !(*this == other);
-        }
-
-        /**
-         * @brief Equality operator.
-         * 
-         * @param other The other BatchKey to compare with.
-         * @return true if this BatchKey is equal to the other, false otherwise.
-         * 
-         * @note Used for comparing BatchKeys in collections.
-         */
-        bool operator==(const BatchKey& other) const noexcept {
-            return writingMask == other.writingMask &&
-                readingMask == other.readingMask &&
-                zindex      == other.zindex &&
-                isOpaque    == other.isOpaque &&
-                programID   == other.programID &&
-                textureID   == other.textureID;
-        }
-    };
-}
-
+    /**
+     * @brief Equality operator.
+     *
+     * @param other The other BatchKey to compare with.
+     * @return true if this BatchKey is equal to the other, false otherwise.
+     *
+     * @note Used for comparing BatchKeys in collections.
+     */
+    bool operator==(const BatchKey &other) const noexcept {
+      return writingMask == other.writingMask && readingMask == other.readingMask && zindex == other.zindex &&
+             isOpaque == other.isOpaque && programID == other.programID && textureID == other.textureID;
+    }
+};
+} // namespace RaeptorCogs
 
 namespace RaeptorCogs::GAPI::Common {
+/**
+ * @brief Graphic batch handler structure.
+ *
+ * Manages batching information for a graphic during rendering.
+ */
+struct GraphicBatchHandler {
     /**
-     * @brief Graphic batch handler structure.
-     * 
-     * Manages batching information for a graphic during rendering.
+     * @brief Static data cursor.
+     *
+     * Indicates the position in the static instance data buffer.
+     *
+     * @note Not size_t to replicate GL buffer offset limitations.
      */
-    struct GraphicBatchHandler {
-        /**
-         * @brief Static data cursor.
-         * 
-         * Indicates the position in the static instance data buffer.
-         * 
-         * @note Not size_t to replicate GL buffer offset limitations.
-         */
-        unsigned int staticDataCursor;
+    unsigned int staticDataCursor;
 
-        /**
-         * @brief Dynamic data cursor.
-         * 
-         * Indicates the position in the dynamic instance data buffer.
-         * 
-         * @note Not size_t to replicate GL buffer offset limitations.
-         */
-        unsigned int dynamicDataCursor;
+    /**
+     * @brief Dynamic data cursor.
+     *
+     * Indicates the position in the dynamic instance data buffer.
+     *
+     * @note Not size_t to replicate GL buffer offset limitations.
+     */
+    unsigned int dynamicDataCursor;
 
-        /**
-         * @brief Dynamic data size.
-         * 
-         * Indicates the size of the dynamic instance data for this graphic.
-         * 
-         * @note Not size_t to replicate GL buffer size limitations.
-         */
-        unsigned int dynamicDataSize;
+    /**
+     * @brief Dynamic data size.
+     *
+     * Indicates the size of the dynamic instance data for this graphic.
+     *
+     * @note Not size_t to replicate GL buffer size limitations.
+     */
+    unsigned int dynamicDataSize;
 
-        /**
-         * @brief Renderer key.
-         * 
-         * Unique key for batching based on rendering parameters.
-         */
-        BatchKey rendererKey;
+    /**
+     * @brief Renderer key.
+     *
+     * Unique key for batching based on rendering parameters.
+     */
+    BatchKey rendererKey;
 
-        /**
-         * @brief Pointer to the associated graphic.
-         * 
-         * The graphic being managed by this batch handler.
-         */
-        Graphic2D* graphic;
+    /**
+     * @brief Pointer to the associated graphic.
+     *
+     * The graphic being managed by this batch handler.
+     */
+    Graphic2D *graphic;
 
-        /**
-         * @brief Dirty flag.
-         * 
-         * Indicates whether the graphic's data has changed and needs to be re-uploaded.
-         */
-        bool isDirty;
+    /**
+     * @brief Dirty flag.
+     *
+     * Indicates whether the graphic's data has changed and needs to be re-uploaded.
+     */
+    bool isDirty;
 
-        /**
-         * @brief Constructor for GraphicBatchHandler.
-         * 
-         * @param key The BatchKey for this handler.
-         * @param graphic Pointer to the associated Graphic2D.
-         * 
-         * @note Initializes cursors and dirty flag.
-         */
-        GraphicBatchHandler(const BatchKey& key, Graphic2D* graphic) : staticDataCursor(0), dynamicDataCursor(0), dynamicDataSize(0), rendererKey(key), graphic(graphic), isDirty(false) {}
-    };
-}
+    /**
+     * @brief Constructor for GraphicBatchHandler.
+     *
+     * @param key The BatchKey for this handler.
+     * @param graphic Pointer to the associated Graphic2D.
+     *
+     * @note Initializes cursors and dirty flag.
+     */
+    GraphicBatchHandler(const BatchKey &key, Graphic2D *graphic)
+        : staticDataCursor(0), dynamicDataCursor(0), dynamicDataSize(0), rendererKey(key), graphic(graphic),
+          isDirty(false) {}
+};
+} // namespace RaeptorCogs::GAPI::Common
 
 namespace std {
 
-    /**
-     * @brief Stream output operator for BatchKey.
-     * 
-     * @param os Output stream.
-     * @param key BatchKey instance to output.
-     * @return Reference to the output stream.
-     * 
-     * @note Outputs the BatchKey in a human-readable format.
-     */
-    inline std::ostream& operator<<(std::ostream& os, const RaeptorCogs::BatchKey& key) {
-        os << "{ writeMask=" << key.writingMask
-        << ", readMaskID=" << key.readingMask
-        << ", z=" << key.zindex
-        << ", opaque=" << key.isOpaque
-        << ", program=" << key.programID
-        << ", texture=" << key.textureID
-        << " }";
-        return os;
-    }
-
-    /**
-     * @brief Stream output operator for GraphicBatchHandler.
-     * 
-     * @param os Output stream.
-     * @param handler GraphicBatchHandler instance to output.
-     * @return Reference to the output stream.
-     * 
-     * @note Outputs the GraphicBatchHandler in a human-readable format.
-     */
-    inline std::ostream& operator<<(std::ostream& os, const RaeptorCogs::GAPI::Common::GraphicBatchHandler& handler) {
-        os << "GraphicBatchHandler { staticDataCursor=" << handler.staticDataCursor
-            << ", dynamicDataCursor=" << handler.dynamicDataCursor
-            << ", dynamicDataSize=" << handler.dynamicDataSize
-            << ", rendererKey=" << handler.rendererKey
-            << ", graphic=" << handler.graphic;
-        os << " }";
-        return os;
-    }
+/**
+ * @brief Stream output operator for BatchKey.
+ *
+ * @param os Output stream.
+ * @param key BatchKey instance to output.
+ * @return Reference to the output stream.
+ *
+ * @note Outputs the BatchKey in a human-readable format.
+ */
+inline std::ostream &operator<<(std::ostream &os, const RaeptorCogs::BatchKey &key) {
+  os << "{ writeMask=" << key.writingMask;
+  os << ", readMaskID=" << key.readingMask;
+  os << ", z=" << key.zindex;
+  os << ", opaque=" << key.isOpaque;
+  os << ", program=" << key.programID;
+  os << ", texture=" << key.textureID;
+  os << " }";
+  return os;
 }
+
+/**
+ * @brief Stream output operator for GraphicBatchHandler.
+ *
+ * @param os Output stream.
+ * @param handler GraphicBatchHandler instance to output.
+ * @return Reference to the output stream.
+ *
+ * @note Outputs the GraphicBatchHandler in a human-readable format.
+ */
+inline std::ostream &operator<<(std::ostream &os, const RaeptorCogs::GAPI::Common::GraphicBatchHandler &handler) {
+  os << "GraphicBatchHandler { staticDataCursor=" << handler.staticDataCursor;
+  os << ", dynamicDataCursor=" << handler.dynamicDataCursor;
+  os << ", dynamicDataSize=" << handler.dynamicDataSize;
+  os << ", rendererKey=" << handler.rendererKey;
+  os << ", graphic=" << handler.graphic;
+  os << " }";
+  return os;
+}
+} // namespace std

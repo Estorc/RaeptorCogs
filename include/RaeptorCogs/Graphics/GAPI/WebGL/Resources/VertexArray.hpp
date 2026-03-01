@@ -38,8 +38,9 @@
  ***********************************************************************************/
 
 #pragma once
-#include <RaeptorCogs/Graphics/GAPI/WebGL/Resources/Object.hpp>
 #include <RaeptorCogs/Graphics/GAPI/GL/Resources/VertexArray.hpp>
+#include <RaeptorCogs/Graphics/GAPI/WebGL/Resources/Object.hpp>
+
 
 namespace RaeptorCogs::GAPI::WebGL {
 
@@ -56,4 +57,4 @@ using VAO = VertexArray;
 /** @brief Register VertexArray with the FactoryRegistry.*/
 REGISTER(Common::VertexArray, VertexArray);
 
-} // namespace RaeptorCogs::GAPI::GL
+} // namespace RaeptorCogs::GAPI::WebGL

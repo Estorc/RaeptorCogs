@@ -26,15 +26,14 @@
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED
+ * "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+ * LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ * PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
 #pragma once
@@ -43,7 +42,7 @@
 #include <vector>
 
 namespace RaeptorCogs {
-    class Window;
+class Window;
 }
 
 namespace RaeptorCogs::Singletons {
@@ -52,99 +51,105 @@ class Renderer;
 
 /**
  * @brief Platform singleton class.
- * 
+ *
  * Manages platform-specific window creation and management.
- * 
+ *
  * @code{.cpp}
- * RaeptorCogs::Window* window = RaeptorCogs::Platform().createWindow(800, 600, "My Window");
+ * RaeptorCogs::Window* window = RaeptorCogs::Platform().createWindow(800, 600,
+ * "My Window");
  * // Use the window ...
  * RaeptorCogs::Platform().destroyWindow(window);
  * @endcode
  */
 class Platform {
-    private:
-    
-        // ============================================================================
-        //                             PRIVATE ATTRIBUTES
-        // ============================================================================
+  private:
+    // ============================================================================
+    //                             PRIVATE ATTRIBUTES
+    // ============================================================================
 
-        /**
-         * @brief Pointer to the renderer singleton.
-         * 
-         * Used for window creation and management.
-         * 
-         * @see RaeptorCogs::Renderer
-         */
-        Renderer* renderer = nullptr;
+    /**
+     * @brief Pointer to the renderer singleton.
+     *
+     * Used for window creation and management.
+     *
+     * @see RaeptorCogs::Renderer
+     */
+    Renderer *renderer = nullptr;
 
-        /**
-         * @brief List of managed windows.
-         * 
-         * The renderer manages multiple windows for rendering.
-         */
-        std::vector<Window*> windows;
+    /**
+     * @brief List of managed windows.
+     *
+     * The renderer manages multiple windows for rendering.
+     */
+    std::vector<Window *> windows;
 
-        friend SingletonAccessor<Platform>;
+    friend SingletonAccessor<Platform>;
 
-    public:
+  public:
+    // ============================================================================
+    //                             PUBLIC METHODS
+    // ============================================================================
 
-        // ============================================================================
-        //                             PUBLIC METHODS
-        // ============================================================================
+    /**
+     * @brief Create a new window with the specified dimensions and title.
+     *
+     * @param width The width of the window.
+     * @param height The height of the window.
+     * @param title The title of the window.
+     * @return Pointer to the created window.
+     *
+     * @code{.cpp}
+     * RaeptorCogs::Window* window = RaeptorCogs::Renderer().createWindow(800,
+     * 600, "My Window");
+     * @endcode
+     * @note The created window is managed by the renderer.
+     */
+    Window *createWindow(int width, int height, const std::string_view &title);
 
-        /**
-         * @brief Create a new window with the specified dimensions and title.
-         * 
-         * @param width The width of the window.
-         * @param height The height of the window.
-         * @param title The title of the window.
-         * @return Pointer to the created window.
-         * 
-         * @code{.cpp}
-         * RaeptorCogs::Window* window = RaeptorCogs::Renderer().createWindow(800, 600, "My Window");
-         * @endcode
-         * @note The created window is managed by the renderer.
-         */
-        Window* createWindow(int width, int height, const std::string_view& title);
+    /**
+     * @brief Destroy the specified window.
+     *
+     * @param window Pointer to the window to be destroyed.
+     *
+     * @note The window is removed from the renderer's management.
+     */
+    void destroyWindow(Window *window);
 
-        /**
-         * @brief Destroy the specified window.
-         * 
-         * @param window Pointer to the window to be destroyed.
-         * 
-         * @note The window is removed from the renderer's management.
-         */
-        void destroyWindow(Window* window);
+    /**
+     * @brief Get the list of managed windows.
+     *
+     * @return Reference to the vector of managed windows.
+     *
+     * @note Used for accessing all windows created by the platform.
+     */
+    std::vector<Window *> &getWindows() {
+      return this->windows;
+    }
 
-        /**
-         * @brief Get the list of managed windows.
-         * 
-         * @return Reference to the vector of managed windows.
-         * 
-         * @note Used for accessing all windows created by the platform.
-         */
-        std::vector<Window*>& getWindows() { return this->windows; }
+    /**
+     * @brief Set the renderer singleton.
+     *
+     * @param renderer Pointer to the renderer singleton.
+     */
+    void setRenderer(Renderer *renderer) {
+      this->renderer = renderer;
+    }
 
-        /**
-         * @brief Set the renderer singleton.
-         * 
-         * @param renderer Pointer to the renderer singleton.
-         */
-        void setRenderer(Renderer* renderer) { this->renderer = renderer; }
+    /**
+     * @brief Get the renderer singleton.
+     *
+     * @return Pointer to the renderer singleton.
+     */
+    Renderer *getRenderer() const {
+      return this->renderer;
+    }
 
-        /**
-         * @brief Get the renderer singleton.
-         * 
-         * @return Pointer to the renderer singleton.
-         */
-        Renderer* getRenderer() const { return this->renderer; }
-
-        /**
-         * @brief Destructor for the Platform singleton.
-         * 
-         * Cleans up all managed windows.
-         */
-        ~Platform();
+    /**
+     * @brief Destructor for the Platform singleton.
+     *
+     * Cleans up all managed windows.
+     */
+    ~Platform();
 };
 
-} // namespace RaeptorCogs
+} // namespace RaeptorCogs::Singletons

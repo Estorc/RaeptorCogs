@@ -38,8 +38,9 @@
  ***********************************************************************************/
 
 #pragma once
-#include <RaeptorCogs/Graphics/GAPI/GL/Resources/Object.hpp>
 #include <RaeptorCogs/Graphics/GAPI/Common/Resources/VertexArray.hpp>
+#include <RaeptorCogs/Graphics/GAPI/GL/Resources/Object.hpp>
+
 
 namespace RaeptorCogs::GAPI::GL {
 
@@ -47,34 +48,34 @@ namespace RaeptorCogs::GAPI::GL {
  * @see RaeptorCogs::GAPI::Common::VertexArray
  */
 class VertexArray : public ObjectMixin<Common::VertexArray> {
-    public:
-        /**
-         * @brief Constructor for VertexArray.
-         */
-        VertexArray();
+  public:
+    /**
+     * @brief Constructor for VertexArray.
+     */
+    VertexArray();
 
-        /**
-         * @brief Destructor for VertexArray.
-         */
-        ~VertexArray() override;
-        
-        /**
-         * @brief Bind the vertex array for use.
-         * 
-         * Binds the OpenGL vertex array object.
-         * 
-         * @note Overrides the pure virtual method from the base class.
-         */
-        void bind() override;
+    /**
+     * @brief Destructor for VertexArray.
+     */
+    ~VertexArray() override;
 
-        /**
-         * @brief Unbind the vertex array.
-         * 
-         * Unbinds the OpenGL vertex array object.
-         * 
-         * @note Overrides the pure virtual method from the base class.
-         */
-        void unbind() const override;
+    /**
+     * @brief Bind the vertex array for use.
+     *
+     * Binds the OpenGL vertex array object.
+     *
+     * @note Overrides the pure virtual method from the base class.
+     */
+    void bind() override;
+
+    /**
+     * @brief Unbind the vertex array.
+     *
+     * Unbinds the OpenGL vertex array object.
+     *
+     * @note Overrides the pure virtual method from the base class.
+     */
+    void unbind() const override;
 };
 
 /**

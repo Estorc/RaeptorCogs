@@ -39,7 +39,7 @@
 
 #pragma once
 namespace RaeptorCogs {
-    class Window;
+class Window;
 }
 struct ImGuiContext;
 
@@ -47,71 +47,75 @@ namespace RaeptorCogs::GAPI::Common {
 
 /**
  * @brief ImGui implementation interface.
- * 
+ *
  * Provides an interface for ImGui backend implementations.
  */
 class ImGuiModule {
-    private:
-        // ============================================================================
-        //                             PRIVATE MEMBERS
-        // ============================================================================
+  private:
+    // ============================================================================
+    //                             PRIVATE MEMBERS
+    // ============================================================================
 
-        bool pendingFrame = false;
+    bool pendingFrame = false;
 
-    protected:
+  protected:
+    // ============================================================================
+    //                             PROTECTED METHODS
+    // ============================================================================
 
-        // ============================================================================
-        //                             PROTECTED METHODS
-        // ============================================================================
+    void setPendingFrame(bool pending) {
+      this->pendingFrame = pending;
+    }
 
-        void setPendingFrame(bool pending) {
-            this->pendingFrame = pending;
-        }
+    bool isPendingFrame() const {
+      return this->pendingFrame;
+    }
 
-        bool isPendingFrame() const {
-            return this->pendingFrame;
-        }
+  public:
+    // ============================================================================
+    //                               PUBLIC METHODS
+    // ============================================================================
 
-    public:
+    /**
+     * @brief Default constructor.
+     */
+    ImGuiModule() = default;
 
-        // ============================================================================
-        //                               PUBLIC METHODS
-        // ============================================================================
+    /**
+     * @brief Virtual destructor.
+     */
+    virtual ~ImGuiModule() = default;
 
-        /**
-         * @brief Default constructor.
-         */
-        ImGuiModule() = default;
+    /**
+     * @brief Create ImGui context for the given window.
+     *
+     * @param imGuiContext Reference to ImGui context pointer to be created.
+     * @param window Pointer to the Window object.
+     *
+     * @note This is a pure virtual function and must be implemented by derived classes.
+     */
+    virtual void createImGuiContext(ImGuiContext *&imGuiContext, Window *window) = 0;
 
-        /**
-         * @brief Virtual destructor.
-         */
-        virtual ~ImGuiModule() = default;
+    /**
+     * @brief Destroy the ImGui context.
+     *
+     * @note This is a pure virtual function and must be implemented by derived classes.
+     */
+    virtual void destroyImGuiContext() = 0;
 
-        /**
-         * @brief Create ImGui context for the given window.
-         * 
-         * @param imGuiContext Reference to ImGui context pointer to be created.
-         * @param window Pointer to the Window object.
-         * 
-         * @note This is a pure virtual function and must be implemented by derived classes.
-         */
-        virtual void createImGuiContext(ImGuiContext *&imGuiContext, Window* window) = 0;
+    /**
+     * @brief Start a new ImGui frame.
+     *
+     * @note Must be called at the beginning of each frame when using ImGui.
+     */
+    virtual void NewImGuiFrame() = 0;
 
-        /**
-         * @brief Start a new ImGui frame.
-         * 
-         * @note Must be called at the beginning of each frame when using ImGui.
-         */
-        virtual void NewImGuiFrame() = 0;
-
-        /**
-         * @brief Render ImGui draw data.
-         * 
-         * @note Must be called to render ImGui draw data.
-         */
-        virtual void RenderImGuiDrawData() = 0;
-
+    /**
+     * @brief Render ImGui draw data.
+     *
+     * @note Must be called to render ImGui draw data.
+     */
+    virtual void RenderImGuiDrawData() = 0;
 };
 
-}
+} // namespace RaeptorCogs::GAPI::Common

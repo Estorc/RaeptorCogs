@@ -45,20 +45,20 @@ namespace RaeptorCogs {
 
 /**
  * @brief Vertex structure for 2D graphics.
- * 
+ *
  * Defines the layout of vertex data used in rendering.
  */
 struct Vertex2D {
     /**
      * @brief Position of the vertex in 2D space.
-     * 
+     *
      * Uses glm::vec2 to represent the x and y coordinates.
      */
     glm::vec2 position;
 
     /**
      * @brief Texture coordinates (UV) of the vertex.
-     * 
+     *
      * Uses glm::vec2 to represent the u and v texture mapping coordinates.
      */
     glm::vec2 uv;
@@ -66,23 +66,23 @@ struct Vertex2D {
 
 /**
  * @brief Vertex structure for 3D graphics.
- * 
+ *
  * Defines the layout of a 3D vertex with position and texture coordinates.
  */
 struct Vertex3D {
     /**
      * @brief Position of the vertex in 3D space.
-     * 
+     *
      * Uses glm::vec3 to represent the x, y, and z coordinates.
      */
     glm::vec3 position;
 
     /**
      * @brief Texture coordinates (UV) of the vertex.
-     * 
+     *
      * Uses glm::vec2 to represent the u and v texture mapping coordinates.
      */
     glm::vec2 uv;
 };
 
-}
+} // namespace RaeptorCogs

@@ -40,59 +40,57 @@
 #pragma once
 #include <RaeptorCogs/Graphics/GAPI/Common/Resources/Object.hpp>
 #include <RaeptorCogs/Graphics/GAPI/GL/Constants.hpp>
-#include <unordered_map>
-#include <typeindex>
 
 namespace RaeptorCogs::GAPI::GL {
 
-template<typename T, typename = typename std::enable_if<std::is_base_of<Common::ObjectData, T>::value>::type>
+template <typename T, typename = typename std::enable_if<std::is_base_of<Common::ObjectData, T>::value>::type>
 class ObjectMixin : public T {
-    protected:
-        // ============================================================================
-        //                             PROTECTED ATTRIBUTES
-        // ============================================================================
+  protected:
+    // ============================================================================
+    //                             PROTECTED ATTRIBUTES
+    // ============================================================================
 
-        /**
-         * @brief OpenGL object ID.
-         * 
-         * Stores the OpenGL-specific object identifier.
-         */
-        GLuint glObjectID = 0;
+    /**
+     * @brief OpenGL object ID.
+     *
+     * Stores the OpenGL-specific object identifier.
+     */
+    GLuint glObjectID = 0;
 
-    public:
-        // ============================================================================
-        //                             PUBLIC METHODS
-        // ============================================================================
+  public:
+    // ============================================================================
+    //                             PUBLIC METHODS
+    // ============================================================================
 
-        /**
-         * @brief Constructor for OpenGL Object.
-         */
-        ObjectMixin() = default;
+    /**
+     * @brief Constructor for OpenGL Object.
+     */
+    ObjectMixin() = default;
 
-        /**
-         * @brief Destructor for OpenGL Object.
-         */
-        virtual ~ObjectMixin() = default;
+    /**
+     * @brief Destructor for OpenGL Object.
+     */
+    virtual ~ObjectMixin() = default;
 
-        /**
-         * @brief Get the OpenGL object ID.
-         * 
-         * @return GLuint The OpenGL object identifier.
-         */
-        size_t getID() const override {
-            return static_cast<size_t>(this->glObjectID);
-        }
+    /**
+     * @brief Get the OpenGL object ID.
+     *
+     * @return GLuint The OpenGL object identifier.
+     */
+    size_t getID() const override {
+      return static_cast<size_t>(this->glObjectID);
+    }
 
-        /**
-         * @brief Check if the object is valid.
-         * 
-         * @return true if the object is valid, false otherwise.
-         * 
-         * @note An object is considered valid if its OpenGL object ID is non-zero.
-         */
-        bool isValid() const override {
-            return this->glObjectID != 0;
-        }
+    /**
+     * @brief Check if the object is valid.
+     *
+     * @return true if the object is valid, false otherwise.
+     *
+     * @note An object is considered valid if its OpenGL object ID is non-zero.
+     */
+    bool isValid() const override {
+      return this->glObjectID != 0;
+    }
 };
 
 /**
@@ -101,4 +99,4 @@ class ObjectMixin : public T {
  */
 FACTORY_REGISTRY_DECLARATION();
 
-}
+} // namespace RaeptorCogs::GAPI::GL

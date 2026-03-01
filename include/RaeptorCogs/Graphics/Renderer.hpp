@@ -42,30 +42,25 @@
 #include <RaeptorCogs/Core/Flags.hpp>
 #include <RaeptorCogs/Graphics/Window.hpp>
 #include <RaeptorCogs/IO/Texture.hpp>
-#include <deque>
-#include <unordered_map>
-#include <map>
-#include <memory>
-#include <functional>
 #include <RaeptorCogsShaders/common/constants.glsl>
 
-#include <RaeptorCogs/Graphics/GAPI/Common/RendererBackend.hpp>
 #include <RaeptorCogs/Core/Singleton.hpp>
 #include <RaeptorCogs/Graphics/GAPI/Common/Core/GraphicHandler.hpp>
+#include <RaeptorCogs/Graphics/GAPI/Common/RendererBackend.hpp>
 
 namespace RaeptorCogs {
 
 class Graphic2D;
 class Component;
 
-}
+} // namespace RaeptorCogs
 namespace RaeptorCogs::Singletons {
 
 /**
  * @brief Renderer singleton class.
- * 
+ *
  * Manages the rendering backend and provides high-level rendering functionalities.
- * 
+ *
  * @code{.cpp}
  * RaeptorCogs::Renderer().initialize(RaeptorCogs::GraphicsBackend::GL); // Initialize OpenGL backend
  * RaeptorCogs::Window* window = RaeptorCogs::Renderer().createWindow(800, 600, "My Window"); // Create a window
@@ -78,197 +73,194 @@ namespace RaeptorCogs::Singletons {
  * @endcode
  */
 class Renderer {
-    private:
+  private:
+    // ============================================================================
+    //                               PRIVATE ATTRIBUTES
+    // ============================================================================
 
-        // ============================================================================
-        //                               PRIVATE ATTRIBUTES
-        // ============================================================================
+    /**
+     * @brief Pointer to the active rendering backend.
+     *
+     * Manages the rendering operations and backend-specific implementations.
+     *
+     * @note Initialized during renderer setup.
+     * @see GraphicsBackend
+     */
+    GAPI::Common::RendererBackend *activeBackend = nullptr;
 
-        /**
-         * @brief Pointer to the active rendering backend.
-         * 
-         * Manages the rendering operations and backend-specific implementations.
-         * 
-         * @note Initialized during renderer setup.
-         * @see GraphicsBackend
-         */
-        GAPI::Common::RendererBackend* activeBackend = nullptr;
+    /**
+     * @brief Texture atlas manager.
+     *
+     * Manages texture atlases for efficient texture handling.
+     */
+    TextureAtlasManager textureAtlasManager;
 
-        /**
-         * @brief Texture atlas manager.
-         * 
-         * Manages texture atlases for efficient texture handling.
-         */
-        TextureAtlasManager textureAtlasManager;
+    // ============================================================================
+    //                               PRIVATE METHODS
+    // ============================================================================
 
-        // ============================================================================
-        //                               PRIVATE METHODS
-        // ============================================================================
+    /**
+     * @brief Private constructor for the Renderer singleton.
+     *
+     * Ensures that the Renderer can only be instantiated through the SingletonAccessor.
+     */
+    Renderer() = default;
 
-        /**
-         * @brief Private constructor for the Renderer singleton.
-         * 
-         * Ensures that the Renderer can only be instantiated through the SingletonAccessor.
-         */
-        Renderer() = default;
+    /**
+     * @brief Destructor for the Renderer singleton.
+     *
+     * Cleans up the active rendering backend.
+     */
+    ~Renderer();
 
-        /**
-         * @brief Destructor for the Renderer singleton.
-         * 
-         * Cleans up the active rendering backend.
-         */
-        ~Renderer();
-        
-        /**
-         * @brief Set the rendering backend.
-         * 
-         * @param backend The graphics backend to use.
-         * 
-         * @note Called during initialization.
-         */
-        void setBackend(GraphicsBackend backend);
+    /**
+     * @brief Set the rendering backend.
+     *
+     * @param backend The graphics backend to use.
+     *
+     * @note Called during initialization.
+     */
+    void setBackend(GraphicsBackend backend);
 
-        friend SingletonAccessor<Renderer>;
+    friend SingletonAccessor<Renderer>;
 
-    public:
+  public:
+    // ============================================================================
+    //                               PUBLIC METHODS
+    // ============================================================================
 
-        // ============================================================================
-        //                               PUBLIC METHODS
-        // ============================================================================
+    /**
+     * @brief Initialize the renderer with the specified graphics backend.
+     *
+     * @param backend The graphics backend to use. Defaults to OpenGL (GL).
+     *
+     * @code{.cpp}
+     * RaeptorCogs::Renderer().initialize(RaeptorCogs::GraphicsBackend::GL); // Initialize OpenGL backend
+     * @endcode
+     * @note This method must be called before any rendering operations.
+     * @see GraphicsBackend
+     */
+    void initialize(GraphicsBackend backend = GraphicsBackend::GL);
 
-        /**
-         * @brief Initialize the renderer with the specified graphics backend.
-         * 
-         * @param backend The graphics backend to use. Defaults to OpenGL (GL).
-         * 
-         * @code{.cpp}
-         * RaeptorCogs::Renderer().initialize(RaeptorCogs::GraphicsBackend::GL); // Initialize OpenGL backend
-         * @endcode
-         * @note This method must be called before any rendering operations.
-         * @see GraphicsBackend
-         */
-        void initialize(GraphicsBackend backend = GraphicsBackend::GL);
+    /**
+     * @brief Destroy the renderer and clean up resources.
+     *
+     * @note Called during RaeptorCogs shutdown.
+     */
+    void destroy();
 
-        /**
-         * @brief Destroy the renderer and clean up resources.
-         * 
-         * @note Called during RaeptorCogs shutdown.
-         */
-        void destroy();
+    /**
+     * @brief Check if the renderer backend is initialized.
+     *
+     * @return true if the renderer backend is initialized, false otherwise.
+     *
+     * @code{.cpp}
+     * if (RaeptorCogs::Renderer().isInitialized()) {
+     *    // Renderer is ready for use
+     * }
+     * @endcode
+     * @note Useful for lazy initialization checks.
+     */
+    bool isInitialized() const;
 
-        /**
-         * @brief Check if the renderer backend is initialized.
-         * 
-         * @return true if the renderer backend is initialized, false otherwise.
-         * 
-         * @code{.cpp}
-         * if (RaeptorCogs::Renderer().isInitialized()) {
-         *    // Renderer is ready for use
-         * }
-         * @endcode
-         * @note Useful for lazy initialization checks.
-         */
-        bool isInitialized() const;
+    /**
+     * @brief Set the current render list ID.
+     *
+     * @param index The index of the render list to set as current.
+     *
+     * @code{.cpp}
+     * RaeptorCogs::Renderer().setRenderListID(1); // Set render list ID to 1
+     * // Now graphics added will go to render list 1 and be rendered accordingly
+     * @endcode
+     * @note A render list is a collection of graphics to be rendered together.
+     */
+    void setRenderListID(int index);
 
-        /**
-         * @brief Set the current render list ID.
-         * 
-         * @param index The index of the render list to set as current.
-         * 
-         * @code{.cpp}
-         * RaeptorCogs::Renderer().setRenderListID(1); // Set render list ID to 1
-         * // Now graphics added will go to render list 1 and be rendered accordingly
-         * @endcode
-         * @note A render list is a collection of graphics to be rendered together.
-         */
-        void setRenderListID(int index);
+    /**
+     * @brief Add a graphic to the renderer.
+     *
+     * @param graphic Pointer to the graphic to be added.
+     */
+    void add(Graphic2D &);
 
-        /**
-         * @brief Add a graphic to the renderer.
-         * 
-         * @param graphic Pointer to the graphic to be added.
-         */
-        void add(Graphic2D&);
+    /**
+     * @brief Remove a graphic from the renderer.
+     *
+     * @param graphic Pointer to the graphic to be removed.
+     */
+    void remove(Graphic2D &);
 
-        /**
-         * @brief Remove a graphic from the renderer.
-         * 
-         * @param graphic Pointer to the graphic to be removed.
-         */
-        void remove(Graphic2D&);
+    /**
+     * @brief Add a component to the renderer.
+     *
+     * @param component Pointer to the component to be added.
+     */
+    void add(Component &);
 
-        /**
-         * @brief Add a component to the renderer.
-         * 
-         * @param component Pointer to the component to be added.
-         */
-        void add(Component&);
+    /**
+     * @brief Remove a component from the renderer.
+     *
+     * @param component Pointer to the component to be removed.
+     */
+    void remove(Component &);
 
-        /**
-         * @brief Remove a component from the renderer.
-         * 
-         * @param component Pointer to the component to be removed.
-         */
-        void remove(Component&);
+    /**
+     * @brief Render the scene to the specified target.
+     *
+     * @param window Reference to the target window.
+     * @param width Width of the rendering area. If 0, uses the window's width.
+     * @param height Height of the rendering area. If 0, uses the window's height.
+     *
+     * @code{.cpp}
+     * RaeptorCogs::Window* window = RaeptorCogs::Renderer().createWindow(800, 600, "My Window");
+     * RaeptorCogs::Renderer().render(*window); // Render to the window
+     * @endcode
+     * @note If a window is provided, renders to that window; otherwise, renders to the default framebuffer.
+     */
+    virtual void render(Window &window, int width = 0, int height = 0);
 
-        /**
-         * @brief Render the scene to the specified target.
-         * 
-         * @param window Reference to the target window.
-         * @param width Width of the rendering area. If 0, uses the window's width.
-         * @param height Height of the rendering area. If 0, uses the window's height.
-         * 
-         * @code{.cpp}
-         * RaeptorCogs::Window* window = RaeptorCogs::Renderer().createWindow(800, 600, "My Window");
-         * RaeptorCogs::Renderer().render(*window); // Render to the window
-         * @endcode
-         * @note If a window is provided, renders to that window; otherwise, renders to the default framebuffer.
-         */
-        virtual void render(Window& window, int width = 0, int height = 0);
+    /**
+     * @brief Render the scene to the specified texture.
+     *
+     * @param texture Reference to the target texture.
+     * @param width Width of the rendering area. If 0, uses the texture's width.
+     * @param height Height of the rendering area. If 0, uses the texture's height.
+     *
+     * @code{.cpp}
+     * RaeptorCogs::Window* window = RaeptorCogs::Renderer().createWindow(800, 600, "My Window");
+     * RaeptorCogs::Renderer().render(window); // Render to the window
+     * @endcode
+     * @note Renders the scene directly into the provided texture.
+     */
+    virtual void render(Texture &texture, int width = 0, int height = 0);
 
-        /**
-         * @brief Render the scene to the specified texture.
-         * 
-         * @param texture Reference to the target texture.
-         * @param width Width of the rendering area. If 0, uses the texture's width.
-         * @param height Height of the rendering area. If 0, uses the texture's height.
-         * 
-         * @code{.cpp}
-         * RaeptorCogs::Window* window = RaeptorCogs::Renderer().createWindow(800, 600, "My Window");
-         * RaeptorCogs::Renderer().render(window); // Render to the window
-         * @endcode
-         * @note Renders the scene directly into the provided texture.
-         */
-        virtual void render(Texture& texture, int width = 0, int height = 0);
+    /**
+     * @brief Get the active renderer backend.
+     *
+     * @return Reference to the active renderer backend.
+     */
+    GAPI::Common::RendererBackend &getBackend();
 
-        /**
-         * @brief Get the active renderer backend.
-         * 
-         * @return Reference to the active renderer backend.
-         */
-        GAPI::Common::RendererBackend& getBackend();
+    /**
+     * @brief Get the texture atlas manager.
+     *
+     * @return Reference to the texture atlas manager.
+     *
+     * @code{.cpp}
+     * RaeptorCogs::TextureAtlasManager& atlasManager = RaeptorCogs::Renderer().getTextureAtlasManager();
+     * @endcode
+     */
+    TextureAtlasManager &getTextureAtlasManager();
 
-        /**
-         * @brief Get the texture atlas manager.
-         * 
-         * @return Reference to the texture atlas manager.
-         * 
-         * @code{.cpp}
-         * RaeptorCogs::TextureAtlasManager& atlasManager = RaeptorCogs::Renderer().getTextureAtlasManager();
-         * @endcode
-         */
-        TextureAtlasManager& getTextureAtlasManager();
-        
-        // --------------------------------------------
-        //                   ImGui
-        // --------------------------------------------
+    // --------------------------------------------
+    //                   ImGui
+    // --------------------------------------------
 
-        /**
-         * @brief Create a new ImGui frame.
-         * 
-         * @note Must be called at the beginning of each frame before any ImGui rendering.
-         */
-        void CreateImGuiFrame();
-
+    /**
+     * @brief Create a new ImGui frame.
+     *
+     * @note Must be called at the beginning of each frame before any ImGui rendering.
+     */
+    void CreateImGuiFrame();
 };
-}
+} // namespace RaeptorCogs::Singletons

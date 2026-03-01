@@ -38,10 +38,10 @@
  ***********************************************************************************/
 
 #pragma once
-#include <RaeptorCogs/IO/Texture.hpp>
-#include <RaeptorCogs/Graphics/Renderer.hpp>
-#include <RaeptorCogs/Graphics/Graphic.hpp>
 #include <RaeptorCogs/Core/Flags.hpp>
+#include <RaeptorCogs/Graphics/Graphic.hpp>
+#include <RaeptorCogs/Graphics/Renderer.hpp>
+#include <RaeptorCogs/IO/Texture.hpp>
 
 namespace RaeptorCogs::Singletons {
 class Renderer;
@@ -50,101 +50,101 @@ namespace RaeptorCogs {
 
 /**
  * @brief Class representing a 2D sprite.
- * 
+ *
  * Manages texture and rendering for a 2D sprite. Inherits from
  * TransformableGraphic2D to provide transformation capabilities.
- * 
+ *
  * @see TransformableGraphic2D
  */
 class Sprite2D : public TransformableGraphic2D {
-    private:
+  private:
+    // ============================================================================
+    //                               PRIVATE ATTRIBUTES
+    // ============================================================================
 
-        // ============================================================================
-        //                               PRIVATE ATTRIBUTES
-        // ============================================================================
+    /**
+     * @brief Texture associated with the sprite.
+     *
+     * Holds the texture used for rendering the sprite.
+     *
+     * @note Initialized to nullptr.
+     */
+    Texture texture = nullptr;
 
-        /**
-         * @brief Texture associated with the sprite.
-         * 
-         * Holds the texture used for rendering the sprite.
-         * 
-         * @note Initialized to nullptr.
-         */
-        Texture texture = nullptr;
+  public:
+    // ============================================================================
+    //                               PUBLIC METHODS
+    // ============================================================================
 
-    public:
+    /**
+     * @brief Constructor for Sprite2D with a texture.
+     *
+     * @param texture Texture to associate with the sprite.
+     */
+    Sprite2D(Texture &texture);
 
-        // ============================================================================
-        //                               PUBLIC METHODS
-        // ============================================================================
+    /**
+     * @brief Default constructor for Sprite2D.
+     */
+    Sprite2D() {}
 
-        /**
-         * @brief Constructor for Sprite2D with a texture.
-         * 
-         * @param texture Texture to associate with the sprite.
-         */
-        Sprite2D(Texture &texture);
-        
-        /**
-         * @brief Default constructor for Sprite2D.
-         */
-        Sprite2D() {}
+    /**
+     * @brief Destructor for Sprite2D.
+     */
+    ~Sprite2D() = default;
 
-        /**
-         * @brief Destructor for Sprite2D.
-         */
-        ~Sprite2D() = default;
+    /**
+     * @brief Compute instance data for the sprite.
+     *
+     * @param instanceAllocator Reference to the instance allocator.
+     * @param mode Mode for computing instance data.
+     * @return true if updates were made, false otherwise.
+     */
+    bool computeInstanceData(
+        GAPI::Common::InstanceAllocator &instanceAllocator,
+        ComputeInstanceDataMode mode = ComputeInstanceDataMode::NONE) override;
 
-        /**
-         * @brief Compute instance data for the sprite.
-         * 
-         * @param instanceAllocator Reference to the instance allocator.
-         * @param mode Mode for computing instance data.
-         * @return true if updates were made, false otherwise.
-         */
-        bool computeInstanceData(GAPI::Common::InstanceAllocator &instanceAllocator, ComputeInstanceDataMode mode = ComputeInstanceDataMode::NONE) override;
+    /**
+     * @brief Bind the sprite for rendering.
+     *
+     * @note Overrides the bind method from Graphic2D.
+     */
+    void bind() const override;
 
-        /**
-         * @brief Bind the sprite for rendering.
-         * 
-         * @note Overrides the bind method from Graphic2D.
-         */
-        void bind() const override;
+    /**
+     * @brief Get the unique ID of the sprite.
+     *
+     * @return Unique ID of the sprite.
+     */
+    GLuint getID() const override;
 
-        /**
-         * @brief Get the unique ID of the sprite.
-         * 
-         * @return Unique ID of the sprite.
-         */
-        GLuint getID() const override;
+    /**
+     * @brief Check if the sprite is opaque.
+     *
+     * @return true if the sprite is opaque, false otherwise.
+     */
+    bool isOpaque() const override;
 
-        /**
-         * @brief Check if the sprite is opaque.
-         * 
-         * @return true if the sprite is opaque, false otherwise.
-         */
-        bool isOpaque() const override;
+    /**
+     * @brief Check if the sprite is visible.
+     *
+     * @return true if the sprite is visible, false otherwise.
+     */
+    bool isVisible() const override;
 
-        /**
-         * @brief Check if the sprite is visible.
-         * 
-         * @return true if the sprite is visible, false otherwise.
-         */
-        bool isVisible() const override;
+    /**
+     * @brief Get the texture associated with the sprite.
+     *
+     * @return Texture associated with the sprite.
+     */
+    Texture getTexture() const override;
 
-        /**
-         * @brief Get the texture associated with the sprite.
-         * 
-         * @return Texture associated with the sprite.
-         */
-        Texture getTexture() const override;
-
-        /**
-         * @brief Set the texture associated with the sprite.
-         * 
-         * @param texture Texture to associate with the sprite.
-         */
-        void setTexture(Texture &texture);
+    /**
+     * @brief Set the texture associated with the sprite.
+     *
+     * @param texture Texture to associate with the sprite.
+     */
+    void setTexture(Texture &texture);
 };
 
-}
+} // namespace RaeptorCogs

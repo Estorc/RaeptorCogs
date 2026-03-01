@@ -38,9 +38,9 @@
  ***********************************************************************************/
 
 #pragma once
-#include <RaeptorCogs/Graphics/GAPI/Vulkan/Resources/Object.hpp>
 #include <RaeptorCogs/Graphics/GAPI/Common/Resources/TextureData.hpp>
 #include <RaeptorCogs/Graphics/GAPI/Vulkan/Core/Vulkan.hpp>
+#include <RaeptorCogs/Graphics/GAPI/Vulkan/Resources/Object.hpp>
 
 namespace RaeptorCogs::GAPI::Vulkan {
 
@@ -48,86 +48,97 @@ namespace RaeptorCogs::GAPI::Vulkan {
  * @see RaeptorCogs::GAPI::Common::TextureData
  */
 class TextureData : public Common::TextureData {
-    private:
-        /**
-         * @brief Vulkan image handle.
-         */
-        VkImage image = nullptr;
+  private:
+    /**
+     * @brief Vulkan image handle.
+     */
+    VkImage image = nullptr;
 
-        /**
-         * @brief Vulkan device memory handle.
-         */
-        VkDeviceMemory memory = nullptr;
+    /**
+     * @brief Vulkan device memory handle.
+     */
+    VkDeviceMemory memory = nullptr;
 
-        /**
-         * @brief Vulkan image view handle.
-         */
-        VkImageView textureView = nullptr;
+    /**
+     * @brief Vulkan image view handle.
+     */
+    VkImageView textureView = nullptr;
 
-        /**
-         * @brief Vulkan sampler handle.
-         */
-        VkSampler textureSampler = nullptr;
+    /**
+     * @brief Vulkan sampler handle.
+     */
+    VkSampler textureSampler = nullptr;
 
-    protected:
-        /**
-         * @brief Get the Vulkan image handle.
-         * 
-         * @return VkImage& Handle to the Vulkan image.
-         */
-        VkImage& getImage();
-        
-        /**
-         * @brief Get the Vulkan device memory handle.
-         * 
-         * @return VkDeviceMemory& Handle to the Vulkan device memory.
-         */
-        VkDeviceMemory& getMemory();
+  protected:
+    /**
+     * @brief Get the Vulkan image handle.
+     *
+     * @return VkImage& Handle to the Vulkan image.
+     */
+    VkImage &getImage();
 
-        /**
-         * @brief Get the Vulkan image view handle.
-         * 
-         * @return VkImageView& Handle to the Vulkan image view.
-         */
-        VkImageView& getImageView();
+    /**
+     * @brief Get the Vulkan device memory handle.
+     *
+     * @return VkDeviceMemory& Handle to the Vulkan device memory.
+     */
+    VkDeviceMemory &getMemory();
 
-        /**
-         * @brief Get the Vulkan sampler handle.
-         * 
-         * @return VkSampler& Handle to the Vulkan sampler.
-         */
-        VkSampler& getSampler();
-    public:
-        /**
-         * @brief Constructor for TextureData.
-         */
-        TextureData();
+    /**
+     * @brief Get the Vulkan image view handle.
+     *
+     * @return VkImageView& Handle to the Vulkan image view.
+     */
+    VkImageView &getImageView();
 
-        /**
-         * @brief Bind the texture for use.
-         * 
-         * Binds the Vulkan texture object for rendering.
-         * 
-         * @note Overrides the pure virtual method from the base class.
-         */
-        void bind() override;
+    /**
+     * @brief Get the Vulkan sampler handle.
+     *
+     * @return VkSampler& Handle to the Vulkan sampler.
+     */
+    VkSampler &getSampler();
 
-        /**
-         * @brief Unbind the texture.
-         * 
-         * Unbinds the Vulkan texture object.
-         * 
-         * @note Overrides the pure virtual method from the base class.
-         */
-        void unbind() const override;
+  public:
+    /**
+     * @brief Constructor for TextureData.
+     */
+    TextureData();
 
-        /**
-         * @see RaeptorCogs::GAPI::Common::TextureData::build()
-         */
-        void build(int width, int height, void * data, GLenum minFilter = GL_LINEAR_MIPMAP_NEAREST, GLenum magFilter = GL_LINEAR) override;
+    /**
+     * @brief Bind the texture for use.
+     *
+     * Binds the Vulkan texture object for rendering.
+     *
+     * @note Overrides the pure virtual method from the base class.
+     */
+    void bind() override;
+
+    /**
+     * @brief Unbind the texture.
+     *
+     * Unbinds the Vulkan texture object.
+     *
+     * @note Overrides the pure virtual method from the base class.
+     */
+    void unbind() const override;
+
+    /**
+     * @see RaeptorCogs::GAPI::Common::TextureData::build()
+     */
+    void
+    build(int width, int height, void *data, GLenum minFilter = GL_LINEAR_MIPMAP_NEAREST,
+          GLenum magFilter = GL_LINEAR) override;
+
+    VkImageView _getImageView() const {
+      return this->textureView;
+    }
+
+    VkSampler _getSampler() const {
+      return this->textureSampler;
+    }
 };
 
 /** @brief Register TextureData with the FactoryRegistry.*/
 REGISTER(Common::TextureData, TextureData);
 
-}
+} // namespace RaeptorCogs::GAPI::Vulkan

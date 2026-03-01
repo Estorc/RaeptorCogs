@@ -38,16 +38,16 @@
  ***********************************************************************************/
 
 #pragma once
-#include <vulkan/vulkan.h>
 #include <vector>
+#include <vulkan/vulkan.h>
 
 /**
  * @brief Find a supported depth format.
- * 
+ *
  * @param physicalDevice The Vulkan physical device.
  * @return VkFormat The first supported format from the candidates.
  * @throws std::runtime_error if no supported format is found.
- * 
+ *
  * @code{.cpp}
  * VkFormat depthFormat = RaeptorCogs::GAPI::Vulkan::findDepthFormat(physicalDevice);
  * @endcode
@@ -66,42 +66,40 @@ VkCompositeAlphaFlagBitsKHR chooseCompositeAlpha(VkSurfaceCapabilitiesKHR caps);
 
 /**
  * @brief Find the best surface format for the given physical device and surface.
- * 
+ *
  * @param physicalDevice The Vulkan physical device.
  * @param surface The Vulkan surface.
  * @param candidates Optional list of candidate formats to consider.
  * @return VkSurfaceFormatKHR The best matching surface format.
- * 
+ *
  * @code{.cpp}
  * VkSurfaceFormatKHR surfaceFormat = RaeptorCogs::GAPI::Vulkan::findBestSurfaceFormat(physicalDevice, surface);
  * @endcode
  */
-VkSurfaceFormatKHR findBestSurfaceFormat(VkPhysicalDevice physicalDevice, VkSurfaceKHR surface, const std::vector<VkFormat>& candidates = {
-    VK_FORMAT_B8G8R8A8_SRGB,
-    VK_FORMAT_R8G8B8A8_SRGB,
-    VK_FORMAT_B8G8R8_UNORM,
-    VK_FORMAT_R8G8B8_UNORM
-});
+VkSurfaceFormatKHR findBestSurfaceFormat(
+    VkPhysicalDevice physicalDevice, VkSurfaceKHR surface,
+    const std::vector<VkFormat> &candidates = {
+        VK_FORMAT_B8G8R8A8_SRGB, VK_FORMAT_R8G8B8A8_SRGB, VK_FORMAT_B8G8R8_UNORM, VK_FORMAT_R8G8B8_UNORM });
 
 /**
  * @brief Check if the requested validation layers are supported.
- * 
+ *
  * @param validationLayers List of validation layer names to check.
  * @return true if all requested layers are supported, false otherwise.
- * 
+ *
  * @code{.cpp}
  * std::vector<const char*> layers = { "VK_LAYER_KHRONOS_validation" };
  * bool supported = RaeptorCogs::GAPI::Vulkan::checkValidationLayerSupport(layers);
  * @endcode
  */
-bool checkValidationLayerSupport(const std::vector<const char*> validationLayers);
+bool checkValidationLayerSupport(const std::vector<const char *> validationLayers);
 
 /**
  * @brief Rate the suitability of a Vulkan physical device.
- * 
+ *
  * @param device The Vulkan physical device to rate.
  * @return int Suitability score of the device.
- * 
+ *
  * @code{.cpp}
  * int score = RaeptorCogs::GAPI::Vulkan::rateDeviceSuitability(physicalDevice);
  * @endcode
@@ -110,44 +108,44 @@ int rateDeviceSuitability(VkPhysicalDevice device);
 
 /**
  * @brief Check if a given VkFormat is an sRGB format.
- * 
+ *
  * @param format The VkFormat to check.
  * @return true if the format is sRGB, false otherwise.
- * 
+ *
  * @code{.cpp}
  * bool isSRGB = RaeptorCogs::GAPI::Vulkan::IsSRGBFormat(VK_FORMAT_R8G8B8A8_SRGB);
  * @endcode
  */
 inline bool IsSRGBFormat(VkFormat format) {
-    switch (format) {
-        case VK_FORMAT_R8_SRGB:
-        case VK_FORMAT_R8G8_SRGB:
-        case VK_FORMAT_R8G8B8_SRGB:
-        case VK_FORMAT_B8G8R8_SRGB:
-        case VK_FORMAT_R8G8B8A8_SRGB:
-        case VK_FORMAT_B8G8R8A8_SRGB:
-        case VK_FORMAT_A8B8G8R8_SRGB_PACK32:
-        case VK_FORMAT_BC1_RGB_SRGB_BLOCK:
-        case VK_FORMAT_BC1_RGBA_SRGB_BLOCK:
-        case VK_FORMAT_BC2_SRGB_BLOCK:
-        case VK_FORMAT_BC3_SRGB_BLOCK:
-        case VK_FORMAT_BC7_SRGB_BLOCK:
-            return true;
-        default:
-            return false;
-    }
+  switch (format) {
+  case VK_FORMAT_R8_SRGB:
+  case VK_FORMAT_R8G8_SRGB:
+  case VK_FORMAT_R8G8B8_SRGB:
+  case VK_FORMAT_B8G8R8_SRGB:
+  case VK_FORMAT_R8G8B8A8_SRGB:
+  case VK_FORMAT_B8G8R8A8_SRGB:
+  case VK_FORMAT_A8B8G8R8_SRGB_PACK32:
+  case VK_FORMAT_BC1_RGB_SRGB_BLOCK:
+  case VK_FORMAT_BC1_RGBA_SRGB_BLOCK:
+  case VK_FORMAT_BC2_SRGB_BLOCK:
+  case VK_FORMAT_BC3_SRGB_BLOCK:
+  case VK_FORMAT_BC7_SRGB_BLOCK:
+    return true;
+  default:
+    return false;
+  }
 }
 
 /**
  * @brief Begin recording a single-use command buffer.
- * 
+ *
  * @return VkCommandBuffer The begun command buffer.
  */
 VkCommandBuffer BeginSingleTimeCommands();
 
 /**
  * @brief End recording and submit a single-use command buffer.
- * 
+ *
  * @param commandBuffer The command buffer to end and submit.
  */
 void EndSingleTimeCommands(VkCommandBuffer commandBuffer);

@@ -45,25 +45,27 @@ namespace RaeptorCogs::GAPI::Common {
 
 /**
  * @brief TextureData interface.
- * 
+ *
  * Provides a common interface for texture data management.
- * 
+ *
  * @note This is an abstract base class and should be inherited by specific texture data implementations.
  */
 class TextureData : public ObjectData {
-    public:
-        /**
-         * @brief Build the texture data.
-         * 
-         * @param width Width of the texture.
-         * @param height Height of the texture.
-         * @param data Pointer to the texture data.
-         * @param minFilter Minification filter (default: GL_LINEAR_MIPMAP_NEAREST).
-         * @param magFilter Magnification filter (default: GL_LINEAR).
-         * 
-         * @note Must be implemented by derived classes.
-         */
-        virtual void build(int width, int height, void * data, GLenum minFilter = GL_LINEAR_MIPMAP_NEAREST, GLenum magFilter = GL_LINEAR) = 0;
+  public:
+    /**
+     * @brief Build the texture data.
+     *
+     * @param width Width of the texture.
+     * @param height Height of the texture.
+     * @param data Pointer to the texture data.
+     * @param minFilter Minification filter (default: GL_LINEAR_MIPMAP_NEAREST).
+     * @param magFilter Magnification filter (default: GL_LINEAR).
+     *
+     * @note Must be implemented by derived classes.
+     */
+    virtual void
+    build(int width, int height, void *data, GLenum minFilter = GL_LINEAR_MIPMAP_NEAREST,
+          GLenum magFilter = GL_LINEAR) = 0;
 };
 
-}
+} // namespace RaeptorCogs::GAPI::Common

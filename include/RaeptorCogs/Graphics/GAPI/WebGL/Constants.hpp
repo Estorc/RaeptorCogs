@@ -38,6 +38,5 @@
  ***********************************************************************************/
 
 #pragma once
-
 // All WebGL constants are defined in RaeptorCogs/Graphics/GAPI/GL/Constants.hpp
 #include <RaeptorCogs/Graphics/GAPI/GL/Constants.hpp>

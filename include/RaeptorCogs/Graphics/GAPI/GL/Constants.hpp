@@ -43,42 +43,42 @@
 
 /**
  * @brief GL enum definition.
- * 
+ *
  * Defines GLenum type for OpenGL programming.
  */
 using GLenum = unsigned int;
 
 /**
  * @brief GLuint definition.
- * 
+ *
  * Defines GLuint type for OpenGL programming.
  */
 using GLuint = unsigned int;
 
 /**
  * @brief GLint definition.
- * 
+ *
  * Defines GLint type for OpenGL programming.
  */
 using GLint = int;
 
 /**
  * @brief GL texture linear filtering mode constant.
- * 
+ *
  * Linear filtering mode for texture sampling in OpenGL.
  */
-constexpr unsigned int GL_LINEAR               = 0x2601;
+constexpr unsigned int GL_LINEAR = 0x2601;
 
 /**
  * @brief GL texture mipmap linear filtering mode constant.
- * 
+ *
  * Linear mipmap filtering mode for texture sampling in OpenGL.
  */
 constexpr unsigned int GL_LINEAR_MIPMAP_LINEAR = 0x2703;
 
 /**
  * @brief GL texture mipmap nearest filtering mode constant.
- * 
+ *
  * Nearest mipmap filtering mode for texture sampling in OpenGL.
  */
 constexpr unsigned int GL_LINEAR_MIPMAP_NEAREST = 0x2701;

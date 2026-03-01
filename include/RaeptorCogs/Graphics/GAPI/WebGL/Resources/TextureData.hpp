@@ -38,8 +38,9 @@
  ***********************************************************************************/
 
 #pragma once
-#include <RaeptorCogs/Graphics/GAPI/WebGL/Resources/Object.hpp>
 #include <RaeptorCogs/Graphics/GAPI/GL/Resources/TextureData.hpp>
+#include <RaeptorCogs/Graphics/GAPI/WebGL/Resources/Object.hpp>
+
 
 namespace RaeptorCogs::GAPI::WebGL {
 
@@ -51,4 +52,4 @@ class TextureData : public GL::TextureData {};
 /** @brief Register TextureData with the FactoryRegistry.*/
 REGISTER(Common::TextureData, TextureData);
 
-}
+} // namespace RaeptorCogs::GAPI::WebGL

@@ -39,20 +39,20 @@
 
 #pragma once
 #include <RaeptorCogs/Core/Flags.hpp>
-#include <RaeptorCogs/Graphics/Renderer.hpp>
 #include <RaeptorCogs/ECS/Node.hpp>
+#include <RaeptorCogs/Graphics/Renderer.hpp>
+
 
 namespace RaeptorCogs {
 
-
 /**
  * @brief Base Component class.
- * 
+ *
  * Provides an interface for components that can be attached to nodes.
- * 
+ *
  * Typical use cases:
  * - Creating reusable components for renderer pipelines.
- * 
+ *
  * @code{.cpp}
  * class MyComponent : public RaeptorCogs::Component {
  *   // Custom component implementation
@@ -60,97 +60,89 @@ namespace RaeptorCogs {
  * @endcode
  */
 class Component : public RegisterNode<Component, Node> {
-    private:
+  private:
+    // ============================================================================
+    //                               PRIVATE ATTRIBUTES
+    // ============================================================================
 
-        // ============================================================================
-        //                               PRIVATE ATTRIBUTES
-        // ============================================================================
+    /**
+     * @brief Pointer to the renderer.
+     *
+     * Used for rendering operations.
+     */
+    Singletons::Renderer *renderer = nullptr;
 
-        /**
-         * @brief Pointer to the renderer.
-         * 
-         * Used for rendering operations.
-         */
-        Singletons::Renderer* renderer = nullptr;
+  public:
+    // ============================================================================
+    //                                PUBLIC METHODS
+    // ============================================================================
 
-    public:
+    /**
+     * @brief Default constructor for Component.
+     */
+    Component() = default;
 
-        // ============================================================================
-        //                                PUBLIC METHODS
-        // ============================================================================
+    /**
+     * @brief Virtual destructor for Component.
+     *
+     * Ensures proper cleanup of derived classes.
+     */
+    virtual ~Component() = default;
 
+    /**
+     * @brief Set the renderer for this component.
+     *
+     * @param renderer Pointer to the renderer.
+     */
+    void setRenderer(Singletons::Renderer *renderer);
 
-        /**
-         * @brief Default constructor for Component.
-         */
-        Component() = default;
+    /**
+     * @brief Get the renderer for this component.
+     *
+     * @return Pointer to the renderer.
+     */
+    Singletons::Renderer *getRenderer() const;
 
-        /**
-         * @brief Virtual destructor for Component.
-         * 
-         * Ensures proper cleanup of derived classes.
-         */
-        virtual ~Component() = default;
-
-        /**
-         * @brief Set the renderer for this component.
-         * 
-         * @param renderer Pointer to the renderer.
-         */
-        void setRenderer(Singletons::Renderer* renderer);
-
-        /**
-         * @brief Get the renderer for this component.
-         * 
-         * @return Pointer to the renderer.
-         */
-        Singletons::Renderer* getRenderer() const;
-
-        /**
-         * @brief Update the component.
-         * 
-         * This method is called to update the component's state.
-         */
-        virtual void update(GAPI::Common::RenderPipeline& pipeline) = 0;
-
+    /**
+     * @brief Update the component.
+     *
+     * This method is called to update the component's state.
+     */
+    virtual void update(GAPI::Common::RenderPipeline &pipeline) = 0;
 };
-
 
 /**
  * @brief 2D Component class.
- * 
+ *
  * Provides an interface for 2D components that can be attached to nodes.
- * 
+ *
  * Typical use cases:
  * - Creating reusable 2D components for game objects or entities
- * 
+ *
  * @see Component
  */
 class Component2D : public RegisterNode<Component2D, Component> {
-    private:
+  private:
+    // ============================================================================
+    //                               PRIVATE ATTRIBUTES
+    // ============================================================================
 
-        // ============================================================================
-        //                               PRIVATE ATTRIBUTES
-        // ============================================================================
+  public:
+    // ============================================================================
+    //                                PUBLIC METHODS
+    // ============================================================================
 
-    public:
+    /**
+     * @brief Default constructor for Component2D.
+     */
+    Component2D() = default;
 
-        // ============================================================================
-        //                                PUBLIC METHODS
-        // ============================================================================
-
-        /**
-         * @brief Default constructor for Component2D.
-         */
-        Component2D() = default;
-
-        /**
-         * @brief Virtual destructor for Component2D.
-         * 
-         * Ensures proper cleanup of derived classes.
-         */
-        virtual ~Component2D() = default;
-
+    /**
+     * @brief Virtual destructor for Component2D.
+     *
+     * Ensures proper cleanup of derived classes.
+     */
+    virtual ~Component2D() = default;
 };
 
-}
+} // namespace RaeptorCogs

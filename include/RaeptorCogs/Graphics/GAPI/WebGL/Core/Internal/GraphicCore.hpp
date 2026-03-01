@@ -40,82 +40,84 @@
 #pragma once
 #include <RaeptorCogs/Graphics/GAPI/GL/Core/Internal/GraphicCore.hpp>
 #include <RaeptorCogs/Graphics/GAPI/WebGL/Resources/Buffer.hpp>
-#include <RaeptorCogs/Graphics/GAPI/WebGL/Resources/TextureData.hpp>
 #include <RaeptorCogs/Graphics/GAPI/WebGL/Resources/Shader.hpp>
+#include <RaeptorCogs/Graphics/GAPI/WebGL/Resources/TextureData.hpp>
 #include <RaeptorCogs/Graphics/GAPI/WebGL/Resources/VertexArray.hpp>
+
 namespace RaeptorCogs::GAPI::WebGL {
 #include <RaeptorCogsShaders/common/constants.glsl>
 
 /**
  * @brief Height of the instance data texture.
  */
-constexpr int IDATATEX_HEIGHT = (Common::MAX_SPRITES * Common::INSTANCE_SIZE + 16 * IDATATEX_WIDTH - 1) / (16 * IDATATEX_WIDTH);
+constexpr int IDATATEX_HEIGHT =
+    (Common::MAX_SPRITES * Common::INSTANCE_SIZE + 16 * IDATATEX_WIDTH - 1) / (16 * IDATATEX_WIDTH);
 
 class GraphicCore : public GL::GraphicCore {
-    public:
+  public:
+    // ============================================================================
+    //                             PUBLIC METHODS
+    // ============================================================================
 
-        // ============================================================================
-        //                             PUBLIC METHODS
-        // ============================================================================
+    /**
+     * @brief Constructor for GraphicCore.
+     *
+     * Initializes the GraphicCore with a reference to the renderer backend.
+     *
+     * @param renderer Reference to the renderer backend.
+     */
+    GraphicCore(Common::RendererBackend &renderer) : GL::GraphicCore(renderer) {}
 
-        /**
-         * @brief Constructor for GraphicCore.
-         * 
-         * Initializes the GraphicCore with a reference to the renderer backend.
-         * 
-         * @param renderer Reference to the renderer backend.
-         */
-        GraphicCore(Common::RendererBackend& renderer) : GL::GraphicCore(renderer) {}
+    /**
+     * @brief Initialize graphics resources.
+     *
+     * Sets up graphics resources such as shaders, buffers, and framebuffers.
+     *
+     * @note Called during renderer backend initialization.
+     */
+    void initGraphics() override;
 
-        /**
-         * @brief Initialize graphics resources.
-         * 
-         * Sets up graphics resources such as shaders, buffers, and framebuffers.
-         * 
-         * @note Called during renderer backend initialization.
-         */
-        void initGraphics() override;
+    /**
+     * @see GL::GraphicCore::buildShaders
+     */
+    void buildShaders() override;
 
-        /**
-         * @see GL::GraphicCore::buildShaders
-         */
-        void buildShaders() override;
+    // ------------------------------------------------------------------------
+    //                      State machine methods
+    // ------------------------------------------------------------------------
 
-        // ------------------------------------------------------------------------
-        //                      State machine methods
-        // ------------------------------------------------------------------------
+    /**
+     * @see Common::GraphicCore::bindMaskTexture
+     */
+    void bindMaskTexture() override;
 
-        /**
-         * @see Common::GraphicCore::bindMaskTexture
-         */
-        void bindMaskTexture() override;
+    /**
+     * @see Common::GraphicCore::setTextureUniform
+     */
+    void setTextureUniform(ObjectHandler<Common::Shader> shader) override;
 
-        /**
-         * @see Common::GraphicCore::setTextureUniform
-         */
-        void setTextureUniform(ObjectHandler<Common::Shader> shader) override;
+    /**
+     * @see Common::GraphicCore::setMaskTextureUniform
+     */
+    void setMaskTextureUniform(ObjectHandler<Common::Shader> shader) override;
 
-        /**
-         * @see Common::GraphicCore::setMaskTextureUniform
-         */
-        void setMaskTextureUniform(ObjectHandler<Common::Shader> shader) override;
+    /**
+     * @see Common::GraphicCore::drawElementsInstancedBaseVertexBaseInstance
+     */
+    void drawElementsInstancedBaseVertexBaseInstance(
+        size_t count, size_t instanceCount, size_t first, int baseVertex, unsigned int baseInstance) override;
 
-        /**
-         * @see Common::GraphicCore::drawElementsInstancedBaseVertexBaseInstance
-         */
-        void drawElementsInstancedBaseVertexBaseInstance(size_t count, size_t instanceCount, size_t first, int baseVertex, unsigned int baseInstance) override;
-        
-        /**
-         * @see Common::GraphicCore::bindGraphicTexture
-         */
-        void bindGraphicTexture(Graphic2D& graphic) override;
+    /**
+     * @see Common::GraphicCore::bindGraphicTexture
+     */
+    void bindGraphicTexture(Graphic2D &graphic) override;
 
-        /**
-         * @see Common::GraphicCore::uploadChunkMaxSize
-         */
-        size_t uploadChunkMaxSize() override {
-            return 100;
-        }
+    /**
+     * @see Common::GraphicCore::uploadChunkMaxSize
+     */
+    size_t uploadChunkMaxSize() override {
+      return 100;
+    }
 };
 
-}
+} // namespace RaeptorCogs::GAPI::WebGL

@@ -45,10 +45,10 @@ namespace RaeptorCogs {
 
 /**
  * @brief Node class.
- * 
+ *
  * Represents a node in a hierarchical structure and provides utilities for managing
  * parent-child relationships and type identification.
- * 
+ *
  * @code{.cpp}
  * class MyNode : public RaeptorCogs::RegisterNode<MyNode, RaeptorCogs::Node> {};
  * RaeptorCogs::Node* root = new RaeptorCogs::Node();
@@ -58,166 +58,163 @@ namespace RaeptorCogs {
  * @endcode
  */
 class Node {
-    private:
+  private:
+    // ============================================================================
+    //                               PRIVATE ATTRIBUTES
+    // ============================================================================
 
-        // ============================================================================
-        //                               PRIVATE ATTRIBUTES
-        // ============================================================================
+    /**
+     * @brief Parent node pointer.
+     *
+     * Points to the parent of this node in the hierarchy.
+     */
+    Node *parent = nullptr;
 
-        /**
-         * @brief Parent node pointer.
-         * 
-         * Points to the parent of this node in the hierarchy.
-         */
-        Node* parent = nullptr;
+    /**
+     * @brief Child nodes vector.
+     *
+     * Stores pointers to the child nodes of this node.
+     */
+    std::vector<Node *> children;
 
-        /**
-         * @brief Child nodes vector.
-         * 
-         * Stores pointers to the child nodes of this node.
-         */
-        std::vector<Node*> children;
+    /**
+     * @brief Get the next unique class ID.
+     *
+     * @return The next unique class ID.
+     */
+    static size_t getNextClassId() {
+      static size_t id = 0;
+      return id++;
+    }
 
-        /**
-         * @brief Get the next unique class ID.
-         * 
-         * @return The next unique class ID.
-         */
-        static size_t getNextClassId() {
-            static size_t id = 0;
-            return id++;
-        }
+  protected:
+    // ============================================================================
+    //                               PROTECTED METHODS
+    // ============================================================================
 
-    protected:
+    /**
+     * @brief Set the parent node.
+     *
+     * @param parent Pointer to the parent node.
+     *
+     * @note Called internally when adding/removing child nodes.
+     */
+    virtual void setParent(Node *parent);
 
-        // ============================================================================
-        //                               PROTECTED METHODS
-        // ============================================================================
+  public:
+    // ============================================================================
+    //                               PUBLIC METHODS
+    // ============================================================================
 
-        /**
-         * @brief Set the parent node.
-         * 
-         * @param parent Pointer to the parent node.
-         * 
-         * @note Called internally when adding/removing child nodes.
-         */
-        virtual void setParent(Node* parent);
+    /**
+     * @brief Default constructor for Node.
+     */
+    Node() = default;
 
-    public:
+    /**
+     * @brief Destructor for Node.
+     */
+    virtual ~Node();
 
-        // ============================================================================
-        //                               PUBLIC METHODS
-        // ============================================================================
+    /**
+     * @brief Get the class IDs BitArray for this node.
+     *
+     * @return BitArray representing the class IDs of this node.
+     */
+    virtual BitArray getClassIds() const {
+      BitArray classIds;
+      return classIds.set(getClassId<Node>());
+    }
 
-        /**
-         * @brief Default constructor for Node.
-         */
-        Node() = default;
+    /**
+     * @brief Check if this node is an instance of the specified type.
+     *
+     * @tparam T The type to check against.
+     * @return true if this node is an instance of type T, false otherwise.
+     *
+     * @code{.cpp}
+     * bool isMyNode = node->isInstanceOf<MyNode>(); // true if node is of type MyNode
+     * @endcode
+     */
+    template <typename T>
+    bool isInstanceOf() const {
+      return this->getClassIds().test(Node::getClassId<T>());
+    }
 
-        /**
-         * @brief Destructor for Node.
-         */
-        virtual ~Node();
+    /**
+     * @brief Add a child node.
+     *
+     * @param child Pointer to the child node to add.
+     *
+     * @note Sets the parent of the child node to this node.
+     */
+    void addChild(Node *child);
 
-        /**
-         * @brief Get the class IDs BitArray for this node.
-         * 
-         * @return BitArray representing the class IDs of this node.
-         */
-        virtual BitArray getClassIds() const {
-            BitArray classIds;
-            return classIds.set(getClassId<Node>());
-        }
+    /**
+     * @brief Remove a child node.
+     *
+     * @param child Pointer to the child node to remove.
+     *
+     * @note Sets the parent of the child node to nullptr.
+     */
+    void removeChild(Node *child);
 
-        /**
-         * @brief Check if this node is an instance of the specified type.
-         * 
-         * @tparam T The type to check against.
-         * @return true if this node is an instance of type T, false otherwise.
-         * 
-         * @code{.cpp}
-         * bool isMyNode = node->isInstanceOf<MyNode>(); // true if node is of type MyNode
-         * @endcode
-         */
-        template<typename T>
-        bool isInstanceOf() const {
-            return this->getClassIds().test(Node::getClassId<T>());
-        }
+    /**
+     * @brief Get the child nodes.
+     *
+     * @return Vector of pointers to the child nodes.
+     *
+     * @note The returned vector is const to prevent modification of the child nodes.
+     */
+    const std::vector<Node *> &getChildren() const;
 
-        /**
-         * @brief Add a child node.
-         * 
-         * @param child Pointer to the child node to add.
-         * 
-         * @note Sets the parent of the child node to this node.
-         */
-        void addChild(Node* child);
+    /**
+     * @brief Get the parent node.
+     *
+     * @return Pointer to the parent node, or nullptr if this node has no parent.
+     */
+    Node *getParent() const;
 
-        /**
-         * @brief Remove a child node.
-         * 
-         * @param child Pointer to the child node to remove.
-         * 
-         * @note Sets the parent of the child node to nullptr.
-         */
-        void removeChild(Node* child);
-
-        /**
-         * @brief Get the child nodes.
-         * 
-         * @return Vector of pointers to the child nodes.
-         * 
-         * @note The returned vector is const to prevent modification of the child nodes.
-         */
-        const std::vector<Node*>& getChildren() const;
-
-        /**
-         * @brief Get the parent node.
-         * 
-         * @return Pointer to the parent node, or nullptr if this node has no parent.
-         */
-        Node* getParent() const;
-
-        /**
-         * @brief Get the unique class ID for a specific type.
-         * 
-         * @tparam T The type to get the class ID for.
-         * @return The unique class ID for type
-         * 
-         * @note Each type T will have a unique class ID assigned the first time this method is called.
-         */
-        template<typename T>
-        static size_t getClassId() {
-            static size_t classId = getNextClassId();
-            return classId;
-        }
+    /**
+     * @brief Get the unique class ID for a specific type.
+     *
+     * @tparam T The type to get the class ID for.
+     * @return The unique class ID for type
+     *
+     * @note Each type T will have a unique class ID assigned the first time this method is called.
+     */
+    template <typename T>
+    static size_t getClassId() {
+      static size_t classId = getNextClassId();
+      return classId;
+    }
 };
 
 /**
  * @brief RegisterNode struct.
- * 
+ *
  * Template struct to register a derived node type and update its class IDs.
- * 
+ *
  * @tparam Derived The derived node type.
  * @tparam Base The base node type.
- * 
+ *
  * @code{.cpp}
  * class MyNode : public RaeptorCogs::RegisterNode<MyNode, RaeptorCogs::Node> {};
  * @endcode
  */
-template<typename Derived, typename Base>
+template <typename Derived, typename Base>
 struct RegisterNode : Base {
 
     /**
      * @brief Get the class IDs BitArray for this node.
-     * 
+     *
      * @return BitArray representing the class IDs of this node.
      */
     BitArray getClassIds() const override {
-        BitArray bits = Base::getClassIds();
-        bits.set(Node::getClassId<Derived>());
-        return bits;
+      BitArray bits = Base::getClassIds();
+      bits.set(Node::getClassId<Derived>());
+      return bits;
     }
 };
 
-}
+} // namespace RaeptorCogs
