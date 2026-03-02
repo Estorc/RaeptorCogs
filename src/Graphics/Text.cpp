@@ -100,9 +100,7 @@ Text2D::Text2D(Font font, const U8String &content) : font(font), content(content
   this->setVisibility(true);
 }
 
-Text2D::Text2D() {
-  Text2D(nullptr, "");
-}
+Text2D::Text2D() : Text2D(nullptr, "") {}
 
 Text2D::~Text2D() {
   glyphs.clear();
