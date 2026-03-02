@@ -79,7 +79,7 @@ bool Sprite2D::isOpaque() const {
 }
 
 bool Sprite2D::isVisible() const {
-  return RenderableGraphic2D::isVisible() && texture->isLoaded();
+  return RenderableGraphic2D::isVisible() && texture && texture->isLoaded();
 }
 
 } // namespace RaeptorCogs

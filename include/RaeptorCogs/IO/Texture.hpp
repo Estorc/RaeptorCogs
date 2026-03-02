@@ -85,7 +85,8 @@ class TextureBase;
  *
  * Used to uniquely identify texture atlases based on their filtering options.
  */
-using TextureAtlasTypeKey = std::tuple<unsigned int, unsigned int>; // Key type for texture atlas map
+using TextureAtlasTypeKey = std::tuple<unsigned int, unsigned int>; // Key type for
+                                                                    // texture atlas map
 
 /**
  * @brief Texture atlas class.
@@ -173,7 +174,8 @@ class TextureAtlas {
      * @note Textures added to the atlas will be packed using stb_rect_pack.
      */
     TextureAtlas(
-        glm::ivec2 size, unsigned int minFilter = GL_LINEAR_MIPMAP_NEAREST, unsigned int magFilter = GL_LINEAR);
+        glm::ivec2 size, unsigned int minFilter = GL_LINEAR_MIPMAP_NEAREST,
+        unsigned int magFilter = GL_LINEAR);
 
     /**
      * @brief Bind the atlas texture for rendering.
@@ -203,7 +205,8 @@ class TextureAtlas {
      * @note The pixel data should be in RGBA format.
      * @see GAPI::Common::TextureData::build()
      */
-    void uploadTexture(GLint x, GLint y, GLint width, GLint height, const void *data, bool newAtlas);
+    void uploadTexture(
+        GLint x, GLint y, GLint width, GLint height, const void *data, bool newAtlas);
 
     /**
      * @brief Try to add a texture to the atlas.
@@ -400,7 +403,8 @@ class TextureBase {
      * @return Shared pointer to the created TextureBase instance.
      */
     static std::shared_ptr<TextureBase>
-    create(unsigned int width, unsigned int height, TextureOptions options = TextureOptions());
+    create(unsigned int width, unsigned int height,
+           TextureOptions options = TextureOptions());
 
     /**
      * @brief Factory method to create a TextureBase from file data.
@@ -409,7 +413,8 @@ class TextureBase {
      * @param options Texture loading options.
      * @return Shared pointer to the created TextureBase instance.
      */
-    static std::shared_ptr<TextureBase> create(const FileData &fileData, TextureOptions options = TextureOptions());
+    static std::shared_ptr<TextureBase>
+    create(const FileData &fileData, TextureOptions options = TextureOptions());
 
     /**
      * @brief Factory method to create a TextureBase from a file path.
@@ -418,8 +423,8 @@ class TextureBase {
      * @param options Texture loading options.
      * @return Shared pointer to the created TextureBase instance.
      */
-    static std::shared_ptr<TextureBase>
-    create(const std::filesystem::path &filepath, TextureOptions options = TextureOptions());
+    static std::shared_ptr<TextureBase> create(
+        const std::filesystem::path &filepath, TextureOptions options = TextureOptions());
 
     /**
      * @brief Set the rectangle of the texture in the atlas.
@@ -601,6 +606,21 @@ class Texture {
             ptr->onLoad_();
           }
         }
+
+        /**
+         * @brief Function call operator to set the onLoad callback.
+         *
+         * @param fn Callback function to be invoked when the texture is loaded.
+         *
+         * @note If the texture is already loaded, the callback is invoked
+         * immediately.
+         */
+        void operator()(std::function<void()> fn) {
+          ptr->onLoad_ = std::move(fn);
+          if (ptr->isLoaded() && ptr->onLoad_) {
+            ptr->onLoad_();
+          }
+        }
     };
 
   public:
@@ -643,7 +663,8 @@ class Texture {
      * @param height Height of the texture in pixels.
      * @param options Texture loading options.
      */
-    Texture(unsigned int width, unsigned int height, TextureOptions options = TextureOptions())
+    Texture(unsigned int width, unsigned int height,
+            TextureOptions options = TextureOptions())
         : ptr(TextureBase::create(width, height, options)) {}
 
     /**
@@ -838,9 +859,11 @@ namespace std {
  * @param options TextureOptions instance to output.
  * @return Reference to the output stream.
  */
-inline std::ostream &operator<<(std::ostream &os, const RaeptorCogs::TextureOptions &options) {
-  return os << "TextureOptions{minFilter=" << options.minFilter << ", magFilter=" << options.magFilter
-            << ", s_width=" << options.s_width << ", s_height=" << options.s_height << "}";
+inline std::ostream &
+operator<<(std::ostream &os, const RaeptorCogs::TextureOptions &options) {
+  return os << "TextureOptions{minFilter=" << options.minFilter
+            << ", magFilter=" << options.magFilter << ", s_width=" << options.s_width
+            << ", s_height=" << options.s_height << "}";
 }
 
 } // namespace std

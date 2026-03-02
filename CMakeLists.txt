@@ -48,24 +48,6 @@ if(NOT VIRTUALENV)
 endif()
 set(VIRTUALENV ${VIRTUALENV} -p ${Python3_EXECUTABLE})
 
-# Generate the virtualenv and ensure it's up to date.
-add_custom_command(
-    OUTPUT venv
-    COMMAND ${VIRTUALENV} venv
-)
-add_custom_command(
-    OUTPUT venv.stamp
-    DEPENDS venv requirements.txt
-    COMMAND ${CMAKE_COMMAND} -E copy
-            ${CMAKE_CURRENT_SOURCE_DIR}/requirements.txt requirements.txt
-    COMMAND ./venv/bin/pip install -r requirements.txt --upgrade
-)
-
-add_custom_target(setup_venv ALL
-    DEPENDS venv.stamp
-    COMMENT "Setting up Python virtual environment and installing dependencies"
-)
-
 set(Python3_EXECUTABLE_NAME ${Python3_EXECUTABLE})
 # Extract the executable name (e.g., "python3" or "python")
 # for use in the venv path
@@ -76,6 +58,22 @@ set(PYTHON
 )
 
 message(STATUS "Using Python from virtualenv: ${PYTHON}")
+
+# Generate the virtualenv and ensure it's up to date.
+add_custom_command(
+    OUTPUT venv
+    COMMAND ${VIRTUALENV} venv
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    DEPENDS ${PYTHON}
+)
+add_custom_command(
+    OUTPUT venv.stamp
+    DEPENDS venv requirements.txt
+    COMMAND ${CMAKE_COMMAND} -E copy
+            ${CMAKE_CURRENT_SOURCE_DIR}/requirements.txt requirements.txt
+    COMMAND ./venv/bin/pip install -r requirements.txt --upgrade
+    COMMAND ${CMAKE_COMMAND} -E touch venv.stamp
+)
 
 #========================================================================#
 # SOURCES

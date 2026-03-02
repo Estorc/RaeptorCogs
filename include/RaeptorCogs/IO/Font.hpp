@@ -62,7 +62,8 @@ constexpr int NORMAL_FONT_SIZE = 72;
 /**
  * @brief Font padding constant.
  *
- * Represents the padding added around each glyph in the font atlas to prevent texture bleeding.
+ * Represents the padding added around each glyph in the font atlas to prevent texture
+ * bleeding.
  */
 constexpr int FONT_PADDING = 1;
 
@@ -177,9 +178,10 @@ class GlyphData {
      * @note All size and offset parameters are in pixels.
      */
     GlyphData(
-        float u0, float v0, float u1, float v1, float x_offset, float y_offset, float width, float height,
-        float x_advance)
-        : uv(u0, v0, u1, v1), offset(x_offset, y_offset), size(width, height), x_advance(x_advance) {}
+        float u0, float v0, float u1, float v1, float x_offset, float y_offset,
+        float width, float height, float x_advance)
+        : uv(u0, v0, u1, v1), offset(x_offset, y_offset), size(width, height),
+          x_advance(x_advance) {}
 
     /**
      * @brief Get the UV rectangle of the glyph.
@@ -252,7 +254,8 @@ struct FontOptions {
     /**
      * @brief Loading priority of the font.
      *
-     * Priority determines the order in which fonts are loaded when multiple fonts are requested simultaneously.
+     * Priority determines the order in which fonts are loaded when multiple fonts are
+     * requested simultaneously.
      */
     int priority = 0;
 };
@@ -260,7 +263,8 @@ struct FontOptions {
 /**
  * @brief Base class for font handling.
  *
- * Provides high-level functionality for loading fonts, managing glyphs, and binding font textures.
+ * Provides high-level functionality for loading fonts, managing glyphs, and binding font
+ * textures.
  *
  * @code{.cpp}
  * FontOptions options;
@@ -335,7 +339,8 @@ class FontBase {
      * @param options Font loading options.
      * @return Shared pointer to the created FontBase instance.
      */
-    static std::shared_ptr<FontBase> create(const FileData &ttf_buffer, FontOptions options = FontOptions());
+    static std::shared_ptr<FontBase>
+    create(const FileData &ttf_buffer, FontOptions options = FontOptions());
 
     /**
      * @brief Factory method to create a FontBase instance from a TTF file path.
@@ -344,7 +349,8 @@ class FontBase {
      * @param options Font loading options.
      * @return Shared pointer to the created FontBase instance.
      */
-    static std::shared_ptr<FontBase> create(const std::filesystem::path &fontPath, FontOptions options = FontOptions());
+    static std::shared_ptr<FontBase>
+    create(const std::filesystem::path &fontPath, FontOptions options = FontOptions());
 
     /**
      * @brief Generate a Signed Distance Field (SDF) font atlas.
@@ -356,10 +362,12 @@ class FontBase {
      * @param font_px Font size in pixels.
      * @param num_chars Number of characters to include in the atlas.
      *
-     * @note This function populates the provided data buffer with the generated SDF atlas.
+     * @note This function populates the provided data buffer with the generated SDF
+     * atlas.
      */
     void GenerateSDFAtlas(
-        const unsigned char *ttf, unsigned char *data, size_t atlas_w, size_t atlas_h, float font_px, size_t num_chars);
+        const unsigned char *ttf, unsigned char *data, size_t atlas_w, size_t atlas_h,
+        float font_px, size_t num_chars);
 
     /**
      * @brief Generate a Bitmap font atlas.
@@ -370,10 +378,12 @@ class FontBase {
      * @param atlas_h Height of the atlas in pixels.
      * @param font_px Font size in pixels.
      * @param num_chars Number of characters to include in the atlas.
-     * @note This function populates the provided data buffer with the generated Bitmap atlas.
+     * @note This function populates the provided data buffer with the generated Bitmap
+     * atlas.
      */
     void GenerateBMPAtlas(
-        const unsigned char *ttf, unsigned char *data, size_t atlas_w, size_t atlas_h, float font_px, size_t num_chars);
+        const unsigned char *ttf, unsigned char *data, size_t atlas_w, size_t atlas_h,
+        float font_px, size_t num_chars);
 
     /**
      * @brief Upload the font atlas texture to OpenGL.
@@ -434,7 +444,8 @@ class FontBase {
      * @brief Retrieve glyph data for a specific character.
      *
      * @param character Pointer to the UTF-8 encoded character.
-     * @return GlyphData* Pointer to the GlyphData for the character, or nullptr if not found.
+     * @return GlyphData* Pointer to the GlyphData for the character, or nullptr if not
+     * found.
      * @note Supports Unicode characters via UTF-8 encoding.
      */
     GlyphData *getGlyph(const U8Char character) const;
@@ -539,9 +550,23 @@ class Font {
          * @note If the font is already loaded, the callback is invoked immediately.
          */
         inline void operator=(std::function<void()> fn) {
-          if (ptr)
-            ptr->onLoad_ = std::move(fn);
+          if (ptr) ptr->onLoad_ = std::move(fn);
           if (ptr && ptr->isLoaded() && ptr->onLoad_) {
+            ptr->onLoad_();
+          }
+        }
+
+        /**
+         * @brief Function call operator to set the onLoad callback.
+         *
+         * @param fn Callback function to be invoked when the texture is loaded.
+         *
+         * @note If the texture is already loaded, the callback is invoked
+         * immediately.
+         */
+        void operator()(std::function<void()> fn) {
+          ptr->onLoad_ = std::move(fn);
+          if (ptr->isLoaded() && ptr->onLoad_) {
             ptr->onLoad_();
           }
         }
@@ -690,8 +715,10 @@ namespace std {
  *
  * Outputs the FontOptions in a human-readable format.
  */
-inline std::ostream &operator<<(std::ostream &os, const RaeptorCogs::FontOptions &options) {
-  return os << "FontOptions{type=" << (options.type == RaeptorCogs::FontType::SDF ? "SDF" : "BITMAP")
+inline std::ostream &
+operator<<(std::ostream &os, const RaeptorCogs::FontOptions &options) {
+  return os << "FontOptions{type="
+            << (options.type == RaeptorCogs::FontType::SDF ? "SDF" : "BITMAP")
             << ", size=" << options.size << "}";
 }
 
@@ -715,7 +742,8 @@ inline std::ostream &operator<<(std::ostream &os, const RaeptorCogs::GlyphData &
   glm::vec2 size   = glyph.getSize();
   float x_advance  = glyph.getXAdvance();
   return os
-         << "GlyphData{uv=(" << uv.x << ", " << uv.y << ", " << uv.z << ", " << uv.w << "), "
+         << "GlyphData{uv=(" << uv.x << ", " << uv.y << ", " << uv.z << ", " << uv.w
+         << "), "
          << "offset=(" << offset.x << ", " << offset.y << "), "
          << "size=(" << size.x << ", " << size.y << "), "
          << "x_advance=" << x_advance << "}";
