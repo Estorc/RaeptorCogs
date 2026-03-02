@@ -317,6 +317,9 @@ bool Text2D::isTextDirty() const {
 }
 
 glm::vec2 Text2D::measureTextSize() const {
+  if (!font || !font->isLoaded()) {
+    return glm::vec2(0.0f, 0.0f);
+  }
   glm::vec2 size(0.0f, 0.0f);
   float currentLineWidth     = 0.0f;
   float lineHeight           = this->font->getFontSize();
