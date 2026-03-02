@@ -63,7 +63,7 @@ message(STATUS "Using Python from virtualenv: ${PYTHON}")
 add_custom_command(
     OUTPUT ${PYTHON}
     COMMAND ${VIRTUALENV} venv
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
 )
 add_custom_command(
     OUTPUT venv.stamp
