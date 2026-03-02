@@ -1,6 +1,8 @@
 #include <RaeptorCogs/Core/Worker.hpp>
 #include <RaeptorCogs/IO/FileIO.hpp>
 #include <RaeptorCogs/RaeptorCogs.hpp>
+#include <mutex>
+#include <vector>
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
 #endif
@@ -10,6 +12,10 @@ namespace RaeptorCogs {
 namespace Singletons {
 
 #pragma region MainWorker
+
+void MainWorker::defer(const std::function<void()> &func) {
+  addJob(func, JobPriority::NORMAL);
+}
 
 void MainWorker::addJob(const std::function<void()> &job, int priority) {
 #ifndef __EMSCRIPTEN__
@@ -23,15 +29,22 @@ void MainWorker::addJob(const std::function<void()> &job, JobPriority priority) 
 }
 
 void MainWorker::executeJobs() {
+  std::vector<std::function<void()>> jobsToExecute;
 #ifndef __EMSCRIPTEN__
-  std::lock_guard<std::mutex> lock(mtx);
+  std::unique_lock<std::mutex> lock(mtx);
 #endif
   for (auto &[priority, jobList] : jobs) {
     for (auto &job : jobList) {
-      job();
+      jobsToExecute.push_back(job);
     }
   }
   jobs.clear();
+#ifndef __EMSCRIPTEN__
+  lock.unlock();
+#endif
+  for (auto &job : jobsToExecute) {
+    job();
+  }
 }
 
 void MainWorker::clearJobs() {

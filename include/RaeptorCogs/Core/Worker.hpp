@@ -112,6 +112,15 @@ class MainWorker {
     ~MainWorker() = default;
 
     /**
+     * @brief Defer a job to be executed on the main worker.
+     *
+     * @param job The job function to defer.
+     *
+     * @note This is a convenience method that adds the job with NORMAL priority.
+     */
+    void defer(const std::function<void()> &job);
+
+    /**
      * @brief Add a job to the main worker.
      *
      * @param job The job function to add.
@@ -130,7 +139,8 @@ class MainWorker {
      *
      * @note Jobs with higher priority values are executed first.
      */
-    void addJob(const std::function<void()> &job, JobPriority priority = JobPriority::NORMAL);
+    void
+    addJob(const std::function<void()> &job, JobPriority priority = JobPriority::NORMAL);
 
     /**
      * @brief Execute all pending jobs in the main worker.
@@ -246,7 +256,8 @@ class Worker {
      *
      * @note Jobs with higher priority values are executed first.
      */
-    void addJob(const std::function<void()> &job, JobPriority priority = JobPriority::NORMAL);
+    void
+    addJob(const std::function<void()> &job, JobPriority priority = JobPriority::NORMAL);
 
     /**
      * @brief Clear all pending jobs in the worker.

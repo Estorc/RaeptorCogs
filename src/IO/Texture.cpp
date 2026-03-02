@@ -191,9 +191,12 @@ bool TextureAtlas::tryAddTexture(TextureBase *texture, int width, int height) {
       (float)(height) / (float)this->size.y));
 
   this->textures.push_back(texture);
-  this->flags |= TextureAtlasFlags::NEEDS_REBUILD;
-  RaeptorCogs::MainWorker().addJob(
-      [this]() { this->flags &= ~TextureAtlasFlags::NEEDS_REBUILD; }, 1);
+  if ((this->flags & TextureAtlasFlags::NEEDS_REBUILD) == TextureAtlasFlags::NONE) {
+    this->flags |= TextureAtlasFlags::NEEDS_REBUILD;
+    RaeptorCogs::MainWorker().defer([this]() {
+      this->flags &= ~TextureAtlasFlags::NEEDS_REBUILD;
+    });
+  }
   return true;
 }
 
@@ -275,8 +278,9 @@ void TextureAtlas::removeTexture(const TextureBase &texture) {
   glGenerateMipmap(GL_TEXTURE_2D);
   if ((this->flags & TextureAtlasFlags::NEEDS_REBUILD) == TextureAtlasFlags::NONE) {
     this->flags |= TextureAtlasFlags::NEEDS_REBUILD;
-    RaeptorCogs::MainWorker().addJob(
-        [this]() { this->flags &= ~TextureAtlasFlags::NEEDS_REBUILD; }, 1);
+    RaeptorCogs::MainWorker().defer([this]() {
+      this->flags &= ~TextureAtlasFlags::NEEDS_REBUILD;
+    });
   }
 }
 
