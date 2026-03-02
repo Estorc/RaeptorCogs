@@ -96,7 +96,8 @@ class Glyph : public TransformableGraphic2D {
      *
      * @note Initializes the glyph with the specified character and advance.
      */
-    Glyph(Text2D &text, const U8Char &character, glm::vec2 advance = glm::vec2(0.0f, 0.0f));
+    Glyph(
+        Text2D &text, const U8Char &character, glm::vec2 advance = glm::vec2(0.0f, 0.0f));
 
     /**
      * @brief Default constructor for Glyph.
@@ -281,7 +282,7 @@ class Text2D : public TransformableGraphic2D, public FlagSet<TextFlags> {
      *
      * @note Initializes the text with the specified font and content.
      */
-    Text2D(Font &font, const U8String &content);
+    Text2D(Font font, const U8String &content);
 
     /**
      * @brief Constructor for Text2D with empty content.
@@ -290,12 +291,22 @@ class Text2D : public TransformableGraphic2D, public FlagSet<TextFlags> {
      *
      * @note Initializes the text with the specified font and empty content.
      */
-    Text2D(Font &font) : Text2D(font, "") {}
+    Text2D(Font font) : Text2D(font, "") {}
+
+    /**
+     * @brief Constructor for Text2D with no font specified.
+     *
+     * @param content The text content.
+     *
+     * @note Initializes the text with no font and the specified content. The font must be
+     * set later for the text to render properly.
+     */
+    Text2D(const U8String &content) : Text2D(nullptr, content) {}
 
     /**
      * @brief Default constructor for Text2D.
      */
-    Text2D() : font(nullptr) {}
+    Text2D();
 
     /**
      * @brief Destructor for Text2D.

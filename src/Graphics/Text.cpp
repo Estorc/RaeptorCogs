@@ -93,11 +93,15 @@ GLuint Glyph::getID() const {
   return this->text->getFont()->getID();
 }
 
-Text2D::Text2D(Font &font, const U8String &content) : font(font), content(content) {
+Text2D::Text2D(Font font, const U8String &content) : font(font), content(content) {
   FlagSet<TextFlags>::setFlag(TextFlags::TEXT_DIRTY);
   FlagSet<GraphicFlags>::setFlag(GraphicFlags::NO_BATCHING);
   this->setLocalMatrixDirty(true);
   this->setVisibility(true);
+}
+
+Text2D::Text2D() {
+  Text2D(nullptr, "");
 }
 
 Text2D::~Text2D() {
