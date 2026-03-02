@@ -61,14 +61,13 @@ message(STATUS "Using Python from virtualenv: ${PYTHON}")
 
 # Generate the virtualenv and ensure it's up to date.
 add_custom_command(
-    OUTPUT venv
+    OUTPUT ${PYTHON}
     COMMAND ${VIRTUALENV} venv
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-    DEPENDS ${PYTHON}
 )
 add_custom_command(
     OUTPUT venv.stamp
-    DEPENDS venv requirements.txt
+    DEPENDS ${PYTHON} requirements.txt
     COMMAND ${CMAKE_COMMAND} -E copy
             ${CMAKE_CURRENT_SOURCE_DIR}/requirements.txt requirements.txt
     COMMAND ./venv/bin/pip install -r requirements.txt --upgrade
