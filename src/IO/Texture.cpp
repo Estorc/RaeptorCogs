@@ -191,6 +191,9 @@ bool TextureAtlas::tryAddTexture(TextureBase *texture, int width, int height) {
       (float)(height) / (float)this->size.y));
 
   this->textures.push_back(texture);
+  this->flags |= TextureAtlasFlags::NEEDS_REBUILD;
+  RaeptorCogs::MainWorker().addJob(
+      [this]() { this->flags &= ~TextureAtlasFlags::NEEDS_REBUILD; }, 1);
   return true;
 }
 
