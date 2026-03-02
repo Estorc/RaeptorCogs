@@ -1,6 +1,9 @@
 #include <GLFW/glfw3.h>
 #include <RaeptorCogs/RaeptorCogs.hpp>
 #include <atomic>
+#ifdef RAEPTOR_HAS_CURL
+#include <RaeptorCogs/External/CURL/CURL.hpp>
+#endif
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
@@ -32,6 +35,9 @@ void Initialize() {
   LocalizeWorkingDirectory();
 #ifndef __EMSCRIPTEN__
   NFD_Init();
+#endif
+#ifdef RAEPTOR_HAS_CURL
+  curl_global_init(CURL_GLOBAL_DEFAULT);
 #endif
 }
 
@@ -75,6 +81,9 @@ void Destroy() {
   ResourceWorker().stop();
 #ifndef __EMSCRIPTEN__
   NFD_Quit();
+#endif
+#ifdef RAEPTOR_HAS_CURL
+  curl_global_cleanup();
 #endif
   Renderer().destroy();
 }

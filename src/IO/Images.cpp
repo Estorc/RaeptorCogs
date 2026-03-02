@@ -1,5 +1,6 @@
 #include <RaeptorCogs/External/glad/glad.hpp>
 #include <RaeptorCogs/External/stb/stb.hpp>
+#include <RaeptorCogs/IO/CURL.hpp>
 #include <RaeptorCogs/IO/FileIO.hpp>
 #include <RaeptorCogs/IO/Images.hpp>
 #include <RaeptorCogs/IO/Path.hpp>
@@ -34,26 +35,17 @@ GLuint LoadTexture(const std::filesystem::path &filename) {
 }
 
 Image LoadImageFromURL(const std::filesystem::path &url) {
-  /*    #ifndef __EMSCRIPTEN__
-      // Parse URL to extract domain and path
-      auto [domain, path] = ParseURL(url.string());
-      httplib::Client client(domain.c_str());
-      client.set_follow_location(true); // Follow redirects if needed
-      auto res = client.Get(path.c_str());
-      if (!res || res->status != 200) {
-          std::cerr << "Failed to load image from URL: " << url << std::endl;
-          return Image(nullptr, 0, 0, 0);
-      }
-      int width, height, channels;
-      stbi_uc* data = stbi_load_from_memory(reinterpret_cast<const
-     stbi_uc*>(res->body.data()), static_cast<int>(res->body.size()), &width, &height,
-     &channels, 4); if (!data) { std::cerr << "Failed to decode image from URL: " << url
-     << std::endl; return Image(nullptr, 0, 0, 0);
-      }
-      return Image(data, static_cast<size_t>(width), static_cast<size_t>(height),
-     static_cast<size_t>(channels)); #else return Image(nullptr, 0, 0, 0); #endif*/
-  (void)url;
+#ifdef __EMSCRIPTEN__
   return Image(nullptr, 0, 0, 0);
+#else
+  std::unique_ptr<RaeptorCogs::CURL::MemoryBuffer> buffer =
+      RaeptorCogs::CURL::LoadDataFromURL(url.string());
+  if (!buffer) {
+    std::cerr << "Failed to load image from URL: " << url << std::endl;
+    return Image(nullptr, 0, 0, 0);
+  }
+  return LoadImageFromMemory(*buffer);
+#endif
 }
 
 Image LoadImageFromMemory(const FileData &filedata, size_t s_width, size_t s_height) {
