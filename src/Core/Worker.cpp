@@ -29,21 +29,17 @@ void MainWorker::addJob(const std::function<void()> &job, JobPriority priority) 
 }
 
 void MainWorker::executeJobs() {
-  std::vector<std::function<void()>> jobsToExecute;
+  std::map<int, std::vector<std::function<void()>>, std::greater<int>> jobsCopy;
+  {
 #ifndef __EMSCRIPTEN__
-  std::unique_lock<std::mutex> lock(mtx);
+    std::lock_guard<std::mutex> lock(mtx);
 #endif
-  for (auto &[priority, jobList] : jobs) {
-    for (auto &job : jobList) {
-      jobsToExecute.push_back(job);
-    }
+    std::swap(jobsCopy, jobs);
   }
-  jobs.clear();
-#ifndef __EMSCRIPTEN__
-  lock.unlock();
-#endif
-  for (auto &job : jobsToExecute) {
-    job();
+  for (auto &[priority, jobList] : jobsCopy) {
+    for (auto &job : jobList) {
+      job();
+    }
   }
 }
 

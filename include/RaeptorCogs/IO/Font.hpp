@@ -564,7 +564,7 @@ class Font {
          * @note If the texture is already loaded, the callback is invoked
          * immediately.
          */
-        void operator()(std::function<void()> fn) {
+        inline void operator()(std::function<void()> fn) {
           ptr->onLoad_ = std::move(fn);
           if (ptr->isLoaded() && ptr->onLoad_) {
             ptr->onLoad_();

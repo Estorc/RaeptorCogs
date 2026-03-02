@@ -113,7 +113,7 @@ void Text2D::setRenderer(Singletons::Renderer *renderer) {
 }
 
 void Text2D::rebuildText() {
-  if (!this->getRenderer()) {
+  if (!this->getRenderer() || !font || !font->isLoaded()) {
     return;
   }
   if (!FlagSet<TextFlags>::hasFlag(TextFlags::TEXT_DIRTY)) {
